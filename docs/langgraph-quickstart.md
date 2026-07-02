@@ -11,10 +11,10 @@ events. See [`../ARCHITECTURE.md`](../ARCHITECTURE.md) §2 for the full graph.
 ## 1. Install
 
 ```bash
-python -m venv .venv && source .venv/bin/activate
-pip install langgraph          # pulls langchain-core; no server, just a lib
-pip install ollama             # dev provider (free, local)
-pip install anthropic          # demo provider (paid, swap in later)
+uv venv && source .venv/bin/activate   # uv over pip for this project (faster + lockfile)
+uv pip install langgraph            # pulls langchain-core; no server, just a lib
+uv pip install langchain-ollama     # dev provider — ChatOllama (free, local); ADR 0005
+uv pip install langchain-anthropic  # demo provider — ChatAnthropic (paid, swap in later); ADR 0005
 ```
 
 ## 2. The three concepts

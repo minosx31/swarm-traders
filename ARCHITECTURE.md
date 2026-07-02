@@ -21,14 +21,14 @@ flowchart TB
     end
 
     subgraph server["Backend — FastAPI + Uvicorn (single in-process app)"]
-        api["POST /analyze &nbsp;·&nbsp; GET /stream (SSE)"]
+        api["GET /stream (SSE) &nbsp;·&nbsp; ticker + as_of as query params"]
         subgraph lg["LangGraph orchestrator (library, in-process)"]
             bb[("Blackboard&nbsp;state")]
             pipe["Fixed two-turn debate<br/>specialists → red-team → rebuttals → judge<br/>+ pure-Python aggregate"]
         end
         ground["Deterministic grounding validator<br/>numeric value-match / textual source"]
         breaker["Circuit breaker + cost logger<br/>max_calls ≈ 15"]
-        prov["Provider abstraction — llm_complete()"]
+        prov["Provider abstraction — LangChain chat model"]
     end
 
     subgraph llm["LLM providers"]
@@ -42,7 +42,7 @@ flowchart TB
     end
 
     user --> ui
-    ui -->|"POST /analyze {ticker, as_of}"| api
+    ui -->|"GET /stream?ticker&as_of"| api
     api --> pipe
     pipe <--> bb
     pipe --> ground
@@ -58,9 +58,13 @@ flowchart TB
 ```
 
 **Deployment:** for the deliverable (a recorded video) nothing is hosted — both
-processes run on the laptop (`uvicorn` + `vite`). A public URL is a stretch goal
-only; if used, the backend must go on an SSE-capable host (Railway/Render/Fly),
-never serverless (Lambda/Vercel functions cut long-lived streams).
+processes run on the laptop (`uvicorn` + `vite`). For a *shareable public URL*, the
+recommended path is a **static replay site** (no backend, no LLM, $0/view): the
+frontend plays a recorded `events.json` through the same reducer/lanes and deploys
+as a static bundle to Vercel/Netlify/Pages. A *live* public URL is a harder stretch
+goal — the backend must then go on an SSE-capable host (Railway/Render/Fly), never
+serverless (Lambda/Vercel functions cut long-lived streams), and live runs spend
+real credits so must be gated. See `PLAN.md` §Hosting.
 
 ---
 
@@ -106,9 +110,14 @@ nodes, not raw reasoning, to bound token cost.
 
 ## 3. Request lifecycle & the SSE event contract
 
-`graph.stream(...)` yields state after each node; the backend relays each as a
-typed SSE event. One event per **agent step** (not token-by-token), with a small
-inter-event delay so the debate is readable.
+Node code emits typed events into a per-run `asyncio.Queue`; the `/stream`
+endpoint drains it and relays each as an SSE event (ADR 0004). LangGraph runs the
+graph but does **not** author these events — its node-level `.stream()` cannot see
+the intra-node ones (`agent_start`, `tool_call`/`tool_result`), which is why the
+queue exists. One event per **agent step** (not token-by-token), with a small
+inter-event delay so the debate is readable. A run that raises mid-graph (e.g. the
+circuit breaker) is caught at this boundary and emitted as a terminal `error`
+event. Recording the queue's output is the replay artifact.
 
 | Order | Event `type` | Key fields |
 |---|---|---|
@@ -182,17 +191,17 @@ the blackboard. Uncached tickers are refused, never live-fetched.
 
 | Layer | Choice | Why / notes |
 |---|---|---|
-| **Frontend framework** | React + **Vite** + TypeScript | Fast dev server; TS keeps the SSE event union honest. Streamlit is the time-crunch fallback. |
+| **Frontend framework** | React + **Vite** + TypeScript | Fast dev server; TS keeps the SSE event union honest. Fallback is *not* Streamlit (it bypasses the SSE backend entirely) — it's a terminal pretty-printer of the same event stream, then replay mode. Same events, no second integration. |
 | **Styling** | Tailwind CSS | Fast, no bespoke design system needed for a demo. |
 | **SSE client** | native `EventSource` | Zero-dep, built for server→client streaming. No websocket/library needed (traffic is one-way). |
-| **Frontend state** | `useReducer` over the event stream | Events are a reducible log → verdict cards. No Redux/Zustand — not enough state to justify a library. |
+| **Frontend state** | `useReducer` over the event stream, keyed by agent | Events reduce into `{ fundamentals, sentiment, technicals, redTeam, verdict }` → three live per-agent lanes + a verdict column. Keying by agent makes parallel fan-out's interleaved arrival a feature, not a bug. No Redux/Zustand — not enough state to justify a library. |
 | **Backend framework** | **FastAPI** + **Uvicorn** (ASGI) | Async fits SSE; holds the API key server-side. |
 | **SSE server** | `sse-starlette` `EventSourceResponse` | Correct SSE framing + disconnect handling over raw `StreamingResponse`. |
-| **Orchestration** | **LangGraph** (library) | Stateful graph maps onto the fixed debate; `.stream()` yields per-node state → SSE for free. Ignore the paid LangGraph Platform. |
-| **Structured I/O** | **Pydantic** models | Thesis/Stance/Evidence/Attack/Verdict schemas — enforce clean JSON from agents and make the grounding validator a typed function. Critical against flaky local-model JSON. |
+| **Orchestration** | **LangGraph** (library) | Stateful graph maps onto the fixed debate: fan-out, fan-in wait, reducer-merged blackboard. Kept for orchestration, **not** streaming — display events go through an explicit queue instead, since `.stream()` can't see intra-node events (ADR 0004). Ignore the paid LangGraph Platform. |
+| **Structured I/O** | **Pydantic** models via LangChain | Thesis/Stance/Evidence/Attack/Verdict schemas — enforce clean JSON and make the grounding validator a typed function. Enforced two ways (ADR 0005): `.with_structured_output()` on no-tool thesis nodes; a terminal `submit_*` tool (schema = the Pydantic model) on tool-using debate nodes, since structured-output coercion is itself a tool call and would collide with the real tools. One validation-retry on the local backend. |
 | **LLM (demo)** | Anthropic SDK → **Claude Sonnet** (`claude-sonnet-5`) | Specialists + Judge all on Sonnet for the budget (no Opus). *(PLAN's budget was estimated on Sonnet-class $3/$15 pricing — confirm the exact model/pricing before the paid runs.)* |
 | **LLM (dev)** | **Ollama** — Qwen 2.5 7B/14B | Free, local; Qwen is best at structured JSON + tool-calling. Groq free tier as no-local-compute fallback. |
-| **Provider abstraction** | thin `llm_complete()` / `llm_complete_with_tools()` wrapper | One config flag (`LLM_BACKEND = ollama|claude`) routes calls. Develop on Ollama, flip to Sonnet near demo. ~20 min to build. |
+| **Provider abstraction** | LangChain chat models (`ChatOllama` / `ChatAnthropic`) | One config flag (`LLM_BACKEND = ollama|claude`) picks the chat-model class; `.bind_tools()` normalizes the tool-calling loop across both providers (ADR 0005). Replaces the hand-rolled wrapper — the "~20 min" estimate only held for the no-tools path; tool threading diverges sharply between providers. No new dependency (LangGraph already pulls `langchain-core`). |
 | **Prompt caching** | Anthropic `cache_control` | On system prompts + snapshot slices from day one (~90% off cached input). |
 | **Data ingestion** | yfinance / FMP / Alpha Vantage (+ **pandas**) | Used **offline** to build snapshots, never during a run. |
 | **Data storage** | JSON files on disk | 2–3 curated snapshots; no database needed. |
@@ -203,10 +212,15 @@ the blackboard. Uncached tickers are refused, never live-fetched.
 
 ## 8. Safeguards (build before any agent)
 
-- **Circuit breaker** in the provider wrapper: `max_calls ≈ 15` per run (covers
-  debate tool iterations) + a per-agent tool-iteration cap (2–3). Kill switch on
-  breach — one runaway tool loop can eat a third of the $15 budget.
-- **Per-run cost logging** — print estimated `$` after every execution.
+- **Circuit breaker** in a single LangChain `BaseCallbackHandler` (ADR 0005), not
+  a per-node counter: `on_llm_start` counts calls and raises `BreakerTripped` past
+  `max_calls ≈ 15` per run (covers debate tool iterations) + a per-agent
+  tool-iteration cap (2–3). Un-bypassable — one runaway tool loop can eat a third
+  of the $15 budget. The trip is caught at the SSE boundary (ADR 0004) and surfaced
+  as a terminal `error` event.
+- **Per-run cost logging** — same handler's `on_llm_end` accumulates token cost
+  (and Anthropic `cache_read`/`cache_creation` counts for real cache accounting);
+  print estimated `$` after every execution.
 - **Global spend counter** — treat $15 as a hard wall.
 - **Replay mode** — a flag that re-streams a recorded good run's events through the
   same SSE pipeline; $0 in credits, lets you re-shoot a clean take.

@@ -48,8 +48,7 @@ A multi-agent system where specialist research agents independently build invest
 - **Live debate works via SSE (Server-Sent Events)** — a one-way stream from backend → browser. The backend emits an event per agent step; the frontend renders each as it arrives.
 
 ```
-Frontend (React)  --POST /analyze-->  Backend (FastAPI)
-Frontend (React)  <--SSE /stream----  Backend (FastAPI)
+Frontend (React)  <--GET /stream (SSE)--  Backend (FastAPI)   # one endpoint; ticker+as_of as query params
                                           | runs
                                           v
                                    LangGraph orchestrator (library, in-process)
@@ -138,26 +137,67 @@ yield {"type": "verdict", "aggregate_stance": -0.05, "direction": "neutral",
 
 | Layer | Choice | Notes |
 |-------|--------|-------|
-| Orchestration | **LangGraph** (Python library) | Runs in-process inside FastAPI. Stateful graph maps onto the fixed two-turn debate sequence (no convergence loop). Use `.stream()` for SSE events. Ignore the paid "LangGraph Platform" cloud product — not needed. |
+| Orchestration | **LangGraph** (Python library) | Runs in-process inside FastAPI. Stateful graph maps onto the fixed two-turn debate sequence (no convergence loop). SSE events come from an explicit event queue, **not** `.stream()` (it can't see intra-node events) — see ADR 0004. Ignore the paid "LangGraph Platform" cloud product — not needed. |
 | LLM (demo) | **Claude Sonnet 4.6** | Specialists + Judge all on Sonnet for this budget (no Opus). |
 | LLM (dev) | **Local via Ollama** | Free. Qwen 2.5 7B/14B (best at structured JSON), Llama 3.3 8B, or Mistral 7B. Groq free tier as no-local-compute fallback. NOTE: Ollama runs on your machine only — a cloud-deployed backend can't reach it; that's fine, the deploy/demo path uses Claude. |
-| Backend | **FastAPI** | Hosts the graph, `POST /analyze` to trigger, `SSE /stream` to stream agent steps. Holds API key (never in frontend). |
-| Frontend | **React + Vite + Tailwind** | Ticker+date input, live debate transcript (SSE), conviction score + evidence cards. Streamlit is the time-crunch fallback. |
+| Backend | **FastAPI** | Hosts the graph, single `GET /stream?ticker&as_of` (SSE) — starts the run and streams agent steps; whitelist miss returns `400` before streaming. Holds API key (never in frontend). |
+| Frontend | **React + Vite + Tailwind** | Ticker+date input, three live per-agent lanes (SSE), conviction score + evidence cards. Fallback is a terminal pretty-printer of the same event stream (not Streamlit — that bypasses the SSE backend), then replay mode. |
 | Data | **Curated point-in-time snapshots** | yfinance / Financial Modeling Prep / Alpha Vantage for fundamentals+prices; saved news headlines with stable IDs + publish dates. Every datum dated ≤ As-Of; the **Outcome is held OUT of agent-visible state**. Whitelisted (ticker, date) pairs. **Never live-call during a run.** See ADR 0002. |
 | Agent tools | **Read the cached snapshot, never live** | Debate-phase tools (`get_financials`, `get_price_history`, `get_news`) enforce the As-Of filter internally (leakage impossible by construction). Initial theses use pre-sliced context; only rebuttals/Red-Team call tools, bounded 2–3 iters. See ADR 0003. |
-| Containerization | **None (skip Docker)** | Run `uvicorn` + `npm run dev` directly. Add Docker ONLY if the 2-person team hits environment drift. Not a best-practice requirement for a 1-week local build. |
+| Containerization | **None (skip Docker)** | Run `uvicorn` + `bun run dev` directly. Add Docker ONLY if the 2-person team hits environment drift. Not a best-practice requirement for a 1-week local build. |
+| JS tooling | **Bun** (over npm) | Preferred for the frontend: `bun install`, `bun run dev`, `bunx`. Fall back to npm only if a dep is Bun-incompatible or CI needs npm. |
+| Python tooling | **uv** (over pip) | Preferred for all Python env/dependency work: `uv venv`, `uv pip install`, `uv add`. Faster installs + a lockfile. Use pip only where uv can't. |
 
 ### Critical: Provider Abstraction
-Thin wrapper so agents call `llm_complete()`, not Claude directly. Config flag picks backend. Develop entirely on Ollama, flip one flag to route to Sonnet near demo. ~20 min to build; makes the whole budget strategy painless.
+> **Superseded by ADR 0005.** The abstraction is a LangChain chat model, not a
+> hand-rolled `llm_complete()`. The one-flag / develop-on-Ollama-flip-to-Sonnet
+> strategy below still holds; the mechanism changed because `.bind_tools()`
+> normalizes the tool-calling loop across providers (the hand-rolled tool path was
+> mis-priced at ~20 min). The `max_calls` breaker + cost logger move into a
+> LangChain callback handler (ADR 0005), not the orchestrator.
+
+One knob — the `LLM_BACKEND` env var — picks the backend. Each entry fully
+specifies provider + model, so switching is a single value. Develop on Ollama at
+home; use a cheap cloud backend when you can't run Ollama; flip to Sonnet near demo.
+
+**Backends:**
+
+| `LLM_BACKEND` | Model | Cost | Use for |
+|---|---|---|---|
+| `ollama` | Qwen 2.5 (local) | Free | Home dev — plumbing + flow |
+| `groq` | Llama 3.3 70B (hosted) | **Free** | On-the-go plumbing tests (no local compute) |
+| `haiku` | `claude-haiku-4-5` | ~$1/$5 per M | On-the-go **faithful** tests — same family as Sonnet, so it de-risks the demo switch and shares tool-calling + `cache_control` mechanics |
+| `sonnet` | `claude-sonnet-5` | $3/$15 per M | Demo / final tuning (paid) |
+
+> Different-family backends (`groq`, Gemini) test *plumbing*, not final reasoning
+> quality or prompt tuning — those don't transfer cleanly across families (see
+> Local Model Caveats). `haiku` is the honest cheap proxy for Sonnet.
+> Any tool-using debate node (ADR 0003) needs a tool-calling-capable backend; all
+> four above qualify. A backend that can't do tools only runs the pre-sliced path.
 
 ```python
-# config: LLM_BACKEND = "ollama" | "claude"
-def llm_complete(messages, model=None):
-    if BACKEND == "ollama":
-        return ollama_call(messages)   # free, local
-    else:
-        return claude_call(messages)   # paid, swap in at the end
+import os
+from langchain_ollama import ChatOllama
+from langchain_anthropic import ChatAnthropic
+from langchain_groq import ChatGroq
+
+BACKENDS = {   # name -> factory; add a line to add a backend, agents unchanged
+    "ollama": lambda: ChatOllama(model="qwen2.5"),
+    "groq":   lambda: ChatGroq(model="llama-3.3-70b-versatile"),
+    "haiku":  lambda: ChatAnthropic(model="claude-haiku-4-5"),
+    "sonnet": lambda: ChatAnthropic(model="claude-sonnet-5"),
+}
+def get_chat_model():
+    return BACKENDS[os.environ["LLM_BACKEND"]]()   # .bind_tools(...) / .with_structured_output(...) — ADR 0005
 ```
+
+**Changing on the fly:** keep every provider key in `.env` (`ANTHROPIC_API_KEY`,
+`GROQ_API_KEY`, …) once — then switching is just editing `LLM_BACKEND` and
+restarting `uvicorn` (seconds), no code change. Two rules: **never switch mid-run**
+(inconsistent reasoning + breaks prompt caching — pick per run), and if you add a
+dev-only `?backend=` query param for no-restart local switching, **never expose it
+on the hosted site** (a visitor could pick `sonnet` and drain the budget — keep
+backend selection server-side / local only).
 
 ---
 
@@ -167,12 +207,35 @@ def llm_complete(messages, model=None):
 
 **Local run (dev + recording):**
 ```
-pip install langgraph fastapi uvicorn
+uv venv && source .venv/bin/activate
+uv pip install langgraph fastapi uvicorn
 uvicorn main:app --reload   # backend → localhost:8000
-npm run dev                 # frontend → localhost:5173
+bun install && bun run dev  # frontend → localhost:5173
 ```
 
-**If a live URL is also wanted (stretch goal / backup, not required):**
+**Public viewing — static replay site (recommended if you want a shareable URL):**
+Host a site where interested people watch the agents work on a whitelisted stock —
+**without running the agents live.** It re-streams pre-recorded runs, so it costs
+**$0 per view**, can't leak future data, and can't drain the $15 budget. This is
+the payoff of the event-queue design (ADR 0004): a recorded run *is* a JSON event
+log, and replaying it is just draining that log through the same reducer/lanes.
+- **No backend needed.** Swap the frontend's event source from `EventSource` to a
+  bundled `events.json`; a small player emits events on the same inter-event delay.
+  The per-agent-lane reducer is unchanged, so the whole UI "just works."
+- **Deploy as a pure static site:** `bun run build` → drop `dist/` on Vercel /
+  Netlify / GitHub Pages / Hugging Face Spaces. Free, permanent, no card, no SSE
+  host, no API key exposed.
+- **Artifacts:** run each of the 2–3 whitelisted stocks once on Sonnet locally and
+  save the recorded events (`nvda.json`, …) — the same runs you record for the
+  video, so ~$0 extra.
+- **Complexity: low.** Marginal work over the frontend + replay mode you're already
+  building ≈ a ~20–40-line "player" + a stock picker + one deploy — call it a half
+  day, most of it first-time deploy fiddling, not code. Limitation: canned 2–3
+  stories, no arbitrary tickers (already true live, per the whitelist / ADR 0002).
+
+**If a *live* URL is also wanted (harder; stretch goal / backup, not required):**
+- Only worth it with more credits (ask the organizers — PLAN's budget note). Gate
+  it hard: rate-limit + whitelist-only + the spend cap wired to the breaker (Q7).
 - The critical requirement is **SSE support (long-lived streaming connections).**
 - **Backend (FastAPI) — good fits:** Railway, Render (free tier sleeps when idle, fine for demo), Fly.io, Hugging Face Spaces (free, permanent, no card), or a $5/mo VPS (DigitalOcean/Hetzner/Linode — most control, most setup).
 - **Backend — AVOID for SSE:** Vercel/Netlify functions, AWS Lambda, GCP Functions — serverless timeouts cut off streaming.
