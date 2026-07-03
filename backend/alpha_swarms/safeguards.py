@@ -96,7 +96,8 @@ class RunSafeguards(BaseCallbackHandler):
             f"[cost] {self.calls} LLM calls · est ${self.cost_usd:.4f} "
             f"(in={t['input']} out={t['output']} "
             f"cache_read={t['cache_read']} cache_creation={t['cache_creation']}) "
-            f"· global spend ${total:.4f} / $15.00"
+            f"· global spend ${total:.4f} / $15.00",
+            flush=True,  # survives redirected stdout + SIGTERM shutdown
         )
 
 

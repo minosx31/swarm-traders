@@ -22,28 +22,45 @@ def paint(agent: str) -> str:
     return f"{COLORS.get(agent, '')}{agent:<13}{RESET}"
 
 
+def _evidence_line(ev: dict) -> str:
+    cite = ev.get("citation_key") or ev.get("source_id")
+    badge = ""
+    if not ev.get("grounded", True):
+        badge = f" \033[31m✗ dropped: {ev.get('reason', 'ungrounded')}\033[0m"
+    elif ev.get("verified_quote"):
+        badge = " \033[32m✓ verified quote\033[0m"
+    return f"• {ev['claim']}  {DIM}[{cite}]{RESET}{badge}"
+
+
 def render(event: dict) -> None:
     t = event.get("type")
     agent = event.get("agent", "")
     if t == "agent_start":
         print(f"{paint(agent)} {DIM}── takes the floor ──{RESET}")
     elif t == "thesis":
-        print(f"{paint(agent)} THESIS  stance={event['stance']:+.2f}")
+        print(f"{paint(agent)} THESIS  stance={event['stance']:+.2f}  {event.get('summary', '')}")
         for ev in event.get("evidence", []):
-            print(f"{'':14}• {ev['claim']}  {DIM}[{ev.get('citation_key') or ev.get('source_id')}]{RESET}")
+            print(f"{'':14}{_evidence_line(ev)}")
+    elif t == "grounding":
+        gate = "VOTES" if event["gated_in"] else "GATED OUT (no vote)"
+        print(f"{paint(agent)} {DIM}grounding: {event['grounded']} grounded, "
+              f"{event['dropped']} dropped → {gate}{RESET}")
     elif t == "attack":
         print(f"{paint(agent)} ATTACK → {event['target']}  ({event['kind']}) {event['critique']}")
         for ev in event.get("counter_evidence", []):
-            print(f"{'':14}• {ev['claim']}  {DIM}[{ev.get('citation_key') or ev.get('source_id')}]{RESET}")
+            print(f"{'':14}{_evidence_line(ev)}")
     elif t == "tool_call":
         print(f"{paint(agent)} {DIM}⚙ {event['tool']}({json.dumps(event['args'])}){RESET}")
     elif t == "tool_result":
         print(f"{paint(agent)} {DIM}⚙ {event['tool']} → {json.dumps(event['data'])}{RESET}")
     elif t == "rebuttal":
-        print(f"{paint(agent)} REBUTTAL  proposed_stance={event['proposed_stance']:+.2f}")
+        print(f"{paint(agent)} REBUTTAL  proposed_stance={event['proposed_stance']:+.2f}  "
+              f"{event.get('response', '')}")
     elif t == "adjudication":
         landed = ", ".join(event["attacks_landed"]) or "none landed"
         print(f"{paint('judge')} ADJUDICATES {agent}: stance={event['adjudicated_stance']:+.2f}  ({landed})")
+        if event.get("rationale"):
+            print(f"{'':14}{DIM}{event['rationale']}{RESET}")
     elif t == "verdict":
         print(f"\n{BOLD}{'═' * 60}{RESET}")
         if event["direction"] == "no_call":

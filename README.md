@@ -11,9 +11,11 @@ theses, a Red-Team attacks them, each specialist gets one rebuttal, a Judge rule
 which attacks landed, and a computed aggregate produces the Verdict (or an honest
 No Call). The debate streams live over SSE, one event per agent step.
 
-**Status:** Phase 0 complete (walking skeleton + budget safeguards + snapshot
-layer). The debate graph currently runs on mock agents; real specialists land in
-Phase 1. See `issues.md` for the build plan and progress.
+**Status:** Phases 0–1 complete. The full debate pipeline — three real
+specialists, Red-Team, rebuttals, Judge, computed Verdict, deterministic
+grounding gate — runs end-to-end on the free Ollama backend (pre-sliced
+baseline, no tools yet). Next: the React frontend (Phase 2) and debate-phase
+tool-calling (Phase 3). See `issues.md` for the build plan and progress.
 
 ---
 
@@ -36,7 +38,12 @@ One FastAPI app with LangGraph running in-process — nothing else to host.
 | File | What it does |
 |---|---|
 | `alpha_swarms/app.py` | FastAPI app. `GET /stream?ticker&as_of` — refuses non-whitelisted pairs with `400`, otherwise streams the debate as SSE. Validates `LLM_BACKEND` at startup |
-| `alpha_swarms/graph.py` | The LangGraph debate graph: parallel specialist fan-out → red_team → parallel rebuttals → judge → pure-Python aggregate. Nodes are currently mocks emitting hardcoded events (Phase 1 replaces them) |
+| `alpha_swarms/graph.py` | LangGraph topology wiring: parallel specialist fan-out → red_team → parallel rebuttals → judge → aggregate, plus the reducer-merged `Blackboard` state |
+| `alpha_swarms/agents.py` | The LLM-backed nodes: specialist/Red-Team/rebuttal/Judge prompts + the structured-output helper (one validation-retry, then graceful failure). Pre-sliced single calls, no tools (ADR 0003 baseline) |
+| `alpha_swarms/models.py` | Pydantic schemas the models must produce: Thesis, Evidence (numeric/textual tiers), Attack, Rebuttal, JudgeRuling |
+| `alpha_swarms/slices.py` | Pre-sliced per-specialist context (flattened statements, derived price metrics, cached news) + the citation key space grounding resolves against |
+| `alpha_swarms/grounding.py` | The deterministic grounding gate (ADR 0001): numeric citation_key + value-match, textual source_id resolution, Verified Quote badge, ≥1 grounded item to vote |
+| `alpha_swarms/scoring.py` | Pure-Python Verdict: mean of adjudicated stances → direction bands / conviction / dissent / quorum No-Call. Never authored by the Judge |
 | `alpha_swarms/events.py` | The display-event channel (ADR 0004): per-run `asyncio.Queue` the nodes emit typed events into; the endpoint drains it with the inter-event delay |
 | `alpha_swarms/runner.py` | Run lifecycle: owns the queue, attaches the safeguards handler globally, catches mid-graph failures and surfaces them as a terminal `error` event |
 | `alpha_swarms/llm.py` | Provider abstraction (ADR 0005): `LLM_BACKEND` env flag picks a LangChain chat model (`ollama` / `groq` / `haiku` / `sonnet`); wires Anthropic `cache_control` for system prompts |
@@ -44,7 +51,7 @@ One FastAPI app with LangGraph running in-process — nothing else to host.
 | `alpha_swarms/snapshot.py` | Point-in-time Snapshot layer (ADR 0002): Pydantic models, the leak validator (no datum dated after as-of), whitelist (= snapshot files on disk), loader that never touches Outcomes |
 | `scripts/build_snapshot.py` | Offline ingestion: builds `data/snapshots/{TICKER}_{AS_OF}.json` from yfinance (prices, last *reported* fundamentals, news) plus the held-out Outcome in `data/outcomes/`. Never runs during a request |
 | `scripts/pretty_print.py` | Terminal client: consumes the SSE stream and renders the debate with per-agent colors (the pre-React fallback UI) |
-| `tests/` | Acceptance tests per issue: `test_walking_skeleton.py` (#1), `test_safeguards.py` (#2), `test_snapshot.py` (#3) |
+| `tests/` | Acceptance tests per issue: `test_safeguards.py` (#2), `test_snapshot.py` (#3), `test_debate.py` (#4/#6, scripted LLM), `test_grounding.py` (#5), `test_scoring.py` (#6) |
 | `data/snapshots/` | Whitelisted point-in-time snapshots — the only data agents ever see |
 | `data/outcomes/` | What actually happened after as-of. Held out of agent-visible state; the UI reveals it only after the Verdict |
 
@@ -72,10 +79,11 @@ Whitelist a `(ticker, as_of)` pair by building its snapshot (offline, one-time):
 uv run scripts/build_snapshot.py AAPL 2026-06-30
 ```
 
-Run the backend and watch a (mock, for now) debate in a second terminal:
+Run the backend and watch a live debate in a second terminal (a full run on the
+local model takes a few minutes):
 
 ```bash
-uv run uvicorn alpha_swarms.app:app --reload       # http://localhost:8000
+LLM_BACKEND=ollama uv run uvicorn alpha_swarms.app:app --reload   # http://localhost:8000
 uv run scripts/pretty_print.py --ticker AAPL --as-of 2026-06-30
 ```
 
@@ -89,7 +97,7 @@ uv run pytest
 
 | Variable | Purpose | Default |
 |---|---|---|
-| `LLM_BACKEND` | Picks the chat model: `ollama` \| `groq` \| `haiku` \| `sonnet`. Unused by the mock graph; required from Phase 1. Never switch mid-run | unset |
+| `LLM_BACKEND` | Picks the chat model: `ollama` \| `groq` \| `haiku` \| `sonnet`. Required for real runs (`LLM_BACKEND=ollama` for free dev). Never switch mid-run | unset |
 | `OLLAMA_MODEL` | Local model for the `ollama` backend | `qwen3.5:9b` |
 | `ANTHROPIC_API_KEY` / `GROQ_API_KEY` | Provider keys, needed only for their backends | — |
 | `EVENT_DELAY_S` | Inter-event delay on the SSE stream (readability) | `0.25` |

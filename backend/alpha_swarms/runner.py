@@ -10,6 +10,8 @@ import asyncio
 from .events import EventEmitter
 from .graph import build_graph
 from .safeguards import RunSafeguards
+from .slices import RunContext
+from .snapshot import load_snapshot
 
 _default_graph = None
 
@@ -21,18 +23,21 @@ def get_graph():
     return _default_graph
 
 
-async def stream_run(ticker: str, as_of: str, *, graph=None, delay: float | None = None):
+async def stream_run(ticker: str, as_of: str, *, graph=None, delay: float | None = None,
+                     safeguards: RunSafeguards | None = None):
     """Run the debate graph for (ticker, as_of), yielding display events."""
     graph = graph or get_graph()
     emitter = EventEmitter()
+    run_context = RunContext(load_snapshot(ticker, as_of))
     # Attached via the invoke config so it propagates to every nested LLM call —
     # global and un-bypassable by node code (ADR 0005).
-    safeguards = RunSafeguards()
+    safeguards = safeguards or RunSafeguards()
 
     async def _run() -> None:
         state = {"ticker": ticker, "as_of": as_of, "theses": [],
                  "attacks": [], "rebuttals": [], "adjudicated_stances": []}
-        config = {"configurable": {"emit": emitter.emit}, "callbacks": [safeguards]}
+        config = {"configurable": {"emit": emitter.emit, "run_context": run_context},
+                  "callbacks": [safeguards]}
         try:
             await graph.ainvoke(state, config=config)
         except Exception as exc:  # breaker trips, node crashes — all end here

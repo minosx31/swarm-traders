@@ -115,7 +115,12 @@ async def test_non_whitelisted_date_is_refused_with_400():
     assert events == []
 
 
-async def test_whitelisted_pair_streams():
+async def test_whitelisted_pair_streams(monkeypatch):
+    from alpha_swarms import llm
+    from tests import fakes
+
+    model = fakes.ScriptedChatModel(script=fakes.full_debate_script())
+    monkeypatch.setattr(llm, "get_chat_model", lambda: model)
     status, events = await collect_sse_events(app, WHITELISTED)
     assert status == 200
     assert events[-1]["type"] == "verdict"

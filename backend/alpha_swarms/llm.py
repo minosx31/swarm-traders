@@ -13,7 +13,11 @@ def _ollama():
     from langchain_ollama import ChatOllama
 
     # PLAN says qwen2.5; the machine currently has qwen3.5:9b pulled — override here.
-    return ChatOllama(model=os.environ.get("OLLAMA_MODEL", "qwen3.5:9b"))
+    # reasoning=False: qwen3.5 is a thinking model (~250 tokens of reasoning per
+    # one-word answer) — too slow for dev-loop runs. num_ctx: judge prompts
+    # exceed Ollama's small default context.
+    return ChatOllama(model=os.environ.get("OLLAMA_MODEL", "qwen3.5:9b"),
+                      reasoning=False, num_ctx=8192)
 
 
 def _groq():
@@ -61,6 +65,15 @@ def get_chat_model():
             f"valid: {', '.join(sorted(BACKENDS))}"
         )
     return BACKENDS[backend]()
+
+
+def structured_output_kwargs() -> dict:
+    """Ollama 0.30.x does not enforce `format` grammars for qwen3.5-family
+    models (silently returns prose), so structured output there must go through
+    tool calling; other providers keep their library defaults."""
+    if current_backend() == "ollama":
+        return {"method": "function_calling"}
+    return {}
 
 
 def system_content(text: str) -> str | list[dict]:

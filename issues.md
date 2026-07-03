@@ -114,11 +114,11 @@ carries a real stance in [−1, +1] and a real evidence list, rendered by the
 pretty-printer.
 
 #### Acceptance criteria
-- [ ] A run on `ollama` streams a real Fundamentals `thesis` event with a signed
+- [x] A run on `ollama` streams a real Fundamentals `thesis` event with a signed
       stance and structured evidence citing Snapshot keys
-- [ ] Malformed model output triggers exactly one validation-retry, then fails
+- [x] Malformed model output triggers exactly one validation-retry, then fails
       gracefully (terminal `error` event), never a crash
-- [ ] The node reads only the pre-sliced Snapshot context — no tool calls, one
+- [x] The node reads only the pre-sliced Snapshot context — no tool calls, one
       LLM call, breaker count confirms it
 
 ---
@@ -137,14 +137,14 @@ dropped before scoring; a specialist needs ≥1 Grounded Evidence item to earn a
 vote. Gate results are visible in the stream.
 
 #### Acceptance criteria
-- [ ] One run streams three `thesis` events from parallel nodes; interleaved
+- [x] One run streams three `thesis` events from parallel nodes; interleaved
       arrival merges cleanly into the blackboard
-- [ ] Unit tests: fabricated `citation_key`, out-of-tolerance `cited_value`, and
+- [x] Unit tests: fabricated `citation_key`, out-of-tolerance `cited_value`, and
       unresolvable `source_id` are each dropped; valid items pass; exact
       `quoted_span` sets the badge
-- [ ] A specialist with zero grounded items is excluded from voting and the
+- [x] A specialist with zero grounded items is excluded from voting and the
       stream shows it
-- [ ] Blackboard passes summarized theses between nodes, not raw reasoning
+- [x] Blackboard passes summarized theses between nodes, not raw reasoning
 
 ---
 
@@ -163,16 +163,16 @@ stances → Direction bands (±0.25 / ±0.75), Conviction = |aggregate|, Dissent
 N — or **No Call** when fewer than 2 lenses cleared the gate.
 
 #### Acceptance criteria
-- [ ] A full run on `ollama` streams the complete sequence through `verdict`
+- [x] A full run on `ollama` streams the complete sequence through `verdict`
       (~8 LLM calls; breaker confirms)
-- [ ] Red-Team attacks fail the same grounding gate when ungrounded; the Judge
+- [x] Red-Team attacks fail the same grounding gate when ungrounded; the Judge
       counts an attack as landed only if grounded counter-evidence or a valid
       logical flaw
-- [ ] `aggregate` is deterministic pure Python with unit tests for bands, the
+- [x] `aggregate` is deterministic pure Python with unit tests for bands, the
       high-conviction flag, dissent bands, and quorum → No Call
-- [ ] Verdict event always carries N (voting lenses) beside conviction; No Call
+- [x] Verdict event always carries N (voting lenses) beside conviction; No Call
       carries a reason
-- [ ] Per-specialist trail visible in the stream: initial stance → proposed
+- [x] Per-specialist trail visible in the stream: initial stance → proposed
       rebuttal stance → adjudicated stance
 
 ---
