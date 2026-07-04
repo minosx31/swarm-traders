@@ -42,6 +42,30 @@ test('attacks land in the TARGET lane, not a red-team lane', () => {
   expect(state.lanes.sentiment.attacks).toHaveLength(0)
 })
 
+test('rebuttal tool activity accumulates in the challenged specialist lane (#8)', () => {
+  const state = run([
+    { type: 'agent_start', agent: 'fundamentals' },
+    { type: 'tool_call', agent: 'fundamentals', tool: 'get_financials', args: {} },
+    { type: 'tool_result', agent: 'fundamentals', tool: 'get_financials', data: { x: 1 } },
+    { type: 'rebuttal', agent: 'fundamentals', proposed_stance: 0.5, response: 'r' },
+  ])
+  expect(state.lanes.fundamentals.toolActivity).toHaveLength(2)
+  expect(state.lanes.fundamentals.toolActivity[0]?.tool).toBe('get_financials')
+})
+
+test('red-team tool activity is captured, not dropped, and survives its gate (#8)', () => {
+  const state = run([
+    { type: 'agent_start', agent: 'red_team' },
+    { type: 'tool_call', agent: 'red_team', tool: 'get_news', args: {} },
+    { type: 'tool_result', agent: 'red_team', tool: 'get_news', data: [] },
+    { type: 'attack', agent: 'red_team', target: 'fundamentals', kind: 'logical',
+      critique: 'c', counter_evidence: [] },
+    { type: 'grounding', agent: 'red_team', gated_in: true, grounded: 1, dropped: 0 },
+  ])
+  expect(state.redTeam.toolActivity).toHaveLength(2)
+  expect(state.redTeam.grounding?.gated_in).toBe(true) // grounding did not wipe toolActivity
+})
+
 test('unknown event types never crash the reducer', () => {
   const state = run([
     { type: 'agent_start', agent: 'fundamentals' },

@@ -1,8 +1,13 @@
-/** DOM-level smoke test: reduce a REAL recorded run into the components.
- *  Doubles as issue #9's "frontend renders a recorded log" check. */
+/** DOM-level smoke test: reduce a recorded run into the components.
+ *  Doubles as issue #9's "frontend renders a recorded log" check.
+ *
+ *  Runs against COMMITTED fixtures (src/fixtures/*.json), not the mutable
+ *  backend/data/runs/ directory — LLM output is non-deterministic, so asserting
+ *  on "the latest live run" is inherently flaky. The fixtures are frozen copies
+ *  of two real recorded runs (one reaching a verdict, one terminating in error). */
 
 import { afterEach, expect, test } from 'bun:test'
-import { readdirSync, readFileSync } from 'node:fs'
+import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { cleanup, render, screen } from '@testing-library/react'
 
@@ -12,18 +17,12 @@ import { VerdictPanel } from './VerdictPanel'
 import { debateReducer, initialState } from './reducer'
 import type { DebateEvent } from './types'
 
-const RUNS_DIR = join(import.meta.dir, '..', '..', 'backend', 'data', 'runs')
+const FIXTURES = join(import.meta.dir, 'fixtures')
+const loadFixture = (name: string): { events: DebateEvent[] } =>
+  JSON.parse(readFileSync(join(FIXTURES, name), 'utf8'))
 
-const runFiles = (): string[] =>
-  readdirSync(RUNS_DIR).filter((f: string) => f.endsWith('.json')).sort()
-
-function latestRecordedRun(): { events: DebateEvent[] } {
-  const files = runFiles()
-  return JSON.parse(readFileSync(join(RUNS_DIR, files[files.length - 1]), 'utf8'))
-}
-
-test('a real recorded run reduces and renders: lanes, gate results, verdict', () => {
-  const { events } = latestRecordedRun()
+test('a recorded verdict run reduces and renders: lanes, gate results, verdict', () => {
+  const { events } = loadFixture('verdict-run.json')
   const state = events.reduce(debateReducer, initialState)
 
   render(
@@ -36,11 +35,12 @@ test('a real recorded run reduces and renders: lanes, gate results, verdict', ()
   )
 
   expect(screen.getByText('FUNDAMENTALS')).toBeTruthy()
-  // the recorded qwen2.5 run: sentiment gated out, verdict BEAR, N=2
+  // this frozen fixture: sentiment gated out, verdict BEAR, N=2
   expect(screen.getByText('GATED OUT · NO VOTE')).toBeTruthy()
   expect(screen.getByText(/BEAR/)).toBeTruthy()
   expect(screen.getByText('N=2')).toBeTruthy()
-  // conviction never shown without N and dissent
+  // structural invariants that hold for ANY verdict run, whatever the model said:
+  // conviction is never shown without N and dissent
   expect(screen.getByText('CONVICTION')).toBeTruthy()
   expect(screen.getByText('DISSENT')).toBeTruthy()
   // outcome absent from the DOM until explicitly revealed
@@ -48,11 +48,18 @@ test('a real recorded run reduces and renders: lanes, gate results, verdict', ()
   expect(screen.getByText('▣ REVEAL THE OUTCOME')).toBeTruthy()
 })
 
-test('error-terminated recorded runs still render lanes without crashing', () => {
-  for (const file of runFiles()) {
-    const { events } = JSON.parse(readFileSync(join(RUNS_DIR, file), 'utf8'))
-    const state = (events as DebateEvent[]).reduce(debateReducer, initialState)
-    const { unmount } = render(<Lane agent="technicals" lane={state.lanes.technicals} />)
-    unmount()
-  }
+test('an error-terminated recorded run still renders lanes without crashing', () => {
+  const { events } = loadFixture('error-run.json')
+  const state = events.reduce(debateReducer, initialState)
+  expect(state.phase).toBe('error')
+  const { unmount } = render(
+    <main>
+      <Lane agent="fundamentals" lane={state.lanes.fundamentals} />
+      <Lane agent="sentiment" lane={state.lanes.sentiment} />
+      <Lane agent="technicals" lane={state.lanes.technicals} />
+    </main>,
+  )
+  // lanes that got a thesis before the error still render it
+  expect(screen.getByText('FUNDAMENTALS')).toBeTruthy()
+  unmount()
 })

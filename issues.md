@@ -224,15 +224,31 @@ bounded to 2–3 iterations per agent, with a terminal `submit_rebuttal` /
 the "challenged agent digs up evidence to defend itself" visual.
 
 #### Acceptance criteria
-- [ ] A tool given `as_of` cannot return any datum dated after it — property
+- [x] A tool given `as_of` cannot return any datum dated after it — property
       verified by test, not prompt
-- [ ] Rebuttal/Red-Team runs show `tool_call`/`tool_result` events live in the UI
+- [x] Rebuttal/Red-Team runs show `tool_call`/`tool_result` events live in the UI
       between `attack` and `rebuttal`
-- [ ] Tool loop hard-stops at the iteration cap; full run stays under the ~15-call
+- [x] Tool loop hard-stops at the iteration cap; full run stays under the ~15-call
       breaker (~10–12 calls)
-- [ ] Node exits when the model calls `submit_*`; the payload validates against
+- [x] Node exits when the model calls `submit_*`; the payload validates against
       the Pydantic schema with one retry
-- [ ] Disabling the increment (flag) reproduces the #6 baseline unchanged
+- [x] Disabling the increment (flag) reproduces the #6 baseline unchanged
+
+> **Local-model caveat:** the mechanism is verified end-to-end (tools fire, events
+> stream, breaker/cost hold, graceful degradation). On the free `ollama` backend
+> the read tools fetch reliably but qwen doesn't consistently emit the nested
+> `submit_*` exit call, so a full tool-mode run may terminate in a graceful `error`
+> event — the documented ADR 0005 model-reliability limitation. Tool-mode is
+> therefore off by default (`DEBATE_TOOLS=1` opts in) and is tuned for the capable
+> demo backends in #10; the default free-backend path is the unchanged #6 baseline.
+>
+> **Recording local demo takes:** set `RESILIENT=1` so a node whose LLM output
+> fails *abstains* (contributes nothing) and the run still reaches a verdict,
+> instead of aborting with a terminal `error` — this maximizes the number of
+> completed, replayable takes on the flaky local models. Off by default (honest
+> fail-loud contract); the budget breaker always stays loud. Separately,
+> `LLM_BACKEND` is now validated at startup, so a forgotten backend refuses to
+> start rather than wasting a run on a mid-graph `RuntimeError`.
 
 ---
 

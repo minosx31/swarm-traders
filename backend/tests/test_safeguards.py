@@ -125,13 +125,16 @@ def test_all_planned_backends_registered():
 
 def test_unknown_backend_fails_fast(monkeypatch):
     monkeypatch.setenv("LLM_BACKEND", "gpt5")
-    with pytest.raises(RuntimeError, match="Unknown LLM_BACKEND"):
+    with pytest.raises(RuntimeError, match="not set to a valid backend"):
         validate_backend()
 
 
-def test_unset_backend_is_allowed_while_graph_is_mock(monkeypatch):
+def test_unset_backend_fails_fast(monkeypatch):
+    # the mock-phase allowance for an unset backend ended at #4: the real graph
+    # needs a backend, so startup refuses rather than erroring mid-run
     monkeypatch.delenv("LLM_BACKEND", raising=False)
-    validate_backend()  # no raise
+    with pytest.raises(RuntimeError, match="not set to a valid backend"):
+        validate_backend()
 
 
 def test_cache_control_only_on_anthropic_backends(monkeypatch):

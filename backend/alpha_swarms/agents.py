@@ -12,8 +12,10 @@ Non-gated specialists are skipped in the debate — no vote, no calls.
 """
 
 import json
+import os
 
-from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
+from pydantic import ValidationError
 
 from . import llm
 from .grounding import earns_vote, ground_evidence
@@ -21,6 +23,13 @@ from .models import JudgeRuling, Rebuttal, RedTeamReport, Thesis
 from .safeguards import BreakerTripped
 from .scoring import compute_verdict
 from .slices import RunContext
+from .tools import (
+    MAX_TOOL_ITERS,
+    debate_tools_enabled,
+    make_read_tools,
+    submit_attack,
+    submit_rebuttal,
+)
 
 SPECIALISTS = ("fundamentals", "sentiment", "technicals")
 
@@ -60,9 +69,88 @@ async def call_structured(schema, system: str, user: str, config, *, post_valida
     raise StructuredOutputError(f"{schema.__name__} failed validation after one retry: {error}")
 
 
+async def call_with_tools(submit_model, read_tools, *, system, user, agent, emit, config):
+    """Bounded tool-calling loop (ADR 0003/0005) for a debate node.
+
+    The model calls read tools over the cached Snapshot, then ends its turn by
+    calling submit_* whose arguments ARE the exit Pydantic model. At most
+    MAX_TOOL_ITERS model calls (hard iteration cap); the submit payload validates
+    against the schema with exactly one retry. tool_call / tool_result display
+    events are emitted per read-tool invocation. The circuit breaker (a global
+    callback) still counts every model call and propagates uncaught.
+    """
+    submit_name = submit_model.__name__
+    model = llm.get_chat_model()
+    tool_map = {t.name: t for t in read_tools}
+    messages = [SystemMessage(content=llm.system_content(system)), HumanMessage(content=user)]
+    error = None
+    for i in range(MAX_TOOL_ITERS):  # hard stop at the iteration cap
+        final = i == MAX_TOOL_ITERS - 1
+        if final:  # last turn: force the exit — drop the read tools, demand submit_*
+            messages.append(HumanMessage(
+                content=f"Stop researching. Call {submit_name} now with your final answer."))
+        bound = model.bind_tools([submit_model] if final else read_tools + [submit_model])
+        ai = await bound.ainvoke(messages, config=config)
+        messages.append(ai)
+        calls = getattr(ai, "tool_calls", None) or []
+        if not calls:  # prose instead of a tool call — nudge it to the exit tool
+            messages.append(HumanMessage(
+                content=f"You did not call a tool. Call {submit_name} to submit and end your turn."))
+            continue
+        submit_call = None
+        for tc in calls:
+            if tc["name"] == submit_name:
+                submit_call = tc  # captured; validated after the tool results are threaded
+                messages.append(ToolMessage(content="received", tool_call_id=tc["id"]))
+                continue
+            impl = tool_map.get(tc["name"])
+            if impl is None:
+                messages.append(ToolMessage(content=f"unknown tool {tc['name']}", tool_call_id=tc["id"]))
+                continue
+            await emit({"type": "tool_call", "agent": agent, "tool": tc["name"], "args": tc["args"]})
+            data = impl.invoke(tc["args"])  # reads only the cached, as-of-filtered Snapshot
+            await emit({"type": "tool_result", "agent": agent, "tool": tc["name"], "data": data})
+            messages.append(ToolMessage(content=json.dumps(data, default=str), tool_call_id=tc["id"]))
+        if submit_call is not None:
+            try:
+                return submit_model.model_validate(submit_call["args"])
+            except ValidationError as exc:  # one validation-retry, same bar as call_structured
+                error = exc
+                messages.append(HumanMessage(
+                    content=f"Your {submit_name} arguments failed validation ({exc}). "
+                            f"Call {submit_name} again with corrected arguments."))
+    raise StructuredOutputError(
+        f"{submit_name} not submitted within {MAX_TOOL_ITERS} tool iterations: {error}")
+
+
 def _configurable(config):
     c = config["configurable"]
     return c["emit"], c["run_context"]
+
+
+def resilient_enabled() -> bool:
+    """Opt-in (RESILIENT=1): a debate node whose LLM production fails degrades to
+    an abstention (contributes nothing) so the run still reaches a verdict, rather
+    than aborting with a terminal error. Off by default — the honest fail-loud
+    contract (#4). Set it when recording local demo runs to maximize completed
+    takes on the flaky local models."""
+    return os.environ.get("RESILIENT", "").strip().lower() in ("1", "true", "yes", "on")
+
+
+async def _produce(coro):
+    """Await a debate node's LLM production. In RESILIENT mode a model-output
+    failure returns None (the node abstains); the budget breaker always
+    propagates. Off by default: failures propagate to a terminal error event,
+    unchanged from #4-#6."""
+    if not resilient_enabled():
+        return await coro
+    try:
+        return await coro
+    except BreakerTripped:
+        raise  # budget kill-switch is never swallowed
+    except Exception as exc:  # noqa: BLE001 — deliberately broad: any node can abstain
+        print(f"[resilient] node abstained: {type(exc).__name__}: {exc}", flush=True)
+        return None
 
 
 # --- prompt fragments ---------------------------------------------------------
@@ -122,12 +210,16 @@ def make_specialist_node(agent: str):
     async def specialist(state, config) -> dict:
         emit, ctx = _configurable(config)
         await emit({"type": "agent_start", "agent": agent})
-        thesis = await call_structured(
+        thesis = await _produce(call_structured(
             Thesis,
             system=f"{SPECIALIST_BRIEFS[agent]}\n{STANCE_RUBRIC}",
             user=specialist_context(agent, ctx),
             config=config,
-        )
+        ))
+        if thesis is None:  # resilient abstention: this lens takes no vote
+            await emit({"type": "grounding", "agent": agent, "gated_in": False,
+                        "grounded": 0, "dropped": 0})
+            return {"theses": []}
         annotated, grounded = ground_evidence(thesis.evidence, ctx)
         gated_in = earns_vote(grounded)
         await emit({"type": "thesis", "agent": agent, "stance": thesis.stance,
@@ -147,18 +239,29 @@ async def red_team(state, config) -> dict:
         return {"attacks": []}
     await emit({"type": "agent_start", "agent": "red_team"})
     digests = "\n".join(_thesis_digest(t) for t in gated)
-    report = await call_structured(
-        RedTeamReport,
-        system=("You are the red-team. Attack each thesis below with its strongest counter-case. "
-                "kind='evidence' attacks MUST cite the provided data (same exact-citation rule); "
-                "kind='logical' attacks expose an internal flaw (contradiction, over-extrapolation, "
-                "ignoring a provided datum) and need no new evidence. Unsupported doubt does not count.\n"
-                + STANCE_RUBRIC),
-        user=(f"Theses under attack:\n{digests}\n\n"
-              f"Data (citation_key = value):\n{_numeric_block(ctx.numeric_keys)}\n\n"
-              f"Cached news:\n{_news_block(ctx)}"),
-        config=config,
-    )
+    system = ("You are the red-team. Attack each thesis below with its strongest counter-case. "
+              "kind='evidence' attacks MUST cite the provided data (same exact-citation rule); "
+              "kind='logical' attacks expose an internal flaw (contradiction, over-extrapolation, "
+              "ignoring a provided datum) and need no new evidence. Unsupported doubt does not count.\n"
+              + STANCE_RUBRIC)
+    if debate_tools_enabled():
+        report = await _produce(call_with_tools(
+            submit_attack, make_read_tools(ctx),
+            system=(system + "\nUse the read tools to pull the cached data you need to build "
+                    "evidence attacks, then call submit_attack to end your turn."),
+            user=f"Theses under attack:\n{digests}",
+            agent="red_team", emit=emit, config=config))
+    else:
+        report = await _produce(call_structured(
+            RedTeamReport, system=system,
+            user=(f"Theses under attack:\n{digests}\n\n"
+                  f"Data (citation_key = value):\n{_numeric_block(ctx.numeric_keys)}\n\n"
+                  f"Cached news:\n{_news_block(ctx)}"),
+            config=config))
+    if report is None:  # resilient abstention: no attacks this round, debate continues
+        await emit({"type": "grounding", "agent": "red_team", "gated_in": False,
+                    "grounded": 0, "dropped": 0})
+        return {"attacks": []}
     gated_names = {t["agent"] for t in gated}
     kept = []
     dropped = 0
@@ -188,15 +291,24 @@ def make_rebuttal_node(agent: str):
             return {"rebuttals": []}  # no vote or unchallenged: no call spent
         await emit({"type": "agent_start", "agent": agent})
         attack_lines = "\n".join(f"- ({a['kind']}) {a['critique']}" for a in attacks)
-        reb = await call_structured(
-            Rebuttal,
-            system=(f"You are the {agent} analyst, defending your thesis in a debate. "
-                    "This is your one rebuttal: concede what genuinely landed, defend what did not, "
-                    "and propose your revised stance (the Judge has the final word).\n" + STANCE_RUBRIC),
-            user=(f"Your thesis: {_thesis_digest(mine)}\n\nAttacks on you:\n{attack_lines}\n\n"
-                  f"Your data:\n{specialist_context(agent, ctx)}"),
-            config=config,
-        )
+        system = (f"You are the {agent} analyst, defending your thesis in a debate. "
+                  "This is your one rebuttal: concede what genuinely landed, defend what did not, "
+                  "and propose your revised stance (the Judge has the final word).\n" + STANCE_RUBRIC)
+        if debate_tools_enabled():
+            reb = await _produce(call_with_tools(
+                submit_rebuttal, make_read_tools(ctx),
+                system=(system + "\nUse the read tools to pull cached data that defends your "
+                        "thesis, then call submit_rebuttal to end your turn."),
+                user=f"Your thesis: {_thesis_digest(mine)}\n\nAttacks on you:\n{attack_lines}",
+                agent=agent, emit=emit, config=config))
+        else:
+            reb = await _produce(call_structured(
+                Rebuttal, system=system,
+                user=(f"Your thesis: {_thesis_digest(mine)}\n\nAttacks on you:\n{attack_lines}\n\n"
+                      f"Your data:\n{specialist_context(agent, ctx)}"),
+                config=config))
+        if reb is None:  # resilient abstention: no rebuttal, judge weighs thesis + attacks
+            return {"rebuttals": []}
         await emit({"type": "rebuttal", "agent": agent,
                     "proposed_stance": reb.proposed_stance, "response": reb.response})
         return {"rebuttals": [{"agent": agent, "proposed_stance": reb.proposed_stance,
@@ -223,7 +335,7 @@ async def judge(state, config) -> dict:
             + (f"\nRebuttal (proposed stance {reb['proposed_stance']:+.2f}): {reb['response']}"
                if reb else "\nRebuttal: none"))
     gated_names = sorted(t["agent"] for t in gated)
-    ruling = await call_structured(
+    ruling = await _produce(call_structured(
         JudgeRuling,
         system=("You are the judge — a neutral adjudicator with no directional view. For each "
                 "specialist below, rule which attacks genuinely landed (an attack lands ONLY if it "
@@ -234,7 +346,9 @@ async def judge(state, config) -> dict:
         user="\n\n".join(sections),
         config=config,
         post_validate=lambda r: _rulings_cover(r, gated_names),
-    )
+    ))
+    if ruling is None:  # resilient abstention: no adjudication → aggregate returns No Call
+        return {"adjudicated_stances": []}
     stances = []
     for r in ruling.rulings:
         if r.agent not in gated_names:

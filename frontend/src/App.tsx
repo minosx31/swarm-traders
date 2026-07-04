@@ -108,6 +108,18 @@ export default function App() {
         </div>
       )}
 
+      {state.redTeam.toolActivity.length > 0 && (
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-redteam/30 bg-redteam/5 px-5 py-1.5 text-[10.5px] text-redteam">
+          <span className="font-semibold tracking-[0.2em]">RED-TEAM GATHERING</span>
+          {state.redTeam.toolActivity.map((t, i) => (
+            <span key={i} className="tnum">
+              ⚙ {t.tool}
+              {t.type === 'tool_result' ? ' ✓' : '…'}
+            </span>
+          ))}
+        </div>
+      )}
+
       <main className="grid flex-1 grid-cols-1 gap-px bg-hairline md:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_340px]">
         {SPECIALISTS.map((agent) => (
           <Lane key={agent} agent={agent} lane={state.lanes[agent]} />

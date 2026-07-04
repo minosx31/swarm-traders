@@ -11,11 +11,17 @@ theses, a Red-Team attacks them, each specialist gets one rebuttal, a Judge rule
 which attacks landed, and a computed aggregate produces the Verdict (or an honest
 No Call). The debate streams live over SSE, one event per agent step.
 
-**Status:** Phases 0–2 complete plus record/replay (#9). The full debate
-pipeline runs end-to-end on the free Ollama backend (pre-sliced baseline), every
-run is recorded to a replayable JSON event log, and the React frontend renders
-live or replayed debates in per-agent lanes. Next: debate-phase tool-calling
-(#8), then the Sonnet demo pass. See `issues.md` for the build plan and progress.
+**Status:** Phases 0–3 complete. The full debate pipeline runs end-to-end on the
+free Ollama backend (pre-sliced #6 baseline); every run is recorded to a
+replayable JSON event log (#9), and the React frontend renders live or replayed
+debates in per-agent lanes. The debate-phase tool-calling increment (#8,
+`DEBATE_TOOLS=1`) lets the Red-Team and rebuttal agents autonomously fetch
+cached, as-of-filtered evidence to attack/defend, streaming `tool_call` /
+`tool_result` events into the lanes. Tool-mode is **off by default** — the local
+qwen models fetch reliably but don't consistently emit the nested `submit_*`
+exit, so it's tuned for the capable demo backends (ADR 0003 graceful fallback:
+the default free-backend path is the unchanged baseline). Next: the Sonnet demo
+pass (#10–#11). See `issues.md` for the build plan and progress.
 
 ---
 
@@ -40,7 +46,8 @@ One FastAPI app with LangGraph running in-process — nothing else to host.
 | `alpha_swarms/app.py` | FastAPI app. `GET /stream?ticker&as_of[&replay=1]` — refuses non-whitelisted pairs with `400`, streams the debate (or a recorded run) as SSE. Also `GET /whitelist` and `GET /outcome` (UI-facing). Validates `LLM_BACKEND` at startup |
 | `alpha_swarms/replay.py` | Record + replay (#9): every run's event log persists to `data/runs/`; replay re-streams the latest log with the graph bypassed — zero LLM calls |
 | `alpha_swarms/graph.py` | LangGraph topology wiring: parallel specialist fan-out → red_team → parallel rebuttals → judge → aggregate, plus the reducer-merged `Blackboard` state |
-| `alpha_swarms/agents.py` | The LLM-backed nodes: specialist/Red-Team/rebuttal/Judge prompts + the structured-output helper (one validation-retry, then graceful failure). Pre-sliced single calls, no tools (ADR 0003 baseline) |
+| `alpha_swarms/agents.py` | The LLM-backed nodes: specialist/Red-Team/rebuttal/Judge prompts + the structured-output helper (one validation-retry, then graceful failure). Pre-sliced single calls; the Red-Team/rebuttal nodes switch to the bounded tool-calling loop when `DEBATE_TOOLS=1` (#8) |
+| `alpha_swarms/tools.py` | Debate-phase tool-calling (#8, ADR 0003): `get_financials`/`get_price_history`/`get_news` read tools over the cached Snapshot with the As-Of filter enforced *inside* the tool (leakage impossible by construction), plus the terminal `submit_attack`/`submit_rebuttal` exit tools whose arg schema *is* the Pydantic model (ADR 0005). Gated behind `DEBATE_TOOLS` |
 | `alpha_swarms/models.py` | Pydantic schemas the models must produce: Thesis, Evidence (numeric/textual tiers), Attack, Rebuttal, JudgeRuling |
 | `alpha_swarms/slices.py` | Pre-sliced per-specialist context (flattened statements, derived price metrics, cached news) + the citation key space grounding resolves against |
 | `alpha_swarms/grounding.py` | The deterministic grounding gate (ADR 0001): numeric citation_key + value-match, textual source_id resolution, Verified Quote badge, ≥1 grounded item to vote |
@@ -52,7 +59,7 @@ One FastAPI app with LangGraph running in-process — nothing else to host.
 | `alpha_swarms/snapshot.py` | Point-in-time Snapshot layer (ADR 0002): Pydantic models, the leak validator (no datum dated after as-of), whitelist (= snapshot files on disk), loader that never touches Outcomes |
 | `scripts/build_snapshot.py` | Offline ingestion: builds `data/snapshots/{TICKER}_{AS_OF}.json` from yfinance (prices, last *reported* fundamentals, news) plus the held-out Outcome in `data/outcomes/`. Never runs during a request |
 | `scripts/pretty_print.py` | Terminal client: consumes the SSE stream and renders the debate with per-agent colors (the pre-React fallback UI) |
-| `tests/` | Acceptance tests per issue: `test_safeguards.py` (#2), `test_snapshot.py` (#3), `test_debate.py` (#4/#6, scripted LLM), `test_grounding.py` (#5), `test_scoring.py` (#6) |
+| `tests/` | Acceptance tests per issue: `test_safeguards.py` (#2), `test_snapshot.py` (#3), `test_debate.py` (#4/#6, scripted LLM), `test_grounding.py` (#5), `test_scoring.py` (#6), `test_tools.py` (#8, tool-calling + as-of leakage property) |
 | `data/snapshots/` | Whitelisted point-in-time snapshots — the only data agents ever see |
 | `data/outcomes/` | What actually happened after as-of. Held out of agent-visible state; the UI reveals it only after the Verdict |
 
@@ -118,6 +125,8 @@ uv run pytest
 |---|---|---|
 | `LLM_BACKEND` | Picks the chat model: `ollama` \| `groq` \| `haiku` \| `sonnet`. Required for real runs (`LLM_BACKEND=ollama` for free dev). Never switch mid-run | unset |
 | `OLLAMA_MODEL` | Local model for the `ollama` backend | `qwen3.5:9b` |
+| `DEBATE_TOOLS` | Enable the debate-phase tool-calling increment (#8): Red-Team + rebuttals fetch cached evidence via tools. Off = the pre-sliced #6 baseline | unset (off) |
+| `RESILIENT` | When set, a debate node whose LLM output fails *abstains* (contributes nothing) so the run still reaches a verdict, instead of aborting with a terminal `error`. Set it when recording local demo takes on the flaky local models; leave off for the honest fail-loud default. The budget breaker always stays loud | unset (off) |
 | `ANTHROPIC_API_KEY` / `GROQ_API_KEY` | Provider keys, needed only for their backends | — |
 | `EVENT_DELAY_S` | Inter-event delay on the SSE stream (readability) | `0.25` |
 | `SNAPSHOT_DIR` | Snapshot/whitelist location | `backend/data/snapshots` |

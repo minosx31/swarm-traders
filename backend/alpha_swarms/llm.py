@@ -55,12 +55,15 @@ def current_backend() -> str | None:
 
 
 def validate_backend() -> None:
-    """Fail fast at startup on an unknown LLM_BACKEND (unset is allowed while
-    the graph is still mock — issue #4 makes it required)."""
+    """Fail fast at startup on an unset or unknown LLM_BACKEND. The real graph
+    needs a backend; the mock-phase allowance for unset ended at #4. Catching it
+    here turns a mid-run RuntimeError (a wasted recorded run) into a clear refusal
+    to start."""
     backend = current_backend()
-    if backend is not None and backend not in BACKENDS:
+    if backend not in BACKENDS:
         raise RuntimeError(
-            f"Unknown LLM_BACKEND={backend!r} — valid: {', '.join(sorted(BACKENDS))}"
+            f"LLM_BACKEND={backend!r} is not set to a valid backend — set one of: "
+            f"{', '.join(sorted(BACKENDS))}"
         )
 
 

@@ -7,6 +7,8 @@ import httpx
 import pytest
 
 os.environ["EVENT_DELAY_S"] = "0"  # no inter-event delay in tests
+os.environ.setdefault("LLM_BACKEND", "ollama")  # startup validation needs a valid backend;
+#                                                 scripted tests override llm.get_chat_model
 
 # Whitelist one (ticker, as_of) pair for the app-level tests: the whitelist is
 # the set of snapshot files on disk, so drop a minimal valid snapshot there.

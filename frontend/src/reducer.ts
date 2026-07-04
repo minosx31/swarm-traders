@@ -28,7 +28,11 @@ export interface LaneState {
 export interface DebateState {
   phase: 'idle' | 'streaming' | 'done' | 'error'
   lanes: Record<Specialist, LaneState>
-  redTeam: { status: LaneState['status']; grounding?: GroundingEvent }
+  redTeam: {
+    status: LaneState['status']
+    grounding?: GroundingEvent
+    toolActivity: (ToolCallEvent | ToolResultEvent)[]
+  }
   judgeActive: boolean
   verdict?: VerdictEvent
   error?: ErrorEvent
@@ -40,7 +44,7 @@ const emptyLane = (): LaneState => ({ status: 'idle', attacks: [], toolActivity:
 export const initialState: DebateState = {
   phase: 'idle',
   lanes: { fundamentals: emptyLane(), sentiment: emptyLane(), technicals: emptyLane() },
-  redTeam: { status: 'idle' },
+  redTeam: { status: 'idle', toolActivity: [] },
   judgeActive: false,
   verdict: undefined,
   error: undefined,
@@ -73,7 +77,7 @@ export function debateReducer(prev: DebateState, event: DebateEvent): DebateStat
       return updateLane(state, event.agent, { thesis: event, status: 'spoke' })
     case 'grounding':
       if (event.agent === 'red_team')
-        return { ...state, redTeam: { status: 'spoke', grounding: event } }
+        return { ...state, redTeam: { ...state.redTeam, status: 'spoke', grounding: event } }
       return updateLane(state, event.agent, { grounding: event })
     case 'attack': {
       const lane = state.lanes[event.target]
@@ -82,6 +86,15 @@ export function debateReducer(prev: DebateState, event: DebateEvent): DebateStat
     }
     case 'tool_call':
     case 'tool_result': {
+      if (event.agent === 'red_team')
+        return {
+          ...state,
+          redTeam: {
+            ...state.redTeam,
+            status: 'thinking',
+            toolActivity: [...state.redTeam.toolActivity, event],
+          },
+        }
       const lane = isSpecialist(event.agent) ? state.lanes[event.agent] : undefined
       if (!lane) return state
       return updateLane(state, event.agent, {
