@@ -75,7 +75,8 @@ React + Vite + TypeScript + Tailwind v4 static site (Bun tooling). Dark
 | `src/reducer.ts` | `useReducer` over the event union, keyed by agent — unknown events never crash it |
 | `src/useDebateStream.ts` | `EventSource` lifecycle: dispatches events, closes on the terminal event |
 | `src/api.ts` | Backend base URL (`VITE_API_BASE`), whitelist + outcome fetches, snapshot build-if-missing |
-| `src/components.tsx` | Atoms: agent chips, signed stance meters, evidence rows (grounded/dropped, Verified Quote badge) |
+| `src/components.tsx` | Atoms: agent chips, signed stance meters, the evidence ledger (grounded foregrounded, failed citations collapsed) + validation badge |
+| `src/Provenance.tsx` | The data-provenance manifest strip: snapshot in play, grounded ratio across lanes, voting lenses (what the swarm is working from) |
 | `src/Lane.tsx` | One specialist's column: thesis → attacks on it → rebuttal → adjudication (the stance trail) |
 | `src/VerdictPanel.tsx` | Verdict stamp, conviction+N+dissent (never conviction alone), landed attacks, post-verdict Outcome reveal |
 | `src/*.test.ts(x)` | `bun test`: reducer contract tests + DOM render of a real recorded run |

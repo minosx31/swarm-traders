@@ -14,8 +14,8 @@
   --color-surface: #0e1210;
   --color-raised: #141a16;
   --color-ink: #f2f4ef;
-  --color-ink-2: #b8bfb4;
-  --color-ink-3: #798379;
+  --color-ink-2: #c2c9bd;
+  --color-ink-3: #929c91;
   --color-hairline: rgba(242, 244, 239, 0.09);
 
   /* agent identity — categorical, fixed order, CVD-validated on #0e1210 */
@@ -39,7 +39,7 @@ body {
   margin: 0;
   font-family: var(--font-mono);
   color: var(--color-ink);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
@@ -87,4 +87,35 @@ body {
 
 .tnum {
   font-variant-numeric: tabular-nums;
+}
+
+/* ── selection: judge-green wash ─────────────────────────────────────── */
+::selection {
+  background: rgba(25, 158, 112, 0.32);
+  color: var(--color-ink);
+}
+
+/* ── disclosure: the "N citations failed validation" expander ───────────
+   dropped citations are honest but must not dominate — they fold away. */
+details.disc > summary {
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.15s ease;
+}
+details.disc > summary::-webkit-details-marker { display: none; }
+details.disc > summary:hover,
+details.disc[open] > summary { color: var(--color-ink-2); }
+.disc-caret::before {
+  content: '▸';
+  display: inline-block;
+  width: 0.8em;
+  transition: transform 0.15s ease;
+}
+details.disc[open] .disc-caret::before { transform: rotate(90deg); }
+details.disc[open] .disc-body { animation: card-in 0.3s cubic-bezier(0.2, 0.9, 0.25, 1) both; }
+
+/* ── segmented control (LIVE / REPLAY) active thumb slide ─────────────── */
+.seg-active {
+  transition: background 0.2s ease, color 0.2s ease;
 }
