@@ -24,7 +24,7 @@ export function Provenance({ state, ticker, asOf, replay }: {
   return (
     <div className="flex flex-wrap items-center gap-x-5 gap-y-2 border-b border-hairline bg-surface/60 px-5 py-2.5">
       <div className="flex items-center gap-2">
-        <span className="border border-hairline px-1.5 py-0.5 text-[10px] font-semibold tracking-[0.2em] text-ink-3">
+        <span className="rounded-[4px] border border-hairline px-2 py-[3px] font-mono text-[9.5px] font-semibold tracking-[0.16em] text-ink-3">
           {replay ? 'REPLAY' : 'SNAPSHOT'}
         </span>
         {ticker && asOf ? (
@@ -95,8 +95,10 @@ export function Provenance({ state, ticker, asOf, replay }: {
         </>
       )}
 
-      <span className="ml-auto text-[11px] tracking-[0.18em] text-ink-3">
-        POINT-IN-TIME ≤ AS-OF · OUTCOME SEALED
+      <span className="ml-auto flex items-center gap-2 text-[10px] tracking-[0.14em] text-ink-3">
+        POINT-IN-TIME ≤ AS-OF
+        <span className="text-ink-3/40" aria-hidden>·</span>
+        <span style={{ color: '#d9a441' }}>⬗ OUTCOME SEALED</span>
       </span>
     </div>
   )

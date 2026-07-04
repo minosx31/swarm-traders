@@ -38,7 +38,7 @@ test('a recorded verdict run reduces and renders: lanes, gate results, verdict',
   expect(screen.getByText('FUNDAMENTALS')).toBeTruthy()
   // this frozen fixture: sentiment gated out, verdict BEAR, N=2
   expect(screen.getByText('GATED OUT · NO VOTE')).toBeTruthy()
-  expect(screen.getByText(/BEAR/)).toBeTruthy()
+  expect(screen.getByText('BEAR')).toBeTruthy()
   expect(screen.getByText('N=2')).toBeTruthy()
   // structural invariants that hold for ANY verdict run, whatever the model said:
   // conviction is never shown without N and dissent

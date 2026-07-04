@@ -1,5 +1,6 @@
 /** Shared atoms: agent chips, stance meters, evidence rows, evidence ledger. */
 
+import type { ReactNode } from 'react'
 import type { AgentName, EvidenceItem, GroundingEvent } from './types'
 
 export const AGENT_COLOR: Record<AgentName, string> = {
@@ -30,33 +31,53 @@ export function AgentChip({ agent, thinking = false }: { agent: AgentName; think
   )
 }
 
-function poleColor(value: number): string {
+export function poleColor(value: number): string {
   if (value > 0.001) return 'var(--color-bull)'
   if (value < -0.001) return 'var(--color-bear)'
   return 'var(--color-neutralpole)'
 }
 
-/** Signed stance in [-1,+1]: sign is encoded by the SIDE of the midline;
- *  color + the numeric label are reinforcement, never the only channel. */
-export function StanceMeter({ value, label }: { value: number; label: string }) {
+/** A colored capsule label — the section marker for a debate-timeline entry
+ *  (THESIS, ATTACK, REBUTTAL…). The tint is derived from the entry color so
+ *  the badge, node, and accent all read as one identity. */
+export function Pill({ children, color, dashed = false }: {
+  children: ReactNode
+  color: string
+  dashed?: boolean
+}) {
+  return (
+    <span
+      className="inline-flex items-center gap-1 rounded-[4px] px-2 py-[3px] font-mono text-[9.5px] font-semibold tracking-[0.14em]"
+      style={{
+        color,
+        background: `color-mix(in oklab, ${color} 15%, transparent)`,
+        border: dashed ? `1px dashed color-mix(in oklab, ${color} 45%, transparent)` : undefined,
+      }}
+    >
+      {children}
+    </span>
+  )
+}
+
+/** Compact signed stance in [-1,+1] for a timeline entry: a centered bar whose
+ *  fill grows from the midline (LEFT = bearish, RIGHT = bullish) plus the signed
+ *  value. Sign lives in the SIDE, not just the color. */
+export function MiniStance({ value }: { value: number }) {
   const magnitude = Math.min(Math.abs(value), 1) * 50
   const side = value >= 0 ? { left: '50%' } : { right: '50%' }
+  const color = poleColor(value)
   return (
-    <div className="flex items-center gap-2" role="img"
-         aria-label={`${label}: stance ${value >= 0 ? '+' : ''}${value.toFixed(2)}`}>
-      <span className="w-16 shrink-0 text-[12px] tracking-[0.12em] text-ink-3">{label}</span>
-      <div className="relative h-[7px] flex-1 rounded-xs bg-raised">
-        <span className="absolute top-[-2px] bottom-[-2px] left-1/2 w-px bg-hairline" />
-        <span
-          className="meter-fill absolute top-0 bottom-0 rounded-xs"
-          style={{ ...side, width: `${magnitude}%`, background: poleColor(value) }}
-        />
-      </div>
-      <span className="tnum w-12 shrink-0 text-right text-[13px] font-medium"
-            style={{ color: poleColor(value) }}>
+    <span className="ml-auto flex items-center gap-2" role="img"
+          aria-label={`stance ${value >= 0 ? '+' : ''}${value.toFixed(2)}`}>
+      <span className="relative h-1 w-[72px] rounded-full bg-raised">
+        <span className="absolute -top-1 -bottom-1 left-1/2 w-px bg-ink-3/40" />
+        <span className="meter-fill absolute inset-y-0 rounded-full"
+              style={{ ...side, width: `${magnitude}%`, background: color }} />
+      </span>
+      <span className="tnum text-[12px] font-semibold" style={{ color }}>
         {value >= 0 ? '+' : ''}{value.toFixed(2)}
       </span>
-    </div>
+    </span>
   )
 }
 
@@ -148,7 +169,7 @@ export function ValidationBadge({ grounding }: { grounding?: GroundingEvent }) {
     }`}>
       <span className="h-1.5 w-1.5 rounded-full"
             style={{ background: ok ? 'var(--color-judge)' : 'var(--color-bear)' }} />
-      {ok ? `VOTES · ${grounding.grounded} GROUNDED` : 'GATED OUT · NO VOTE'}
+      {ok ? `✦ VOTES · ${grounding.grounded} GROUNDED` : 'GATED OUT · NO VOTE'}
     </span>
   )
 }

@@ -86,7 +86,7 @@ export default function App() {
 
   const streaming = state.phase === 'streaming'
   const fieldCls =
-    'appearance-none border border-hairline bg-surface py-1.5 pl-2.5 pr-7 text-[14px] text-ink outline-none transition-colors focus:border-judge disabled:opacity-40'
+    'appearance-none rounded-md border border-hairline bg-surface py-1.5 pl-2.5 pr-7 text-[14px] text-ink outline-none transition-colors focus:border-judge disabled:opacity-40'
 
   return (
     <div className="atmosphere flex min-h-screen flex-col bg-page">
@@ -102,16 +102,22 @@ export default function App() {
 
         <div className="flex flex-wrap items-center gap-2.5">
           {/* mode: LIVE convenes the swarm (building if needed) · REPLAY re-streams a recorded run */}
-          <div className="inline-flex overflow-hidden border border-hairline">
+          <div className="inline-flex overflow-hidden rounded-md border border-hairline">
             {(['live', 'replay'] as Mode[]).map((m) => (
               <button
                 key={m}
                 onClick={() => pickMode(m)}
                 disabled={streaming || building}
-                className={`seg-active cursor-pointer px-3 py-1.5 text-[12px] font-semibold tracking-[0.18em] disabled:cursor-default ${
-                  mode === m ? 'bg-judge text-page' : 'text-ink-3 hover:text-ink-2'
+                className={`seg-active flex cursor-pointer items-center gap-2 px-3.5 py-2 text-[11px] font-semibold tracking-[0.14em] disabled:cursor-default ${
+                  mode === m ? 'bg-judge/15 text-judge' : 'text-ink-3 hover:text-ink-2'
                 }`}
               >
+                {m === 'live' && (
+                  <span
+                    className={`h-1.5 w-1.5 rounded-full bg-judge ${mode === 'live' ? 'live-dot' : 'opacity-40'}`}
+                    style={mode === 'live' ? { boxShadow: '0 0 8px var(--color-judge)' } : undefined}
+                  />
+                )}
                 {m === 'live' ? 'LIVE' : 'REPLAY'}
               </button>
             ))}
@@ -121,14 +127,14 @@ export default function App() {
             // escape hatch: type a brand-new (ticker, as-of) to build a fresh snapshot
             <>
               <input
-                className="w-20 border border-hairline bg-surface px-2 py-1.5 text-[14px] uppercase text-ink outline-none focus:border-judge"
+                className="w-20 rounded-md border border-hairline bg-surface px-2 py-1.5 text-[14px] uppercase text-ink outline-none focus:border-judge"
                 value={ticker}
                 onChange={(e) => setTicker(e.target.value)}
                 placeholder="TICKER"
                 aria-label="new ticker"
               />
               <input
-                className="w-32 border border-hairline bg-surface px-2 py-1.5 text-[14px] text-ink outline-none focus:border-judge"
+                className="w-32 rounded-md border border-hairline bg-surface px-2 py-1.5 text-[14px] text-ink outline-none focus:border-judge"
                 value={asOf}
                 onChange={(e) => setAsOf(e.target.value)}
                 placeholder="YYYY-MM-DD"
@@ -175,7 +181,7 @@ export default function App() {
                 <button
                   onClick={() => setNewPair(true)}
                   disabled={streaming || building}
-                  className="cursor-pointer border border-dashed border-hairline px-2.5 py-1.5 text-[12px] font-semibold tracking-[0.14em] text-ink-3 transition-colors hover:border-judge hover:text-judge disabled:cursor-default disabled:opacity-40"
+                  className="cursor-pointer rounded-md border border-dashed border-hairline px-2.5 py-1.5 text-[12px] font-semibold tracking-[0.14em] text-ink-3 transition-colors hover:border-judge hover:text-judge disabled:cursor-default disabled:opacity-40"
                   title="build a new point-in-time snapshot"
                 >
                   ＋ NEW PAIR
@@ -187,7 +193,7 @@ export default function App() {
           <button
             onClick={run}
             disabled={streaming || building || !ticker || !asOf}
-            className="cursor-pointer border border-judge px-4 py-1.5 text-[13px] font-semibold tracking-[0.2em] text-judge transition-colors hover:bg-judge hover:text-page disabled:cursor-default disabled:opacity-40"
+            className="cursor-pointer rounded-md border border-judge bg-judge/5 px-4 py-1.5 text-[13px] font-semibold tracking-[0.2em] text-judge transition-colors hover:bg-judge hover:text-page disabled:cursor-default disabled:opacity-40"
           >
             {building ? 'BUILDING SNAPSHOT…'
               : streaming ? 'IN SESSION…'
@@ -221,7 +227,7 @@ export default function App() {
         </div>
       )}
 
-      <main className="grid flex-1 grid-cols-1 gap-px bg-hairline md:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_340px]">
+      <main className="grid flex-1 grid-cols-1 gap-px bg-hairline md:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_360px]">
         {SPECIALISTS.map((agent) => (
           <Lane key={agent} agent={agent} lane={state.lanes[agent]} />
         ))}

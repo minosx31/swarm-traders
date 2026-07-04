@@ -119,3 +119,7 @@ details.disc[open] .disc-body { animation: card-in 0.3s cubic-bezier(0.2, 0.9, 0
 .seg-active {
   transition: background 0.2s ease, color 0.2s ease;
 }
+
+/* ── LIVE indicator: a slow breathing pulse ─────────────────────────────── */
+@keyframes live-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.live-dot { animation: live-pulse 1.6s ease-in-out infinite; }
