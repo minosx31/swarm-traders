@@ -14,6 +14,7 @@ import { cleanup, render, screen } from '@testing-library/react'
 afterEach(cleanup)
 import { Lane } from './Lane'
 import { VerdictPanel } from './VerdictPanel'
+import { Provenance } from './Provenance'
 import { debateReducer, initialState } from './reducer'
 import type { DebateEvent } from './types'
 
@@ -37,7 +38,7 @@ test('a recorded verdict run reduces and renders: lanes, gate results, verdict',
   expect(screen.getByText('FUNDAMENTALS')).toBeTruthy()
   // this frozen fixture: sentiment gated out, verdict BEAR, N=2
   expect(screen.getByText('GATED OUT · NO VOTE')).toBeTruthy()
-  expect(screen.getByText(/BEAR/)).toBeTruthy()
+  expect(screen.getByText('BEAR')).toBeTruthy()
   expect(screen.getByText('N=2')).toBeTruthy()
   // structural invariants that hold for ANY verdict run, whatever the model said:
   // conviction is never shown without N and dissent
@@ -46,6 +47,20 @@ test('a recorded verdict run reduces and renders: lanes, gate results, verdict',
   // outcome absent from the DOM until explicitly revealed
   expect(screen.queryByText(/what actually happened/)).toBeNull()
   expect(screen.getByText('▣ REVEAL THE OUTCOME')).toBeTruthy()
+})
+
+test('the provenance manifest derives grounded ratio + voting lenses from state', () => {
+  const { events } = loadFixture('verdict-run.json')
+  const state = events.reduce(debateReducer, initialState)
+
+  render(<Provenance state={state} ticker="NVDA" asOf="2026-07-02" replay={false} />)
+
+  // specialist grounding across the three lanes: 2 + 0 + 4 = 6 grounded of 7 cited
+  expect(screen.getByText('6')).toBeTruthy()
+  expect(screen.getByText('/ 7')).toBeTruthy()
+  // the sealed outcome is never named in the provenance readout
+  expect(screen.queryByText(/what actually happened/)).toBeNull()
+  expect(screen.getByText('NVDA')).toBeTruthy()
 })
 
 test('an error-terminated recorded run still renders lanes without crashing', () => {

@@ -14,6 +14,7 @@ export interface EvidenceItem {
   grounded: boolean
   reason?: string
   verified_quote?: boolean
+  url?: string
 }
 
 export interface AgentStartEvent {

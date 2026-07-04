@@ -74,9 +74,10 @@ def fetch_news(t: yf.Ticker, as_of: date) -> list[NewsItem]:
         published = datetime.fromisoformat(pub.replace("Z", "+00:00")).date()
         if published > as_of:
             continue  # hard point-in-time filter
+        url = (content.get("canonicalUrl") or {}).get("url") or (content.get("clickThroughUrl") or {}).get("url")
         items.append(NewsItem(source_id=raw["id"], title=content["title"],
                               summary=content.get("summary") or "",
-                              published_at=published, available_at=published))
+                              published_at=published, available_at=published, url=url))
     return items
 
 
@@ -94,7 +95,7 @@ def finnhub_news_items(payload: list[dict], as_of: date, cap: int = 50) -> list[
             continue
         seen.add(sid)
         items.append(NewsItem(source_id=sid, title=headline, summary=raw.get("summary") or "",
-                              published_at=published, available_at=published))
+                              published_at=published, available_at=published, url=raw.get("url") or None))
     items.sort(key=lambda n: n.published_at, reverse=True)
     return items[:cap]
 

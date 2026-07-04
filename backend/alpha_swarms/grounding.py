@@ -34,7 +34,7 @@ def ground_item(item: Evidence, ctx: RunContext) -> dict:
         if source is None:
             out.update(grounded=False, reason="source_id not in snapshot")
         else:
-            out.update(grounded=True,
+            out.update(grounded=True, url=source.url,
                        verified_quote=item.quoted_span in f"{source.title} {source.summary}")
     return out
 

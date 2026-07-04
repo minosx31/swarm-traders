@@ -2,18 +2,24 @@ import { useEffect, useMemo, useState } from 'react'
 import { ensureSnapshot, fetchWhitelist } from './api'
 import { AgentChip } from './components'
 import { Lane } from './Lane'
+import { Provenance } from './Provenance'
 import { useDebateStream } from './useDebateStream'
 import { VerdictPanel } from './VerdictPanel'
 import { SPECIALISTS, type WhitelistPair } from './types'
+
+type Mode = 'live' | 'replay'
 
 export default function App() {
   const { state, start } = useDebateStream()
   const [whitelist, setWhitelist] = useState<WhitelistPair[]>([])
   const [ticker, setTicker] = useState('')
   const [asOf, setAsOf] = useState('')
-  const [replay, setReplay] = useState(false)
+  const [mode, setMode] = useState<Mode>('live')
+  const [newPair, setNewPair] = useState(false)
   const [building, setBuilding] = useState(false)
   const [refusal, setRefusal] = useState<string | null>(null)
+
+  const replay = mode === 'replay'
 
   useEffect(() => {
     fetchWhitelist().then((pairs) => {
@@ -25,10 +31,39 @@ export default function App() {
     }, () => setRefusal('backend unreachable — start uvicorn on :8000'))
   }, [])
 
+  // dropdown option spaces, derived from the whitelist (= snapshots on disk)
+  const tickers = useMemo(
+    () => [...new Set(whitelist.map((p) => p.ticker))].sort(),
+    [whitelist],
+  )
+  const datesForTicker = useMemo(
+    () => whitelist.filter((p) => p.ticker === ticker).map((p) => p.as_of).sort().reverse(),
+    [whitelist, ticker],
+  )
   const whitelisted = useMemo(
     () => whitelist.some((p) => p.ticker === ticker.toUpperCase() && p.as_of === asOf),
     [whitelist, ticker, asOf],
   )
+
+  const pickTicker = (t: string) => {
+    setTicker(t)
+    // snap as-of to that ticker's newest recorded date
+    const dates = whitelist.filter((p) => p.ticker === t).map((p) => p.as_of).sort()
+    if (dates.length > 0 && !dates.includes(asOf)) setAsOf(dates[dates.length - 1])
+  }
+
+  const pickMode = (m: Mode) => {
+    setMode(m)
+    if (m === 'replay') {
+      // replay can only re-stream recorded pairs — leave the free-text escape hatch
+      setNewPair(false)
+      if (!whitelisted && whitelist.length > 0) {
+        const last = whitelist[whitelist.length - 1]
+        setTicker(last.ticker)
+        setAsOf(last.as_of)
+      }
+    }
+  }
 
   const run = async () => {
     setRefusal(null)
@@ -49,76 +84,139 @@ export default function App() {
     start(t, asOf, replay)
   }
 
+  const streaming = state.phase === 'streaming'
+  const fieldCls =
+    'appearance-none rounded-md border border-hairline bg-surface py-1.5 pl-2.5 pr-7 text-[14px] text-ink outline-none transition-colors focus:border-judge disabled:opacity-40'
+
   return (
     <div className="atmosphere flex min-h-screen flex-col bg-page">
-      <header className="flex flex-wrap items-end justify-between gap-3 border-b border-hairline px-5 py-4">
+      <header className="flex flex-wrap items-end justify-between gap-4 border-b border-hairline px-5 py-4">
         <div>
           <h1 className="font-display text-2xl italic leading-none">
             Alpha Swarms<span className="text-judge">.</span>
           </h1>
-          <p className="mt-1 text-[10px] tracking-[0.24em] text-ink-3">
+          <p className="mt-1 text-[12px] tracking-[0.24em] text-ink-3">
             THE RESEARCH ANALYST THAT NEVER SKIPS THE BEAR CASE
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
-          <label className="flex items-center gap-1.5 text-[10px] tracking-widest text-ink-3">
-            TICKER
-            <input
-              className="w-20 border border-hairline bg-surface px-2 py-1.5 text-[12px] text-ink uppercase outline-none focus:border-judge"
-              value={ticker}
-              onChange={(e) => setTicker(e.target.value)}
-              list="whitelist-tickers"
-            />
-          </label>
-          <label className="flex items-center gap-1.5 text-[10px] tracking-widest text-ink-3">
-            AS-OF
-            <input
-              className="w-32 border border-hairline bg-surface px-2 py-1.5 text-[12px] text-ink outline-none focus:border-judge"
-              value={asOf}
-              onChange={(e) => setAsOf(e.target.value)}
-              placeholder="YYYY-MM-DD"
-              list="whitelist-dates"
-            />
-          </label>
-          <datalist id="whitelist-tickers">
-            {[...new Set(whitelist.map((p) => p.ticker))].map((t) => <option key={t} value={t} />)}
-          </datalist>
-          <datalist id="whitelist-dates">
-            {whitelist.filter((p) => p.ticker === ticker.toUpperCase()).map((p) => (
-              <option key={p.as_of} value={p.as_of} />
+        <div className="flex flex-wrap items-center gap-2.5">
+          {/* mode: LIVE convenes the swarm (building if needed) · REPLAY re-streams a recorded run */}
+          <div className="inline-flex overflow-hidden rounded-md border border-hairline">
+            {(['live', 'replay'] as Mode[]).map((m) => (
+              <button
+                key={m}
+                onClick={() => pickMode(m)}
+                disabled={streaming || building}
+                className={`seg-active flex cursor-pointer items-center gap-2 px-3.5 py-2 text-[11px] font-semibold tracking-[0.14em] disabled:cursor-default ${
+                  mode === m ? 'bg-judge/15 text-judge' : 'text-ink-3 hover:text-ink-2'
+                }`}
+              >
+                {m === 'live' && (
+                  <span
+                    className={`h-1.5 w-1.5 rounded-full bg-judge ${mode === 'live' ? 'live-dot' : 'opacity-40'}`}
+                    style={mode === 'live' ? { boxShadow: '0 0 8px var(--color-judge)' } : undefined}
+                  />
+                )}
+                {m === 'live' ? 'LIVE' : 'REPLAY'}
+              </button>
             ))}
-          </datalist>
-          <label className="flex cursor-pointer items-center gap-1.5 text-[10px] tracking-widest text-ink-3">
-            <input type="checkbox" checked={replay} onChange={(e) => setReplay(e.target.checked)}
-                   className="accent-(--color-judge)" />
-            REPLAY
-          </label>
+          </div>
+
+          {newPair && !replay ? (
+            // escape hatch: type a brand-new (ticker, as-of) to build a fresh snapshot
+            <>
+              <input
+                className="w-20 rounded-md border border-hairline bg-surface px-2 py-1.5 text-[14px] uppercase text-ink outline-none focus:border-judge"
+                value={ticker}
+                onChange={(e) => setTicker(e.target.value)}
+                placeholder="TICKER"
+                aria-label="new ticker"
+              />
+              <input
+                className="w-32 rounded-md border border-hairline bg-surface px-2 py-1.5 text-[14px] text-ink outline-none focus:border-judge"
+                value={asOf}
+                onChange={(e) => setAsOf(e.target.value)}
+                placeholder="YYYY-MM-DD"
+                aria-label="new as-of date"
+              />
+              <button
+                onClick={() => setNewPair(false)}
+                className="cursor-pointer px-1 text-[16px] leading-none text-ink-3 hover:text-ink"
+                title="back to recorded pairs"
+              >
+                ×
+              </button>
+            </>
+          ) : (
+            // dropdowns over the recorded snapshots
+            <>
+              <div className="relative">
+                <select
+                  className={`${fieldCls} w-24`}
+                  value={tickers.includes(ticker) ? ticker : ''}
+                  onChange={(e) => pickTicker(e.target.value)}
+                  disabled={streaming || building || tickers.length === 0}
+                  aria-label="ticker"
+                >
+                  {tickers.length === 0 && <option value="">—</option>}
+                  {tickers.map((t) => <option key={t} value={t}>{t}</option>)}
+                </select>
+                <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[11px] text-ink-3">▾</span>
+              </div>
+              <div className="relative">
+                <select
+                  className={`${fieldCls} w-36`}
+                  value={datesForTicker.includes(asOf) ? asOf : ''}
+                  onChange={(e) => setAsOf(e.target.value)}
+                  disabled={streaming || building || datesForTicker.length === 0}
+                  aria-label="as-of date"
+                >
+                  {datesForTicker.length === 0 && <option value="">as-of…</option>}
+                  {datesForTicker.map((d) => <option key={d} value={d}>{d}</option>)}
+                </select>
+                <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[11px] text-ink-3">▾</span>
+              </div>
+              {!replay && (
+                <button
+                  onClick={() => setNewPair(true)}
+                  disabled={streaming || building}
+                  className="cursor-pointer rounded-md border border-dashed border-hairline px-2.5 py-1.5 text-[12px] font-semibold tracking-[0.14em] text-ink-3 transition-colors hover:border-judge hover:text-judge disabled:cursor-default disabled:opacity-40"
+                  title="build a new point-in-time snapshot"
+                >
+                  ＋ NEW PAIR
+                </button>
+              )}
+            </>
+          )}
+
           <button
             onClick={run}
-            disabled={state.phase === 'streaming' || building}
-            className="cursor-pointer border border-judge px-4 py-1.5 text-[11px] font-semibold tracking-[0.2em] text-judge transition-colors hover:bg-judge hover:text-page disabled:cursor-default disabled:opacity-40"
+            disabled={streaming || building || !ticker || !asOf}
+            className="cursor-pointer rounded-md border border-judge bg-judge/5 px-4 py-1.5 text-[13px] font-semibold tracking-[0.2em] text-judge transition-colors hover:bg-judge hover:text-page disabled:cursor-default disabled:opacity-40"
           >
             {building ? 'BUILDING SNAPSHOT…'
-              : state.phase === 'streaming' ? 'IN SESSION…'
+              : streaming ? 'IN SESSION…'
               : replay ? '▶ REPLAY RUN' : '▶ CONVENE SWARM'}
           </button>
         </div>
       </header>
 
       {refusal && (
-        <div className="border-b border-bear/40 bg-bear/10 px-5 py-2 text-[11.5px] text-bear">
+        <div className="border-b border-bear/40 bg-bear/10 px-5 py-2 text-[13px] text-bear">
           400 · {refusal}
         </div>
       )}
       {state.error && (
-        <div className="border-b border-bear/40 bg-bear/10 px-5 py-2 text-[11.5px] text-bear">
+        <div className="border-b border-bear/40 bg-bear/10 px-5 py-2 text-[13px] text-bear">
           RUN ENDED — {state.error.error}: {state.error.message}
         </div>
       )}
 
+      <Provenance state={state} ticker={ticker.toUpperCase()} asOf={asOf} replay={replay} />
+
       {state.redTeam.toolActivity.length > 0 && (
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-redteam/30 bg-redteam/5 px-5 py-1.5 text-[10.5px] text-redteam">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-redteam/30 bg-redteam/5 px-5 py-1.5 text-[12px] text-redteam">
           <span className="font-semibold tracking-[0.2em]">RED-TEAM GATHERING</span>
           {state.redTeam.toolActivity.map((t, i) => (
             <span key={i} className="tnum">
@@ -129,14 +227,14 @@ export default function App() {
         </div>
       )}
 
-      <main className="grid flex-1 grid-cols-1 gap-px bg-hairline md:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_340px]">
+      <main className="grid flex-1 grid-cols-1 gap-px bg-hairline md:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_360px]">
         {SPECIALISTS.map((agent) => (
           <Lane key={agent} agent={agent} lane={state.lanes[agent]} />
         ))}
         <VerdictPanel state={state} ticker={ticker.toUpperCase()} asOf={asOf} />
       </main>
 
-      <footer className="flex items-center justify-between border-t border-hairline px-5 py-2 text-[10px] tracking-widest text-ink-3">
+      <footer className="flex items-center justify-between border-t border-hairline px-5 py-2 text-[12px] tracking-widest text-ink-3">
         <span className="flex items-center gap-3">
           <AgentChip agent="red_team" thinking={state.redTeam.status === 'thinking'} />
           <AgentChip agent="judge" thinking={state.judgeActive && state.phase === 'streaming'} />

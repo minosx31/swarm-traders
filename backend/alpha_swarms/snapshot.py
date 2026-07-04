@@ -44,6 +44,7 @@ class NewsItem(BaseModel):
     summary: str
     published_at: date
     available_at: date  # = published_at
+    url: str | None = None  # article link for UI verification (optional; older snapshots lack it)
 
 
 class Snapshot(BaseModel):
