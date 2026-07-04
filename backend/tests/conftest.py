@@ -12,6 +12,7 @@ os.environ["EVENT_DELAY_S"] = "0"  # no inter-event delay in tests
 # the set of snapshot files on disk, so drop a minimal valid snapshot there.
 _snapshot_dir = Path(tempfile.mkdtemp(prefix="snapshots-"))
 os.environ["SNAPSHOT_DIR"] = str(_snapshot_dir)
+os.environ["RUNS_DIR"] = str(Path(tempfile.mkdtemp(prefix="runs-")))  # don't pollute data/runs
 
 WHITELISTED = {"ticker": "NVDA", "as_of": "2026-06-30"}
 (_snapshot_dir / "NVDA_2026-06-30.json").write_text(json.dumps({

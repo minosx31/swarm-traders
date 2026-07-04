@@ -9,6 +9,7 @@ import asyncio
 
 from .events import EventEmitter
 from .graph import build_graph
+from .replay import save_run
 from .safeguards import RunSafeguards
 from .slices import RunContext
 from .snapshot import load_snapshot
@@ -47,8 +48,12 @@ async def stream_run(ticker: str, as_of: str, *, graph=None, delay: float | None
             await emitter.close()
 
     run_task = asyncio.create_task(_run())
+    recorded: list[dict] = []
     try:
         async for event in emitter.drain(delay):
+            recorded.append(event)
             yield event
     finally:
         run_task.cancel()  # client disconnected mid-run: stop the graph
+        if recorded:
+            save_run(ticker, as_of, recorded)  # a recorded run IS the event log (#9)

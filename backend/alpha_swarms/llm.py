@@ -9,15 +9,22 @@ import os
 BACKENDS = {}  # name -> zero-arg factory; add a line to add a backend
 
 
+def ollama_model() -> str:
+    # qwen2.5 per PLAN: on Ollama 0.30.x it is the family whose `format` JSON
+    # grammar is actually enforced (qwen3.5's new engine ignores it and its
+    # tool-call template 500s on malformed calls).
+    return os.environ.get("OLLAMA_MODEL", "qwen2.5:7b")
+
+
 def _ollama():
     from langchain_ollama import ChatOllama
 
-    # PLAN says qwen2.5; the machine currently has qwen3.5:9b pulled — override here.
-    # reasoning=False: qwen3.5 is a thinking model (~250 tokens of reasoning per
-    # one-word answer) — too slow for dev-loop runs. num_ctx: judge prompts
-    # exceed Ollama's small default context.
-    return ChatOllama(model=os.environ.get("OLLAMA_MODEL", "qwen3.5:9b"),
-                      reasoning=False, num_ctx=8192)
+    model = ollama_model()
+    kwargs = {}
+    if model.startswith("qwen3"):
+        kwargs["reasoning"] = False  # thinking model — too slow for the dev loop
+    # num_ctx: judge prompts exceed Ollama's small default context
+    return ChatOllama(model=model, num_ctx=8192, **kwargs)
 
 
 def _groq():
@@ -68,10 +75,10 @@ def get_chat_model():
 
 
 def structured_output_kwargs() -> dict:
-    """Ollama 0.30.x does not enforce `format` grammars for qwen3.5-family
-    models (silently returns prose), so structured output there must go through
-    tool calling; other providers keep their library defaults."""
-    if current_backend() == "ollama":
+    """qwen3.5 on Ollama 0.30.x ignores `format` grammars (silently returns
+    prose), so it must use tool calling; qwen2.5 gets grammar-enforced
+    json_schema (the library default). Other providers keep their defaults."""
+    if current_backend() == "ollama" and ollama_model().startswith("qwen3"):
         return {"method": "function_calling"}
     return {}
 

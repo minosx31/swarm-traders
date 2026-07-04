@@ -25,3 +25,6 @@ dist/
 
 # WSL download artifacts
 *:Zone.Identifier
+
+# Runtime state (not source)
+backend/data/spend.json

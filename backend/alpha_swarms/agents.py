@@ -18,6 +18,7 @@ from langchain_core.messages import HumanMessage, SystemMessage
 from . import llm
 from .grounding import earns_vote, ground_evidence
 from .models import JudgeRuling, Rebuttal, RedTeamReport, Thesis
+from .safeguards import BreakerTripped
 from .scoring import compute_verdict
 from .slices import RunContext
 
@@ -35,8 +36,13 @@ async def call_structured(schema, system: str, user: str, config, *, post_valida
     messages = [SystemMessage(content=llm.system_content(system)), HumanMessage(content=user)]
     error = None
     for _ in range(2):  # initial attempt + exactly one retry
-        result = await model.ainvoke(messages, config=config)
-        parsed, error = result.get("parsed"), result.get("parsing_error")
+        try:
+            result = await model.ainvoke(messages, config=config)
+            parsed, error = result.get("parsed"), result.get("parsing_error")
+        except BreakerTripped:
+            raise  # the budget kill-switch always propagates uncaught
+        except Exception as exc:  # e.g. Ollama 500 on malformed model tool-call XML
+            parsed, error = None, exc
         if parsed is not None and post_validate is not None:
             try:
                 post_validate(parsed)
@@ -44,9 +50,13 @@ async def call_structured(schema, system: str, user: str, config, *, post_valida
                 parsed, error = None, exc
         if parsed is not None:
             return parsed
-        messages = messages + [HumanMessage(content=(
-            f"Your previous output failed validation: {error}. "
-            "Respond again with ONLY valid JSON matching the schema."))]
+        if error is None:  # model answered in prose without calling the output tool
+            feedback = (f"You did not produce structured output. You MUST call the "
+                        f"{schema.__name__} tool with valid JSON arguments — no prose.")
+        else:
+            feedback = (f"Your previous output failed validation ({error}). "
+                        "Respond again with ONLY valid JSON matching the schema.")
+        messages = messages + [HumanMessage(content=feedback)]
     raise StructuredOutputError(f"{schema.__name__} failed validation after one retry: {error}")
 
 

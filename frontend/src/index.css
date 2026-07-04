@@ -1,0 +1,90 @@
+@import 'tailwindcss';
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/500.css';
+@import '@fontsource/ibm-plex-mono/600.css';
+@import '@fontsource/instrument-serif/400.css';
+@import '@fontsource/instrument-serif/400-italic.css';
+
+@theme {
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --font-display: 'Instrument Serif', Georgia, serif;
+
+  /* terminal-courtroom surfaces (validated as chart surface #0e1210) */
+  --color-page: #0a0d0b;
+  --color-surface: #0e1210;
+  --color-raised: #141a16;
+  --color-ink: #f2f4ef;
+  --color-ink-2: #b8bfb4;
+  --color-ink-3: #798379;
+  --color-hairline: rgba(242, 244, 239, 0.09);
+
+  /* agent identity — categorical, fixed order, CVD-validated on #0e1210 */
+  --color-fundamentals: #3987e5;
+  --color-sentiment: #d55181;
+  --color-technicals: #c98500;
+  --color-redteam: #d95926;
+  --color-judge: #199e70;
+
+  /* polarity (status roles, always paired with a label/icon, never alone) */
+  --color-bull: #0ca30c;
+  --color-bear: #d03b3b;
+  --color-neutralpole: #898781;
+}
+
+html {
+  background: var(--color-page);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-mono);
+  color: var(--color-ink);
+  font-size: 13px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── atmosphere: vignette + faint scanlines ─────────────────────────── */
+.atmosphere::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  background:
+    radial-gradient(120% 90% at 50% 0%, transparent 55%, rgba(4, 6, 5, 0.55) 100%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.014) 0 1px, transparent 1px 3px);
+}
+
+/* ── event entrance ─────────────────────────────────────────────────── */
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(9px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-in {
+  animation: card-in 0.45s cubic-bezier(0.2, 0.9, 0.25, 1) both;
+}
+
+/* ── "thinking" cursor pulse ────────────────────────────────────────── */
+@keyframes blink { 0%, 55% { opacity: 1; } 56%, 100% { opacity: 0.15; } }
+.thinking-dot { animation: blink 1.1s steps(1) infinite; }
+
+/* ── the verdict stamp ──────────────────────────────────────────────── */
+@keyframes stamp {
+  0% { opacity: 0; transform: scale(2.1) rotate(-9deg); }
+  62% { opacity: 1; transform: scale(0.94) rotate(-2deg); }
+  80% { transform: scale(1.04) rotate(-3deg); }
+  100% { transform: scale(1) rotate(-3deg); }
+}
+.stamp {
+  animation: stamp 0.5s cubic-bezier(0.2, 0.8, 0.3, 1.2) both;
+}
+
+/* ── stance meter fill ──────────────────────────────────────────────── */
+.meter-fill {
+  transition: width 0.7s cubic-bezier(0.25, 1, 0.35, 1);
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+}

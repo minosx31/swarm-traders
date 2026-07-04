@@ -195,14 +195,14 @@ verdict — never part of the stream. A terminal `error` event degrades the UI
 gracefully. Use Bun for install/dev/build.
 
 #### Acceptance criteria
-- [ ] `bun run dev` against a running backend renders a full debate live, events
+- [x] `bun run dev` against a running backend renders a full debate live, events
       appearing per agent lane as they arrive
-- [ ] TypeScript event union mirrors the SSE contract; unknown events don't crash
+- [x] TypeScript event union mirrors the SSE contract; unknown events don't crash
       the reducer
-- [ ] Verdict card never shows Conviction without N and Dissent; No Call renders
+- [x] Verdict card never shows Conviction without N and Dissent; No Call renders
       as honest abstention, not an error
-- [ ] Outcome reveal is a post-verdict interaction, absent from the DOM until then
-- [ ] Non-whitelisted input shows the `400` refusal cleanly
+- [x] Outcome reveal is a post-verdict interaction, absent from the DOM until then
+- [x] Non-whitelisted input shows the `400` refusal cleanly
 
 ---
 
@@ -247,10 +247,10 @@ recorded run *is* the log), preserving inter-event delays. The frontend works
 unchanged. This is also the artifact the static replay site (#11) consumes.
 
 #### Acceptance criteria
-- [ ] Every run writes its full event log to a JSON file
-- [ ] Replay mode streams a recorded log through `/stream`; the frontend renders
+- [x] Every run writes its full event log to a JSON file
+- [x] Replay mode streams a recorded log through `/stream`; the frontend renders
       it identically to the live run
-- [ ] Replay makes zero LLM calls and costs $0 (breaker/cost log confirm)
+- [x] Replay makes zero LLM calls and costs $0 (breaker/cost log confirm)
 
 ---
 

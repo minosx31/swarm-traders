@@ -11,11 +11,11 @@ theses, a Red-Team attacks them, each specialist gets one rebuttal, a Judge rule
 which attacks landed, and a computed aggregate produces the Verdict (or an honest
 No Call). The debate streams live over SSE, one event per agent step.
 
-**Status:** Phases 0–1 complete. The full debate pipeline — three real
-specialists, Red-Team, rebuttals, Judge, computed Verdict, deterministic
-grounding gate — runs end-to-end on the free Ollama backend (pre-sliced
-baseline, no tools yet). Next: the React frontend (Phase 2) and debate-phase
-tool-calling (Phase 3). See `issues.md` for the build plan and progress.
+**Status:** Phases 0–2 complete plus record/replay (#9). The full debate
+pipeline runs end-to-end on the free Ollama backend (pre-sliced baseline), every
+run is recorded to a replayable JSON event log, and the React frontend renders
+live or replayed debates in per-agent lanes. Next: debate-phase tool-calling
+(#8), then the Sonnet demo pass. See `issues.md` for the build plan and progress.
 
 ---
 
@@ -37,7 +37,8 @@ One FastAPI app with LangGraph running in-process — nothing else to host.
 
 | File | What it does |
 |---|---|
-| `alpha_swarms/app.py` | FastAPI app. `GET /stream?ticker&as_of` — refuses non-whitelisted pairs with `400`, otherwise streams the debate as SSE. Validates `LLM_BACKEND` at startup |
+| `alpha_swarms/app.py` | FastAPI app. `GET /stream?ticker&as_of[&replay=1]` — refuses non-whitelisted pairs with `400`, streams the debate (or a recorded run) as SSE. Also `GET /whitelist` and `GET /outcome` (UI-facing). Validates `LLM_BACKEND` at startup |
+| `alpha_swarms/replay.py` | Record + replay (#9): every run's event log persists to `data/runs/`; replay re-streams the latest log with the graph bypassed — zero LLM calls |
 | `alpha_swarms/graph.py` | LangGraph topology wiring: parallel specialist fan-out → red_team → parallel rebuttals → judge → aggregate, plus the reducer-merged `Blackboard` state |
 | `alpha_swarms/agents.py` | The LLM-backed nodes: specialist/Red-Team/rebuttal/Judge prompts + the structured-output helper (one validation-retry, then graceful failure). Pre-sliced single calls, no tools (ADR 0003 baseline) |
 | `alpha_swarms/models.py` | Pydantic schemas the models must produce: Thesis, Evidence (numeric/textual tiers), Attack, Rebuttal, JudgeRuling |
@@ -55,10 +56,21 @@ One FastAPI app with LangGraph running in-process — nothing else to host.
 | `data/snapshots/` | Whitelisted point-in-time snapshots — the only data agents ever see |
 | `data/outcomes/` | What actually happened after as-of. Held out of agent-visible state; the UI reveals it only after the Verdict |
 
-### Frontend
+### Frontend (`frontend/`)
 
-Not built yet — Phase 2 (`issues.md` #7) adds a React + Vite + Tailwind static
-site with live per-agent lanes over the same SSE stream.
+React + Vite + TypeScript + Tailwind v4 static site (Bun tooling). Dark
+"terminal courtroom" design; the agent palette is CVD-validated.
+
+| File | What it does |
+|---|---|
+| `src/types.ts` | TypeScript mirror of the SSE event contract |
+| `src/reducer.ts` | `useReducer` over the event union, keyed by agent — unknown events never crash it |
+| `src/useDebateStream.ts` | `EventSource` lifecycle: dispatches events, closes on the terminal event |
+| `src/api.ts` | Backend base URL (`VITE_API_BASE`), whitelist + outcome fetches |
+| `src/components.tsx` | Atoms: agent chips, signed stance meters, evidence rows (grounded/dropped, Verified Quote badge) |
+| `src/Lane.tsx` | One specialist's column: thesis → attacks on it → rebuttal → adjudication (the stance trail) |
+| `src/VerdictPanel.tsx` | Verdict stamp, conviction+N+dissent (never conviction alone), landed attacks, post-verdict Outcome reveal |
+| `src/*.test.ts(x)` | `bun test`: reducer contract tests + DOM render of a real recorded run |
 
 ---
 
@@ -79,11 +91,18 @@ Whitelist a `(ticker, as_of)` pair by building its snapshot (offline, one-time):
 uv run scripts/build_snapshot.py AAPL 2026-06-30
 ```
 
-Run the backend and watch a live debate in a second terminal (a full run on the
-local model takes a few minutes):
+Run the backend, and the frontend in a second terminal:
 
 ```bash
 LLM_BACKEND=ollama uv run uvicorn alpha_swarms.app:app --reload   # http://localhost:8000
+cd frontend && bun install && bun run dev                          # http://localhost:5173
+```
+
+Pick a whitelisted pair in the UI and hit **Convene Swarm** (a live run on the
+local model takes a few minutes; check **Replay** to re-stream the last recorded
+run instantly at $0). The terminal fallback renders the same stream:
+
+```bash
 uv run scripts/pretty_print.py --ticker AAPL --as-of 2026-06-30
 ```
 
@@ -102,7 +121,9 @@ uv run pytest
 | `ANTHROPIC_API_KEY` / `GROQ_API_KEY` | Provider keys, needed only for their backends | — |
 | `EVENT_DELAY_S` | Inter-event delay on the SSE stream (readability) | `0.25` |
 | `SNAPSHOT_DIR` | Snapshot/whitelist location | `backend/data/snapshots` |
+| `RUNS_DIR` | Recorded run logs (replay reads the latest per pair) | `backend/data/runs` |
 | `SPEND_FILE` | Persistent global spend counter | `backend/data/spend.json` |
+| `VITE_API_BASE` | Frontend → backend base URL | `http://localhost:8000` |
 
 **Budget guardrails are always on:** every run is capped at 15 LLM calls, prints
 its estimated cost, and accumulates into the global counter — treat $15 as a wall.

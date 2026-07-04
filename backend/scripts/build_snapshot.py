@@ -89,6 +89,7 @@ def build_outcome(t: yf.Ticker, as_of: date, days: int) -> dict:
         "prices_after": [
             {"date": ts.date().isoformat(), "close": float(row["Close"]), "volume": int(row["Volume"])}
             for ts, row in hist.iterrows()
+            if ts.date() > as_of  # yfinance can echo the as_of bar when the window is empty
         ],
     }
 

@@ -70,6 +70,21 @@ def is_whitelisted(ticker: str, as_of: str) -> bool:
     return snapshot_path(ticker, as_of).is_file()
 
 
+def list_whitelisted() -> list[dict]:
+    pairs = []
+    for path in sorted(snapshot_dir().glob("*.json")):
+        ticker, _, as_of = path.stem.rpartition("_")
+        if ticker:
+            pairs.append({"ticker": ticker, "as_of": as_of})
+    return pairs
+
+
+def load_outcome(ticker: str, as_of: str) -> dict | None:
+    """UI-facing only — revealed after the Verdict. Never called on the run path."""
+    path = outcome_dir() / f"{ticker.upper()}_{as_of}.json"
+    return json.loads(path.read_text()) if path.is_file() else None
+
+
 def load_snapshot(ticker: str, as_of: str) -> Snapshot:
     """The ONLY loader agent-side code may use. Never reads data/outcomes/."""
     return Snapshot.model_validate_json(snapshot_path(ticker, as_of).read_text())
