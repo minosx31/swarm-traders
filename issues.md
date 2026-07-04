@@ -314,3 +314,38 @@ stays a stretch goal, gated behind extra credits.
 - [ ] (Optional) Static replay site deployed: stock picker over the 2–3 recorded
       runs, plays through the unchanged reducer/lanes, zero external calls
 - [ ] Nothing in the shipped bundle exposes an API key or a paid endpoint
+
+---
+
+### #12 · Frontend UI refresh / design pass
+**Type:** HITL · **Blocked by:** #7 · Should land before or alongside #11 — the
+demo video captures whatever the UI looks like at record time
+
+#### What to build
+A visual polish pass on the existing React frontend, not a rebuild: the App
+shell, per-agent lanes, tool-activity strip, and Verdict panel all render
+correctly today but the terminal-courtroom v1 (IBM Plex Mono + Instrument
+Serif, dark surfaces) is functional rather than sharp. User feedback after
+Phase 2 was that it "looks kinda sick" but wants a design improvement pass
+before the demo video ships. This is styling/layout/motion work over the
+current event union — no new event types, no reducer changes, no backend
+touch. The first step is to ask the user what specifically felt lacking
+(spacing, hierarchy, motion, typography, something else) rather than guessing
+a direction; re-invoke the `frontend-design` skill once that's known. Two hard
+constraints carry over unchanged from v1: the CVD-validated agent color
+palette (`--color-fundamentals/sentiment/technicals/redteam/judge` in
+`index.css`) stays as-is, and Conviction is never displayed without N and
+Dissent alongside it.
+
+#### Acceptance criteria
+- [ ] User feedback on what felt lacking is gathered and confirmed *before*
+      any redesign work starts — not assumed
+- [ ] `bun test` and `tsc -b` stay green throughout
+- [ ] The SSE event contract and the `useReducer` event-union logic are
+      untouched — this is a rendering/styling change only
+- [ ] The CVD-validated agent palette tokens are unchanged; polarity colors
+      stay paired with a label/icon, never shown alone
+- [ ] Verdict card still never shows Conviction without N and Dissent; No Call
+      still renders as honest abstention
+- [ ] `bun run dev` against a running backend (live or replay) renders a full
+      debate with the refreshed look, no regressions in existing lanes/cards

@@ -34,7 +34,7 @@ pass (#10–#11). See `issues.md` for the build plan and progress.
 | `PLAN.md` | The 1-week build plan: problem, architecture, budget strategy ($15 hard limit), day-by-day order |
 | `ARCHITECTURE.md` | Consolidated technical design: system diagram, agent graph, SSE event contract (§3), scoring pipeline, safeguards |
 | `CONTEXT.md` | Domain glossary — the shared vocabulary (Thesis, Stance, Grounded Evidence, No Call, …) |
-| `issues.md` | The build broken into 11 tracer-bullet slices with acceptance criteria; checkboxes track progress |
+| `issues.md` | The build broken into 12 tracer-bullet slices with acceptance criteria; checkboxes track progress |
 | `docs/adr/0001–0006` | Decision records: advocacy/adjudication split, point-in-time integrity, tools-over-cached-data, event queue over LangGraph `.stream()`, LangChain chat models, on-demand snapshot build |
 
 ### Backend (`backend/`)
