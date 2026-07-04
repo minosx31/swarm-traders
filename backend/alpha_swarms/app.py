@@ -6,17 +6,24 @@ never touches the run path). replay=1 re-streams the latest recorded run
 through the same endpoint with the graph bypassed (#9).
 """
 
+import asyncio
 import json
 from contextlib import asynccontextmanager
+from datetime import date
+from pathlib import Path
 
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sse_starlette.sse import EventSourceResponse
 
+from .ingest import IngestError, ingest_pair
 from .llm import validate_backend
 from .replay import has_recording, stream_replay
 from .runner import stream_run
 from .snapshot import is_whitelisted, list_whitelisted, load_outcome
+
+load_dotenv(Path(__file__).parent.parent / ".env")  # FINNHUB_API_KEY, provider keys, …
 
 
 @asynccontextmanager
@@ -30,7 +37,7 @@ app = FastAPI(title="Alpha Swarms", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],  # Vite dev server
-    allow_methods=["GET"],
+    allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
 
@@ -57,6 +64,19 @@ async def stream(ticker: str, as_of: str, replay: bool = False):
             yield {"data": json.dumps(event)}
 
     return EventSourceResponse(sse_events())
+
+
+@app.post("/snapshots")
+async def build_snapshot(ticker: str, as_of: str):
+    """Build-if-missing (ADR 0006): the snapshot is fetched, leak-checked, and on
+    disk before any run can start; an existing pair is reused, never re-fetched."""
+    if is_whitelisted(ticker, as_of):
+        return {"ticker": ticker.upper(), "as_of": as_of, "built": False}
+    try:
+        await asyncio.to_thread(ingest_pair, ticker, date.fromisoformat(as_of))
+    except (IngestError, ValueError) as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    return {"ticker": ticker.upper(), "as_of": as_of, "built": True}
 
 
 @app.get("/whitelist")

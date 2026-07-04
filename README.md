@@ -35,7 +35,7 @@ pass (#10–#11). See `issues.md` for the build plan and progress.
 | `ARCHITECTURE.md` | Consolidated technical design: system diagram, agent graph, SSE event contract (§3), scoring pipeline, safeguards |
 | `CONTEXT.md` | Domain glossary — the shared vocabulary (Thesis, Stance, Grounded Evidence, No Call, …) |
 | `issues.md` | The build broken into 11 tracer-bullet slices with acceptance criteria; checkboxes track progress |
-| `docs/adr/0001–0005` | Decision records: advocacy/adjudication split, point-in-time integrity, tools-over-cached-data, event queue over LangGraph `.stream()`, LangChain chat models |
+| `docs/adr/0001–0006` | Decision records: advocacy/adjudication split, point-in-time integrity, tools-over-cached-data, event queue over LangGraph `.stream()`, LangChain chat models, on-demand snapshot build |
 
 ### Backend (`backend/`)
 
@@ -43,7 +43,7 @@ One FastAPI app with LangGraph running in-process — nothing else to host.
 
 | File | What it does |
 |---|---|
-| `alpha_swarms/app.py` | FastAPI app. `GET /stream?ticker&as_of[&replay=1]` — refuses non-whitelisted pairs with `400`, streams the debate (or a recorded run) as SSE. Also `GET /whitelist` and `GET /outcome` (UI-facing). Validates `LLM_BACKEND` at startup |
+| `alpha_swarms/app.py` | FastAPI app. `GET /stream?ticker&as_of[&replay=1]` — refuses non-whitelisted pairs with `400`, streams the debate (or a recorded run) as SSE. `POST /snapshots` builds a missing pair on demand (ADR 0006; an existing pair is reused, never re-fetched). Also `GET /whitelist` and `GET /outcome` (UI-facing). Validates `LLM_BACKEND` at startup |
 | `alpha_swarms/replay.py` | Record + replay (#9): every run's event log persists to `data/runs/`; replay re-streams the latest log with the graph bypassed — zero LLM calls |
 | `alpha_swarms/graph.py` | LangGraph topology wiring: parallel specialist fan-out → red_team → parallel rebuttals → judge → aggregate, plus the reducer-merged `Blackboard` state |
 | `alpha_swarms/agents.py` | The LLM-backed nodes: specialist/Red-Team/rebuttal/Judge prompts + the structured-output helper (one validation-retry, then graceful failure). Pre-sliced single calls; the Red-Team/rebuttal nodes switch to the bounded tool-calling loop when `DEBATE_TOOLS=1` (#8) |
@@ -57,7 +57,8 @@ One FastAPI app with LangGraph running in-process — nothing else to host.
 | `alpha_swarms/llm.py` | Provider abstraction (ADR 0005): `LLM_BACKEND` env flag picks a LangChain chat model (`ollama` / `groq` / `haiku` / `sonnet`); wires Anthropic `cache_control` for system prompts |
 | `alpha_swarms/safeguards.py` | Budget safeguards: circuit breaker (kills a run past 15 LLM calls), per-run cost estimate incl. cache accounting, persistent global spend counter (`data/spend.json`) |
 | `alpha_swarms/snapshot.py` | Point-in-time Snapshot layer (ADR 0002): Pydantic models, the leak validator (no datum dated after as-of), whitelist (= snapshot files on disk), loader that never touches Outcomes |
-| `scripts/build_snapshot.py` | Offline ingestion: builds `data/snapshots/{TICKER}_{AS_OF}.json` from yfinance (prices, last *reported* fundamentals, news) plus the held-out Outcome in `data/outcomes/`. Never runs during a request |
+| `alpha_swarms/ingest.py` | Snapshot ingestion (ADR 0006): prices + last *reported* fundamentals from yfinance, date-ranged historical news from Finnhub (`FINNHUB_API_KEY`; yfinance current-news fallback), leak-validated and persisted with the held-out Outcome. Runs via the CLI or `POST /snapshots` — always completes before any agent runs |
+| `scripts/build_snapshot.py` | Offline ingestion CLI: thin wrapper over `alpha_swarms/ingest.py`; builds `data/snapshots/{TICKER}_{AS_OF}.json` plus `data/outcomes/` |
 | `scripts/pretty_print.py` | Terminal client: consumes the SSE stream and renders the debate with per-agent colors (the pre-React fallback UI) |
 | `tests/` | Acceptance tests per issue: `test_safeguards.py` (#2), `test_snapshot.py` (#3), `test_debate.py` (#4/#6, scripted LLM), `test_grounding.py` (#5), `test_scoring.py` (#6), `test_tools.py` (#8, tool-calling + as-of leakage property) |
 | `data/snapshots/` | Whitelisted point-in-time snapshots — the only data agents ever see |
@@ -73,7 +74,7 @@ React + Vite + TypeScript + Tailwind v4 static site (Bun tooling). Dark
 | `src/types.ts` | TypeScript mirror of the SSE event contract |
 | `src/reducer.ts` | `useReducer` over the event union, keyed by agent — unknown events never crash it |
 | `src/useDebateStream.ts` | `EventSource` lifecycle: dispatches events, closes on the terminal event |
-| `src/api.ts` | Backend base URL (`VITE_API_BASE`), whitelist + outcome fetches |
+| `src/api.ts` | Backend base URL (`VITE_API_BASE`), whitelist + outcome fetches, snapshot build-if-missing |
 | `src/components.tsx` | Atoms: agent chips, signed stance meters, evidence rows (grounded/dropped, Verified Quote badge) |
 | `src/Lane.tsx` | One specialist's column: thesis → attacks on it → rebuttal → adjudication (the stance trail) |
 | `src/VerdictPanel.tsx` | Verdict stamp, conviction+N+dissent (never conviction alone), landed attacks, post-verdict Outcome reveal |
@@ -92,7 +93,19 @@ cd backend
 uv sync                                            # install deps into .venv
 ```
 
-Whitelist a `(ticker, as_of)` pair by building its snapshot (offline, one-time):
+Put API keys in `backend/.env` (auto-loaded by the app and the CLI):
+
+```bash
+cp .env.example .env    # then paste your FINNHUB_API_KEY
+```
+
+`FINNHUB_API_KEY` (free key at [finnhub.io](https://finnhub.io)) sources
+date-ranged historical news for the as_of window; without it, news falls back to
+yfinance current headlines.
+
+A `(ticker, as_of)` pair gets its snapshot built automatically the first time you
+convene it from the UI (ADR 0006) and is cached on disk for every later run. To
+pre-build or rebuild one from the terminal:
 
 ```bash
 uv run scripts/build_snapshot.py AAPL 2026-06-30
@@ -105,9 +118,10 @@ LLM_BACKEND=ollama uv run uvicorn alpha_swarms.app:app --reload   # http://local
 cd frontend && bun install && bun run dev                          # http://localhost:5173
 ```
 
-Pick a whitelisted pair in the UI and hit **Convene Swarm** (a live run on the
-local model takes a few minutes; check **Replay** to re-stream the last recorded
-run instantly at $0). The terminal fallback renders the same stream:
+Pick a pair in the UI and hit **Convene Swarm** — an uncached pair builds its
+snapshot first, then the debate starts (a live run on the local model takes a
+few minutes; check **Replay** to re-stream the last recorded run instantly at
+$0). The terminal fallback renders the same stream:
 
 ```bash
 uv run scripts/pretty_print.py --ticker AAPL --as-of 2026-06-30
@@ -128,6 +142,7 @@ uv run pytest
 | `DEBATE_TOOLS` | Enable the debate-phase tool-calling increment (#8): Red-Team + rebuttals fetch cached evidence via tools. Off = the pre-sliced #6 baseline | unset (off) |
 | `RESILIENT` | When set, a debate node whose LLM output fails *abstains* (contributes nothing) so the run still reaches a verdict, instead of aborting with a terminal `error`. Set it when recording local demo takes on the flaky local models; leave off for the honest fail-loud default. The budget breaker always stays loud | unset (off) |
 | `ANTHROPIC_API_KEY` / `GROQ_API_KEY` | Provider keys, needed only for their backends | — |
+| `FINNHUB_API_KEY` | When set, snapshot builds source historical date-ranged company news from Finnhub (window = `--news-days`, default 30) instead of yfinance current-news. Optional — falls back to yfinance when unset. Free key at [finnhub.io](https://finnhub.io); put it in `backend/.env` (auto-loaded) | unset |
 | `EVENT_DELAY_S` | Inter-event delay on the SSE stream (readability) | `0.25` |
 | `SNAPSHOT_DIR` | Snapshot/whitelist location | `backend/data/snapshots` |
 | `RUNS_DIR` | Recorded run logs (replay reads the latest per pair) | `backend/data/runs` |

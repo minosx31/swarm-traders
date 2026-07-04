@@ -8,6 +8,17 @@ export function streamUrl(ticker: string, asOf: string, replay: boolean): string
   return `${API_BASE}/stream?${params}`
 }
 
+/** Build the point-in-time snapshot if missing (ADR 0006) — resolves once it is
+ * on disk and leak-checked; an existing pair returns immediately. */
+export async function ensureSnapshot(ticker: string, asOf: string): Promise<void> {
+  const params = new URLSearchParams({ ticker, as_of: asOf })
+  const res = await fetch(`${API_BASE}/snapshots?${params}`, { method: 'POST' })
+  if (!res.ok) {
+    const detail = await res.json().then((b) => b.detail, () => res.statusText)
+    throw new Error(detail)
+  }
+}
+
 export async function fetchWhitelist(): Promise<WhitelistPair[]> {
   const res = await fetch(`${API_BASE}/whitelist`)
   if (!res.ok) throw new Error(`whitelist fetch failed: ${res.status}`)

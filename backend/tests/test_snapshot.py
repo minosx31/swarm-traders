@@ -1,11 +1,13 @@
 """Issue #3 acceptance: point-in-time integrity, whitelist refusal, Outcome held out."""
 
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
 
+import httpx
 import pytest
 
 from alpha_swarms.app import app
+from alpha_swarms.ingest import IngestError, finnhub_news_items
 from alpha_swarms.snapshot import (
     NewsItem,
     PriceBar,
@@ -19,6 +21,10 @@ from alpha_swarms.snapshot import (
 from tests.conftest import WHITELISTED, collect_sse_events
 
 AS_OF = date(2026, 6, 30)
+
+
+def _fh(as_of: date) -> int:
+    return int(datetime(as_of.year, as_of.month, as_of.day, tzinfo=timezone.utc).timestamp())
 
 
 def make_snapshot(**overrides) -> Snapshot:
@@ -62,6 +68,21 @@ def test_news_after_as_of_is_a_violation():
                                          published_at=date(2026, 7, 2),
                                          available_at=date(2026, 7, 2))])
     assert any("news" in v for v in validate_snapshot(leaky))
+
+
+def test_finnhub_mapping_filters_dedupes_and_skips_incomplete():
+    payload = [
+        {"id": 1, "headline": "valid", "summary": "s", "datetime": _fh(date(2026, 6, 20))},
+        {"id": 2, "headline": "future", "summary": "", "datetime": _fh(date(2026, 7, 2))},
+        {"id": 1, "headline": "dup", "summary": "", "datetime": _fh(date(2026, 6, 19))},
+        {"id": 3, "headline": "", "summary": "", "datetime": _fh(date(2026, 6, 18))},
+        {"headline": "no id", "datetime": _fh(date(2026, 6, 17))},
+        {"id": 5, "headline": "no datetime"},
+    ]
+    items = finnhub_news_items(payload, AS_OF)
+    assert [n.source_id for n in items] == ["fh-1"]
+    assert items[0].title == "valid" and items[0].summary == "s"
+    assert items[0].published_at == date(2026, 6, 20)
 
 
 def test_save_refuses_leaky_snapshot():
@@ -113,6 +134,47 @@ async def test_non_whitelisted_date_is_refused_with_400():
     status, events = await collect_sse_events(app, {"ticker": "NVDA", "as_of": "1999-01-01"})
     assert status == 400
     assert events == []
+
+
+# --- on-demand snapshot build at POST /snapshots (ADR 0006) -----------------------
+
+
+async def _post_snapshots(params: dict) -> tuple[int, dict]:
+    transport = httpx.ASGITransport(app=app)
+    async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+        resp = await client.post("/snapshots", params=params)
+        return resp.status_code, resp.json()
+
+
+async def test_build_endpoint_builds_missing_pair_then_reuses(monkeypatch):
+    from alpha_swarms import app as app_module
+
+    calls = []
+
+    def fake_ingest(ticker, as_of, **kwargs):
+        calls.append(ticker)
+        save_snapshot(make_snapshot(ticker=ticker.upper(), as_of=as_of))
+
+    monkeypatch.setattr(app_module, "ingest_pair", fake_ingest)
+    status, body = await _post_snapshots({"ticker": "AAPL", "as_of": "2026-06-30"})
+    assert (status, body["built"]) == (200, True)
+    status, body = await _post_snapshots({"ticker": "AAPL", "as_of": "2026-06-30"})
+    assert (status, body["built"]) == (200, False)
+    assert calls == ["AAPL"]  # snapshot on disk is reused, never re-fetched
+
+
+async def test_build_endpoint_surfaces_failure_as_400(monkeypatch):
+    from alpha_swarms import app as app_module
+
+    def failing_ingest(ticker, as_of, **kwargs):
+        raise IngestError("no price data for BAD <= 2026-06-30 — bad ticker or date?")
+
+    monkeypatch.setattr(app_module, "ingest_pair", failing_ingest)
+    status, body = await _post_snapshots({"ticker": "BAD", "as_of": "2026-06-30"})
+    assert status == 400 and "no price data" in body["detail"]
+
+    status, _ = await _post_snapshots({"ticker": "AAPL", "as_of": "not-a-date"})
+    assert status == 400  # malformed as_of never reaches a fetch
 
 
 async def test_whitelisted_pair_streams(monkeypatch):

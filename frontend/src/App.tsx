@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { fetchWhitelist } from './api'
+import { ensureSnapshot, fetchWhitelist } from './api'
 import { AgentChip } from './components'
 import { Lane } from './Lane'
 import { useDebateStream } from './useDebateStream'
@@ -12,6 +12,7 @@ export default function App() {
   const [ticker, setTicker] = useState('')
   const [asOf, setAsOf] = useState('')
   const [replay, setReplay] = useState(false)
+  const [building, setBuilding] = useState(false)
   const [refusal, setRefusal] = useState<string | null>(null)
 
   useEffect(() => {
@@ -29,17 +30,23 @@ export default function App() {
     [whitelist, ticker, asOf],
   )
 
-  const run = () => {
-    if (!whitelisted && !replay) {
-      // mirror the backend's 400 without spending a connection on it
-      setRefusal(
-        `(${ticker.toUpperCase()}, ${asOf}) is not a whitelisted snapshot — ` +
-          'uncached pairs are refused, never live-fetched',
-      )
-      return
-    }
+  const run = async () => {
     setRefusal(null)
-    start(ticker.toUpperCase(), asOf, replay)
+    const t = ticker.toUpperCase()
+    if (!whitelisted && !replay) {
+      // build the snapshot first (ADR 0006) — the debate only convenes once it exists
+      setBuilding(true)
+      try {
+        await ensureSnapshot(t, asOf)
+        setWhitelist(await fetchWhitelist())
+      } catch (e) {
+        setRefusal(e instanceof Error ? e.message : String(e))
+        return
+      } finally {
+        setBuilding(false)
+      }
+    }
+    start(t, asOf, replay)
   }
 
   return (
@@ -89,10 +96,12 @@ export default function App() {
           </label>
           <button
             onClick={run}
-            disabled={state.phase === 'streaming'}
+            disabled={state.phase === 'streaming' || building}
             className="cursor-pointer border border-judge px-4 py-1.5 text-[11px] font-semibold tracking-[0.2em] text-judge transition-colors hover:bg-judge hover:text-page disabled:cursor-default disabled:opacity-40"
           >
-            {state.phase === 'streaming' ? 'IN SESSION…' : replay ? '▶ REPLAY RUN' : '▶ CONVENE SWARM'}
+            {building ? 'BUILDING SNAPSHOT…'
+              : state.phase === 'streaming' ? 'IN SESSION…'
+              : replay ? '▶ REPLAY RUN' : '▶ CONVENE SWARM'}
           </button>
         </div>
       </header>
