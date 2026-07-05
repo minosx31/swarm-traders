@@ -20,6 +20,7 @@ export default function App() {
   const [refusal, setRefusal] = useState<string | null>(null)
 
   const replay = mode === 'replay'
+  const today = new Date().toISOString().slice(0, 10) // upper bound for a buildable as-of
 
   useEffect(() => {
     fetchWhitelist().then((pairs) => {
@@ -93,7 +94,7 @@ export default function App() {
       <header className="flex flex-wrap items-end justify-between gap-4 border-b border-hairline px-5 py-4">
         <div>
           <h1 className="font-display text-2xl italic leading-none">
-            Alpha Swarms<span className="text-judge">.</span>
+            Swarm Traders<span className="text-judge">.</span>
           </h1>
           <p className="mt-1 text-[12px] tracking-[0.24em] text-ink-3">
             THE RESEARCH ANALYST THAT NEVER SKIPS THE BEAR CASE
@@ -134,10 +135,11 @@ export default function App() {
                 aria-label="new ticker"
               />
               <input
-                className="w-32 rounded-md border border-hairline bg-surface px-2 py-1.5 text-[14px] text-ink outline-none focus:border-judge"
+                type="date"
+                max={today}
+                className="w-40 rounded-md border border-hairline bg-surface px-2 py-1.5 text-[14px] text-ink outline-none [color-scheme:dark] focus:border-judge"
                 value={asOf}
                 onChange={(e) => setAsOf(e.target.value)}
-                placeholder="YYYY-MM-DD"
                 aria-label="new as-of date"
               />
               <button
@@ -177,27 +179,28 @@ export default function App() {
                 </select>
                 <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[11px] text-ink-3">▾</span>
               </div>
-              {!replay && (
-                <button
-                  onClick={() => setNewPair(true)}
-                  disabled={streaming || building}
-                  className="cursor-pointer rounded-md border border-dashed border-hairline px-2.5 py-1.5 text-[12px] font-semibold tracking-[0.14em] text-ink-3 transition-colors hover:border-judge hover:text-judge disabled:cursor-default disabled:opacity-40"
-                  title="build a new point-in-time snapshot"
-                >
-                  ＋ NEW PAIR
-                </button>
-              )}
+              {/* always rendered so its footprint is reserved — hidden but space-holding in replay, keeping the dropdowns from shifting on mode toggle */}
+              <button
+                onClick={() => setNewPair(true)}
+                disabled={streaming || building || replay}
+                aria-hidden={replay}
+                tabIndex={replay ? -1 : undefined}
+                className={`cursor-pointer rounded-md border border-dashed border-hairline px-2.5 py-1.5 text-[12px] font-semibold tracking-[0.14em] text-ink-3 transition-colors hover:border-judge hover:text-judge disabled:cursor-default disabled:opacity-40 ${replay ? 'invisible' : ''}`}
+                title="build a new point-in-time snapshot"
+              >
+                ＋ NEW PAIR
+              </button>
             </>
           )}
 
           <button
             onClick={run}
             disabled={streaming || building || !ticker || !asOf}
-            className="cursor-pointer rounded-md border border-judge bg-judge/5 px-4 py-1.5 text-[13px] font-semibold tracking-[0.2em] text-judge transition-colors hover:bg-judge hover:text-page disabled:cursor-default disabled:opacity-40"
+            className="min-w-[200px] cursor-pointer rounded-md border border-judge bg-judge/5 px-4 py-1.5 text-[13px] font-semibold tracking-[0.2em] text-judge transition-colors hover:bg-judge hover:text-page disabled:cursor-default disabled:opacity-40"
           >
             {building ? 'BUILDING SNAPSHOT…'
               : streaming ? 'IN SESSION…'
-              : replay ? '▶ REPLAY RUN' : '▶ CONVENE SWARM'}
+              : replay ? '▶ REPLAY RUN' : '▶ START ANALYSIS'}
           </button>
         </div>
       </header>
