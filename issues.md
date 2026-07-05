@@ -262,6 +262,12 @@ through the same `/stream` SSE pipeline with the graph bypassed (ADR 0004 — a
 recorded run *is* the log), preserving inter-event delays. The frontend works
 unchanged. This is also the artifact the static replay site (#11) consumes.
 
+> **Pitch decision (2026-07-05, `docs/pitch.md`):** the #11 static-site player
+> additionally needs **presenter-paced act breaks** — auto-pause at each phase
+> boundary (theses → attacks → tools → rebuttals → adjudication → verdict →
+> Outcome), advance on keypress. Client-side player increment only; the
+> auto-paced audience mode stays.
+
 #### Acceptance criteria
 - [x] Every run writes its full event log to a JSON file
 - [x] Replay mode streams a recorded log through `/stream`; the frontend renders
@@ -284,6 +290,23 @@ future-data leakage* (~30 min each, ADR 0002 — correctness rests on this), fli
 prompts — PLAN is explicit that the Ollama→Sonnet switch is its own task, not a
 flip, and ADR 0001 makes the Judge prompt the highest-leverage tuning target.
 Confirm exact model pricing before paid runs; watch the global spend counter.
+
+> **Pitch decisions (2026-07-05, `docs/pitch.md`):** the demo spine is the
+> earnings post-mortem on a **historical** earnings event picked for story
+> quality (not the latest print — point-in-time integrity makes them
+> indistinguishable to the swarm). Outcome files currently store only
+> `prices_after`; **enrich the demo pairs' Outcome JSON with the actual print**
+> (reported vs. expected figures, next-day/5-day move) and render it on the
+> reveal card — the Outcome is a bounded catalyst-reaction window (CONTEXT.md).
+> Also record one deliberately *unflattering* run (No Call or
+> wrong-but-well-reasoned) for the live site as Q&A armor.
+>
+> **Hard curation criterion:** every demo pair's as-of date *and* Outcome
+> window must fall **after the demo model's training cutoff** (verify the
+> exact cutoff via the `claude-api` reference before picking pairs) —
+> otherwise "the model remembered the outcome from training" un-does the
+> mic-drop. The snapshot controls the context; only the cutoff controls the
+> weights.
 
 #### Acceptance criteria
 - [ ] 2–3 whitelisted demo Snapshots curated, each human-checked for leakage,

@@ -33,9 +33,12 @@ The point in time a run simulates. Nothing dated after it — no price, headline
 unreported financial — may reach the swarm.
 
 **Outcome**:
-What actually happened after the As-Of Date (e.g. the earnings result). Held
-entirely outside agent-visible state and revealed by the UI only after the Verdict.
-Never enters the Snapshot or the blackboard.
+What actually happened over a *bounded horizon* after the As-Of Date — the
+catalyst's reaction window (e.g. the reported earnings figures plus the next
+few trading days' move), fixed when the pair is curated. Not "the price today":
+a Verdict is a call on a defined window; drift beyond it is confounded by
+everything since. Held entirely outside agent-visible state and revealed by the
+UI only after the Verdict. Never enters the Snapshot or the blackboard.
 _Avoid_: result, actual, answer (in glossary use "Outcome" for the held-out reveal).
 
 **Evidence**:
