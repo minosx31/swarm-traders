@@ -1,0 +1,6 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "VITE_STATIC=1 bun run build",
+  "outputDirectory": "dist",
+  "installCommand": "bun install"
+}

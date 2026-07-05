@@ -18,8 +18,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from sse_starlette.sse import EventSourceResponse
 
 from .ingest import IngestError, ingest_pair
-from .llm import validate_backend
-from .replay import has_recording, stream_replay
+from .llm import BACKENDS, available_models, validate_backend
+from .replay import list_runs, resolve_run_path, stream_replay
 from .runner import stream_run
 from .snapshot import is_whitelisted, list_whitelisted, load_outcome
 
@@ -43,13 +43,18 @@ app.add_middleware(
 
 
 @app.get("/stream")
-async def stream(ticker: str, as_of: str, replay: bool = False):
+async def stream(ticker: str, as_of: str, replay: bool = False,
+                 backend: str | None = None, model: str | None = None,
+                 run: str | None = None):
     if replay:
-        if not has_recording(ticker, as_of):
+        # `run` selects a specific recording (which model's run); else the latest.
+        if resolve_run_path(ticker, as_of, run) is None:
             raise HTTPException(status_code=400,
                                 detail=f"no recorded run for ({ticker}, {as_of})")
-        source = stream_replay(ticker, as_of)
+        source = stream_replay(ticker, as_of, run=run)
     else:
+        if backend is not None and backend not in BACKENDS:
+            raise HTTPException(status_code=400, detail=f"unknown backend {backend!r}")
         # Refused before any streaming, LLM call, or live fetch (ADR 0002).
         if not is_whitelisted(ticker, as_of):
             raise HTTPException(
@@ -57,7 +62,7 @@ async def stream(ticker: str, as_of: str, replay: bool = False):
                 detail=f"({ticker}, {as_of}) is not a whitelisted snapshot — "
                        "uncached pairs are refused, never live-fetched",
             )
-        source = stream_run(ticker, as_of)
+        source = stream_run(ticker, as_of, backend=backend, model=model)
 
     async def sse_events():
         async for event in source:
@@ -82,6 +87,19 @@ async def build_snapshot(ticker: str, as_of: str):
 @app.get("/whitelist")
 async def whitelist():
     return list_whitelisted()
+
+
+@app.get("/models")
+async def models():
+    """Selectable (backend, model) options for the UI — installed Ollama models
+    plus the paid Claude options when ANTHROPIC_API_KEY is configured."""
+    return available_models()
+
+
+@app.get("/runs")
+async def runs(ticker: str, as_of: str):
+    """Recorded runs for a pair (newest first) so replay can pick one by model."""
+    return list_runs(ticker, as_of)
 
 
 @app.get("/outcome")

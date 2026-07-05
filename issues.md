@@ -331,12 +331,19 @@ bundled `events.json` player over the same reducer/lanes, `bun run build`, deplo
 `dist/` to Vercel/Netlify/Pages. No backend, no key, $0/view. A live public URL
 stays a stretch goal, gated behind extra credits.
 
+> **Static site implemented (2026-07-05).** `VITE_STATIC=1` build toggle: reads
+> bundled `public/data/` (runs + outcomes + `index.json` via `bun run bundle`),
+> replays client-side over the unchanged reducer, hides all live/model/build UI.
+> `frontend/vercel.json` pins the Vercel build. Path B untouched (see README
+> "Deploy the replay-only static site"). Remaining: curate/record demo runs,
+> then push + deploy on Vercel.
+
 #### Acceptance criteria
 - [ ] Pre-recorded video captures a full debate → Verdict → Outcome reveal for
       the chosen scenarios, framed on process quality
-- [ ] (Optional) Static replay site deployed: stock picker over the 2–3 recorded
-      runs, plays through the unchanged reducer/lanes, zero external calls
-- [ ] Nothing in the shipped bundle exposes an API key or a paid endpoint
+- [x] Static replay site *implemented*: stock picker over the recorded runs,
+      plays through the unchanged reducer/lanes, zero external calls — deploy on Vercel pending
+- [x] Nothing in the shipped bundle exposes an API key or a paid endpoint
 
 ---
 

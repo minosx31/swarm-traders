@@ -109,7 +109,8 @@ def fetch_finnhub_news(ticker: str, as_of: date, news_days: int) -> list[NewsIte
         resp.raise_for_status()
     except httpx.HTTPError as e:
         raise IngestError(f"Finnhub request failed: {e}") from e
-    return finnhub_news_items(resp.json(), as_of)
+    cap = int(os.environ.get("NEWS_CAP", "50"))
+    return finnhub_news_items(resp.json(), as_of, cap)
 
 
 def build_outcome(t: yf.Ticker, as_of: date, days: int) -> dict:
@@ -127,9 +128,14 @@ def build_outcome(t: yf.Ticker, as_of: date, days: int) -> dict:
 
 
 def ingest_pair(ticker: str, as_of: date, window_days: int = 365, outcome_days: int = 30,
-                news_days: int = 30) -> tuple[Snapshot, str, Path, Path]:
+                news_days: int | None = None) -> tuple[Snapshot, str, Path, Path]:
     """Fetch, leak-check, and persist one (ticker, as_of) pair. Raises IngestError
-    on fetch failure / empty data, ValueError if the snapshot would leak."""
+    on fetch failure / empty data, ValueError if the snapshot would leak.
+
+    News volume is tunable via env: NEWS_DAYS (lookback window, default 30) and
+    NEWS_CAP (max items kept, default 50, applied in fetch_finnhub_news)."""
+    if news_days is None:
+        news_days = int(os.environ.get("NEWS_DAYS", "30"))
     t = yf.Ticker(ticker)
     prices = fetch_prices(t, as_of - timedelta(days=window_days), as_of)
     if not prices:

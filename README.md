@@ -43,8 +43,8 @@ One FastAPI app with LangGraph running in-process — nothing else to host.
 
 | File | What it does |
 |---|---|
-| `alpha_swarms/app.py` | FastAPI app. `GET /stream?ticker&as_of[&replay=1]` — refuses non-whitelisted pairs with `400`, streams the debate (or a recorded run) as SSE. `POST /snapshots` builds a missing pair on demand (ADR 0006; an existing pair is reused, never re-fetched). Also `GET /whitelist` and `GET /outcome` (UI-facing). Validates `LLM_BACKEND` at startup |
-| `alpha_swarms/replay.py` | Record + replay (#9): every run's event log persists to `data/runs/`; replay re-streams the latest log with the graph bypassed — zero LLM calls |
+| `alpha_swarms/app.py` | FastAPI app. `GET /stream?ticker&as_of[&replay=1][&backend=&model=][&run=]` — refuses non-whitelisted pairs with `400`, streams the debate (or a recorded run) as SSE; `backend`/`model` pin the LLM for a live run, `run` selects which recording to replay. `POST /snapshots` builds a missing pair on demand (ADR 0006; an existing pair is reused, never re-fetched). Also `GET /whitelist`, `GET /outcome`, `GET /models` (selectable models), `GET /runs?ticker&as_of` (recorded runs, for replay-by-model) — all UI-facing. Validates `LLM_BACKEND` at startup |
+| `alpha_swarms/replay.py` | Record + replay (#9): every run's event log persists to `data/runs/` with its model in the filename + payload; replay re-streams a chosen run (or the latest) with the graph bypassed — zero LLM calls |
 | `alpha_swarms/graph.py` | LangGraph topology wiring: parallel specialist fan-out → red_team → parallel rebuttals → judge → aggregate, plus the reducer-merged `Blackboard` state |
 | `alpha_swarms/agents.py` | The LLM-backed nodes: specialist/Red-Team/rebuttal/Judge prompts + the structured-output helper (one validation-retry, then graceful failure). Pre-sliced single calls; the Red-Team/rebuttal nodes switch to the bounded tool-calling loop when `DEBATE_TOOLS=1` (#8) |
 | `alpha_swarms/tools.py` | Debate-phase tool-calling (#8, ADR 0003): `get_financials`/`get_price_history`/`get_news` read tools over the cached Snapshot with the As-Of filter enforced *inside* the tool (leakage impossible by construction), plus the terminal `submit_attack`/`submit_rebuttal` exit tools whose arg schema *is* the Pydantic model (ADR 0005). Gated behind `DEBATE_TOOLS` |
@@ -54,7 +54,7 @@ One FastAPI app with LangGraph running in-process — nothing else to host.
 | `alpha_swarms/scoring.py` | Pure-Python Verdict: mean of adjudicated stances → direction bands / conviction / dissent / quorum No-Call. Never authored by the Judge |
 | `alpha_swarms/events.py` | The display-event channel (ADR 0004): per-run `asyncio.Queue` the nodes emit typed events into; the endpoint drains it with the inter-event delay |
 | `alpha_swarms/runner.py` | Run lifecycle: owns the queue, attaches the safeguards handler globally, catches mid-graph failures and surfaces them as a terminal `error` event |
-| `alpha_swarms/llm.py` | Provider abstraction (ADR 0005): `LLM_BACKEND` env flag picks a LangChain chat model (`ollama` / `groq` / `haiku` / `sonnet`); wires Anthropic `cache_control` for system prompts |
+| `alpha_swarms/llm.py` | Provider abstraction (ADR 0005): `LLM_BACKEND` env flag picks the *default* LangChain chat model (`ollama` / `groq` / `haiku` / `sonnet`); a live request can override backend+model per-run via a contextvar. `available_models()` lists choices for the UI; wires Anthropic `cache_control` for system prompts |
 | `alpha_swarms/safeguards.py` | Budget safeguards: circuit breaker (kills a run past 15 LLM calls), per-run cost estimate incl. cache accounting, persistent global spend counter (`data/spend.json`) |
 | `alpha_swarms/snapshot.py` | Point-in-time Snapshot layer (ADR 0002): Pydantic models, the leak validator (no datum dated after as-of), whitelist (= snapshot files on disk), loader that never touches Outcomes |
 | `alpha_swarms/ingest.py` | Snapshot ingestion (ADR 0006): prices + last *reported* fundamentals from yfinance, date-ranged historical news from Finnhub (`FINNHUB_API_KEY`; yfinance current-news fallback), leak-validated and persisted with the held-out Outcome. Runs via the CLI or `POST /snapshots` — always completes before any agent runs |
@@ -138,17 +138,42 @@ uv run pytest
 
 | Variable | Purpose | Default |
 |---|---|---|
-| `LLM_BACKEND` | Picks the chat model: `ollama` \| `groq` \| `haiku` \| `sonnet`. Required for real runs (`LLM_BACKEND=ollama` for free dev). Never switch mid-run | unset |
-| `OLLAMA_MODEL` | Local model for the `ollama` backend | `qwen3.5:9b` |
+| `LLM_BACKEND` | *Default* chat model: `ollama` \| `groq` \| `haiku` \| `sonnet`. Required at startup (`LLM_BACKEND=ollama` for free dev). The UI can override backend+model per live run (`GET /models`); a run never switches model mid-flight | unset |
+| `OLLAMA_MODEL` | Default local model for the `ollama` backend (the UI model dropdown overrides it per-run) | `qwen2.5:7b` |
 | `DEBATE_TOOLS` | Enable the debate-phase tool-calling increment (#8): Red-Team + rebuttals fetch cached evidence via tools. Off = the pre-sliced #6 baseline | unset (off) |
 | `RESILIENT` | When set, a debate node whose LLM output fails *abstains* (contributes nothing) so the run still reaches a verdict, instead of aborting with a terminal `error`. Set it when recording local demo takes on the flaky local models; leave off for the honest fail-loud default. The budget breaker always stays loud | unset (off) |
 | `ANTHROPIC_API_KEY` / `GROQ_API_KEY` | Provider keys, needed only for their backends | — |
-| `FINNHUB_API_KEY` | When set, snapshot builds source historical date-ranged company news from Finnhub (window = `--news-days`, default 30) instead of yfinance current-news. Optional — falls back to yfinance when unset. Free key at [finnhub.io](https://finnhub.io); put it in `backend/.env` (auto-loaded) | unset |
+| `FINNHUB_API_KEY` | When set, snapshot builds source historical date-ranged company news from Finnhub (window = `NEWS_DAYS`) instead of yfinance current-news. Optional — falls back to yfinance when unset. Free key at [finnhub.io](https://finnhub.io); put it in `backend/.env` (auto-loaded) | unset |
+| `NEWS_DAYS` | Finnhub news lookback window (days before as-of) when building a snapshot | `30` |
+| `NEWS_CAP` | Max news items kept per snapshot. Raising it enlarges the Sentiment + Red-Team prompts — mind the model's context window | `50` |
 | `EVENT_DELAY_S` | Inter-event delay on the SSE stream (readability) | `0.25` |
 | `SNAPSHOT_DIR` | Snapshot/whitelist location | `backend/data/snapshots` |
-| `RUNS_DIR` | Recorded run logs (replay reads the latest per pair) | `backend/data/runs` |
+| `RUNS_DIR` | Recorded run logs (replay reads the latest per pair, or a specific one picked by model) | `backend/data/runs` |
 | `SPEND_FILE` | Persistent global spend counter | `backend/data/spend.json` |
-| `VITE_API_BASE` | Frontend → backend base URL | `http://localhost:8000` |
+| `VITE_API_BASE` | Frontend → backend base URL (Path B). Ignored in static mode | `http://localhost:8000` |
+| `VITE_STATIC` | Build-time flag: `1` builds the **replay-only static site** (Path A) — reads bundled JSON from `public/data/`, replays client-side, no backend/API/key | unset |
+| `VITE_EVENT_DELAY_MS` | Static-mode client-side replay pacing | `250` |
 
 **Budget guardrails are always on:** every run is capped at 15 LLM calls, prints
 its estimated cost, and accumulates into the global counter — treat $15 as a wall.
+
+## Deploy the replay-only static site (Path A)
+
+A `$0`, backend-free site that replays recorded runs from bundled JSON — no LLM,
+no API key, nothing paid in the bundle. Live, on-demand runs (Path B) stay
+possible later by pointing `VITE_API_BASE` at a hosted backend and leaving
+`VITE_STATIC` unset; no code is removed.
+
+1. **Record the runs you want to ship.** Do live runs (`LLM_BACKEND=ollama …`);
+   each persists to `backend/data/runs/` tagged with its model. Curate by which
+   files live there — delete takes you don't want public.
+2. **Bundle them:** `cd frontend && bun run bundle`. Copies `data/runs/*.json`
+   (+ each referenced outcome) into `frontend/public/data/` and writes
+   `index.json` (the offline stand-in for `GET /whitelist` + `GET /runs`).
+3. **Commit `frontend/public/data/`** — Vercel builds from git, so the bundled
+   JSON must be committed (it is *not* gitignored).
+4. **Deploy to Vercel:** set the project's **Root Directory → `frontend`**.
+   `frontend/vercel.json` pins the rest (`VITE_STATIC=1 bun run build`,
+   output `dist/`, `bun install`). Re-run steps 2–3 and push to ship more runs.
+
+Preview the static build locally: `VITE_STATIC=1 bun run build && bun run preview`.

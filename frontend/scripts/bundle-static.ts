@@ -1,0 +1,67 @@
+/**
+ * Bundle recorded runs into the static site (Path A).
+ *
+ * Copies backend/data/runs/*.json (+ each referenced outcome) into
+ * public/data/, and writes public/data/index.json — the offline replacement for
+ * the backend's GET /whitelist and GET /runs. Run `bun run bundle` after
+ * recording the runs you want to ship, then commit public/data/ and deploy.
+ *
+ * Whatever runs are present in backend/data/runs/ get bundled — curate by which
+ * files exist there (delete the takes you don't want public before running).
+ */
+import { existsSync, mkdirSync, copyFileSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { join, resolve } from 'node:path'
+
+const ROOT = resolve(import.meta.dir, '..')
+const SRC_RUNS = resolve(ROOT, '../backend/data/runs')
+const SRC_OUTCOMES = resolve(ROOT, '../backend/data/outcomes')
+const DEST = join(ROOT, 'public', 'data')
+
+interface IndexRun { run: string; model: string; recorded_at: string }
+interface IndexPair { ticker: string; as_of: string; has_outcome: boolean; runs: IndexRun[] }
+
+function resetDir(dir: string) {
+  rmSync(dir, { recursive: true, force: true })
+  mkdirSync(dir, { recursive: true })
+}
+
+resetDir(join(DEST, 'runs'))
+resetDir(join(DEST, 'outcomes'))
+
+const runFiles = existsSync(SRC_RUNS)
+  ? readdirSync(SRC_RUNS).filter((f) => f.endsWith('.json'))
+  : []
+
+const pairs = new Map<string, IndexPair>()
+
+for (const file of runFiles) {
+  const log = JSON.parse(readFileSync(join(SRC_RUNS, file), 'utf8'))
+  const { ticker, as_of, model = 'unknown', recorded_at = '' } = log
+  if (!ticker || !as_of) {
+    console.warn(`skip ${file}: missing ticker/as_of`)
+    continue
+  }
+  copyFileSync(join(SRC_RUNS, file), join(DEST, 'runs', file))
+
+  const key = `${ticker}_${as_of}`
+  if (!pairs.has(key)) {
+    const outcomeFile = `${ticker}_${as_of}.json`
+    const hasOutcome = existsSync(join(SRC_OUTCOMES, outcomeFile))
+    if (hasOutcome) copyFileSync(join(SRC_OUTCOMES, outcomeFile), join(DEST, 'outcomes', outcomeFile))
+    pairs.set(key, { ticker, as_of, has_outcome: hasOutcome, runs: [] })
+  }
+  pairs.get(key)!.runs.push({ run: file, model, recorded_at })
+}
+
+// newest run first within each pair; pairs sorted by ticker then date
+const index: IndexPair[] = [...pairs.values()]
+  .map((p) => ({ ...p, runs: p.runs.sort((a, b) => b.recorded_at.localeCompare(a.recorded_at)) }))
+  .sort((a, b) => a.ticker.localeCompare(b.ticker) || a.as_of.localeCompare(b.as_of))
+
+writeFileSync(join(DEST, 'index.json'), JSON.stringify(index, null, 2))
+
+const runCount = index.reduce((n, p) => n + p.runs.length, 0)
+console.log(`bundled ${runCount} run(s) across ${index.length} pair(s) → public/data/`)
+for (const p of index) {
+  console.log(`  ${p.ticker} ${p.as_of}  outcome:${p.has_outcome ? 'yes' : 'NO'}  runs: ${p.runs.map((r) => r.model).join(', ')}`)
+}

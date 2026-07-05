@@ -106,3 +106,18 @@ export interface WhitelistPair {
   ticker: string
   as_of: string
 }
+
+/** A selectable (backend, model) pair from GET /models. */
+export interface ModelOption {
+  backend: string // llm.py backend name: ollama | haiku | sonnet | groq
+  model: string
+  label: string
+  paid: boolean // true ⇒ real API credits (Claude); UI warns + confirms
+}
+
+/** A recorded run from GET /runs, for the replay 'which model' picker. */
+export interface RunOption {
+  run: string // filename, passed back as ?run= to replay this exact recording
+  model: string
+  recorded_at: string // compact UTC stamp, e.g. 20260704T031559Z
+}

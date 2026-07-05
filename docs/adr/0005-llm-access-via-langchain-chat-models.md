@@ -40,6 +40,17 @@ anyway.
   cost and reads Anthropic `cache_read`/`cache_creation` counts for real cache
   accounting. Centralized and un-bypassable, unlike a per-node counter. The trip is
   caught at the SSE boundary (ADR 0004).
+- **Backend/model is selectable per-run, not just per-launch.** `LLM_BACKEND` (+
+  `OLLAMA_MODEL`) is now the *default*; a live `/stream?backend=&model=` request
+  overrides it for that run via a `contextvars` override (`llm.set_run_override`)
+  set by the runner before the graph task is created, so it rides the asyncio task
+  into every nested call and the `save_run` model tag — no param threaded through
+  each node. This refines, not breaks, "never switch mid-run": the override is
+  fixed for a run's duration; only *between* runs can it change. The UI lists
+  choices from `GET /models` (installed Ollama models via the local daemon; the
+  paid Claude options only when `ANTHROPIC_API_KEY` is set). Run logs carry their
+  model in both filename and payload, so replay can pick a run by model
+  (`GET /runs`, `/stream?replay=1&run=`).
 - We are coupled to LangChain message objects internally; this never reaches the
   SSE contract, which is owned by the queue (ADR 0004).
 - LangChain normalizes the tool-call *format*, not model *reliability* — Qwen still

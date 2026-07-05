@@ -7,6 +7,7 @@ terminal `error` event instead of a dead socket.
 
 import asyncio
 
+from . import llm
 from .events import EventEmitter
 from .graph import build_graph
 from .replay import save_run
@@ -25,8 +26,15 @@ def get_graph():
 
 
 async def stream_run(ticker: str, as_of: str, *, graph=None, delay: float | None = None,
-                     safeguards: RunSafeguards | None = None):
-    """Run the debate graph for (ticker, as_of), yielding display events."""
+                     safeguards: RunSafeguards | None = None,
+                     backend: str | None = None, model: str | None = None):
+    """Run the debate graph for (ticker, as_of), yielding display events.
+
+    backend/model pin the LLM for THIS run (contextvar, ADR 0005): set before the
+    graph task is created so it rides into every nested call and the save_run tag.
+    None ⇒ the LLM_BACKEND env default."""
+    if backend:
+        llm.set_run_override(backend, model)
     graph = graph or get_graph()
     emitter = EventEmitter()
     run_context = RunContext(load_snapshot(ticker, as_of))

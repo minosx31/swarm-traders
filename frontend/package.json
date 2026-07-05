@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "bundle": "bun scripts/bundle-static.ts",
     "lint": "oxlint",
     "preview": "vite preview"
   },
