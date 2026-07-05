@@ -1,5 +1,0 @@
-{
-  "note": "What actually happened after as_of. NEVER enters agent-visible state (ADR 0002).",
-  "as_of": "2026-07-02",
-  "prices_after": []
-}
