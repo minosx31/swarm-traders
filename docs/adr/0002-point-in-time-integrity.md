@@ -33,6 +33,6 @@ the answer it is supposed to predict.
 ## Rejected
 
 - **A real point-in-time data pipeline** (paid vendor / as-of reconstruction):
-  correct and general, but far outside a 1-week, $15 build.
+  correct and general, but far outside a 1-week build.
 - **Live-fetching on demand for uncached tickers**: leaks future data and spends
   unbudgeted API credits mid-demo.

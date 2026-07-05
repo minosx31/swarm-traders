@@ -21,15 +21,17 @@ def runs_dir() -> Path:
     return Path(os.environ.get("RUNS_DIR", Path(__file__).parent.parent / "data" / "runs"))
 
 
-def save_run(ticker: str, as_of: str, events: list[dict]) -> Path:
+def save_run(ticker: str, as_of: str, events: list[dict],
+             usage: dict | None = None) -> Path:
     stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
     tag = llm.model_tag()  # ticker_asof_MODEL_stamp_pid_hex — run self-identifies its model
     path = runs_dir() / f"{ticker.upper()}_{as_of}_{tag}_{stamp}_{os.getpid()}_{id(events):x}.json"
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(
-        {"ticker": ticker.upper(), "as_of": as_of, "model": tag,
-         "recorded_at": stamp, "events": events},
-        indent=2))
+    record = {"ticker": ticker.upper(), "as_of": as_of, "model": tag,
+              "recorded_at": stamp, "events": events}
+    if usage is not None:
+        record["usage"] = usage  # tokens/calls/cost for cross-run comparison
+    path.write_text(json.dumps(record, indent=2))
     return path
 
 
@@ -47,7 +49,8 @@ def latest_run_path(ticker: str, as_of: str) -> Path | None:
 
 def list_runs(ticker: str, as_of: str) -> list[dict]:
     """Recorded runs for a pair, newest first — for the replay 'which run' picker.
-    Each carries its model and recorded_at; `run` is the filename to replay."""
+    Each carries its model, recorded_at, and usage (tokens/calls/cost, or None for
+    runs recorded before usage tracking); `run` is the filename to replay."""
     out = []
     for p in reversed(_runs_for(ticker, as_of)):
         try:
@@ -55,7 +58,8 @@ def list_runs(ticker: str, as_of: str) -> list[dict]:
         except (OSError, json.JSONDecodeError):
             continue
         out.append({"run": p.name, "model": log.get("model", "unknown"),
-                    "recorded_at": log.get("recorded_at", "")})
+                    "recorded_at": log.get("recorded_at", ""),
+                    "usage": log.get("usage")})
     return out
 
 

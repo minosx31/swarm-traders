@@ -31,7 +31,7 @@ pass (#10–#11). See `issues.md` for the build plan and progress.
 
 | File | What it is |
 |---|---|
-| `PLAN.md` | The 1-week build plan: problem, architecture, budget strategy ($15 hard limit), day-by-day order |
+| `PLAN.md` | The 1-week build plan: problem, architecture, cost strategy, day-by-day order |
 | `ARCHITECTURE.md` | Consolidated technical design: system diagram, agent graph, SSE event contract (§3), scoring pipeline, safeguards |
 | `CONTEXT.md` | Domain glossary — the shared vocabulary (Thesis, Stance, Grounded Evidence, No Call, …) |
 | `issues.md` | The build broken into 12 tracer-bullet slices with acceptance criteria; checkboxes track progress |
@@ -154,8 +154,11 @@ uv run pytest
 | `VITE_STATIC` | Build-time flag: `1` builds the **replay-only static site** (Path A) — reads bundled JSON from `public/data/`, replays client-side, no backend/API/key | unset |
 | `VITE_EVENT_DELAY_MS` | Static-mode client-side replay pacing | `250` |
 
-**Budget guardrails are always on:** every run is capped at 15 LLM calls, prints
-its estimated cost, and accumulates into the global counter — treat $15 as a wall.
+**Cost guardrails are always on:** every run is capped at 15 LLM calls, prints
+its estimated cost, and accumulates into the global counter. Each recorded run
+also stores a `usage` block (per-run token breakdown + call count + est cost) in
+its run log for cross-run comparison — token counts are real even on Ollama,
+where cost is $0.
 
 ## Deploy the replay-only static site (Path A)
 

@@ -64,4 +64,5 @@ async def stream_run(ticker: str, as_of: str, *, graph=None, delay: float | None
     finally:
         run_task.cancel()  # client disconnected mid-run: stop the graph
         if recorded:
-            save_run(ticker, as_of, recorded)  # a recorded run IS the event log (#9)
+            # a recorded run IS the event log (#9); usage rides along for comparison
+            save_run(ticker, as_of, recorded, safeguards.usage())

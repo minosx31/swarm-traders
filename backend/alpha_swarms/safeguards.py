@@ -86,6 +86,16 @@ class RunSafeguards(BaseCallbackHandler):
                 self.tokens["cache_read"] += cache_read
                 self.tokens["cache_creation"] += cache_creation
 
+    def usage(self) -> dict:
+        """Per-run usage snapshot for persistence/comparison: call count, token
+        breakdown, and estimated cost ($0 on unpriced backends like Ollama, but
+        the token counts are still real)."""
+        return {
+            "llm_calls": self.calls,
+            "cost_usd": round(self.cost_usd, 6),
+            "tokens": dict(self.tokens),
+        }
+
     def finish_run(self) -> None:
         """Print the per-run estimate and fold it into the global spend counter."""
         if self.calls == 0:
@@ -96,7 +106,7 @@ class RunSafeguards(BaseCallbackHandler):
             f"[cost] {self.calls} LLM calls · est ${self.cost_usd:.4f} "
             f"(in={t['input']} out={t['output']} "
             f"cache_read={t['cache_read']} cache_creation={t['cache_creation']}) "
-            f"· global spend ${total:.4f} / $15.00",
+            f"· global spend ${total:.4f}",
             flush=True,  # survives redirected stdout + SIGTERM shutdown
         )
 

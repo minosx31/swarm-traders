@@ -8,7 +8,7 @@
 - **Name:** Swarm Traders
 - **Size:** 2 people
 - **Dev time:** ~1 week (compressed — see Build Order and Cuts)
-- **API budget:** $15 of Claude API credits (hard constraint — see Budget section)
+- **API budget:** develop free on local models; reserve Claude credits for demo runs (see Cost section)
 - **Demo format:** Pre-recorded video (live demos have failed before; recording removes on-stage failure risk and lets us capture our best run)
 
 ---
@@ -216,7 +216,7 @@ bun install && bun run dev  # frontend → localhost:5173
 **Public viewing — static replay site (recommended if you want a shareable URL):**
 Host a site where interested people watch the agents work on a whitelisted stock —
 **without running the agents live.** It re-streams pre-recorded runs, so it costs
-**$0 per view**, can't leak future data, and can't drain the $15 budget. This is
+**$0 per view**, can't leak future data, and can't run up API cost. This is
 the payoff of the event-queue design (ADR 0004): a recorded run *is* a JSON event
 log, and replaying it is just draining that log through the same reducer/lanes.
 - **No backend needed.** Swap the frontend's event source from `EventSource` to a
@@ -234,7 +234,7 @@ log, and replaying it is just draining that log through the same reducer/lanes.
   stories, no arbitrary tickers (already true live, per the whitelist / ADR 0002).
 
 **If a *live* URL is also wanted (harder; stretch goal / backup, not required):**
-- Only worth it with more credits (ask the organizers — PLAN's budget note). Gate
+- Only worth it with more credits (ask the organizers). Gate
   it hard: rate-limit + whitelist-only + the spend cap wired to the breaker (Q7).
 - The critical requirement is **SSE support (long-lived streaming connections).**
 - **Backend (FastAPI) — good fits:** Railway, Render (free tier sleeps when idle, fine for demo), Fly.io, Hugging Face Spaces (free, permanent, no card), or a $5/mo VPS (DigitalOcean/Hetzner/Linode — most control, most setup).
@@ -245,25 +245,25 @@ log, and replaying it is just draining that log through the same reducer/lanes.
 
 ---
 
-## Budget Strategy ($15 hard limit)
+## Cost Strategy
 
 **Pricing (per M tokens):** Haiku 4.5 $1/$5 · Sonnet 4.6 $3/$15 · Opus 4.8 $5/$25. Output = 5× input. Caching cuts cached input ~90%. Batch API = 50% off (async).
 
-**Per full run estimate:** ~$0.60–1.10 (Sonnet). $15 ≈ only ~18 full runs — so do NOT develop on full paid runs.
+**Per full run estimate:** ~$0.60–1.10 (Sonnet) — full paid runs add up fast, so do NOT develop on them.
 
 **The plan:**
 1. **Mock agents first** — fake agent returns hardcoded thesis JSON, free. Build the orchestration skeleton + SSE pipeline against mocks. Cuts real API usage ~80%. **Do this first.**
 2. **Develop on local (Ollama)** — free, for all plumbing/flow debugging (graph fan-out, loop termination, blackboard updates, JSON parsing, SSE rendering).
 3. **Test agents in isolation** — tune one agent's prompt with single calls, not full runs.
 4. **Cache aggressively** — `cache_control` on data snapshots + system prompts from day one.
-5. **Switch to Sonnet near the end** (NOT the final hour) — buffer to absorb surprises. Spend most of $15 here on reasoning-quality tuning + recording the demo runs.
+5. **Switch to Sonnet near the end** (NOT the final hour) — buffer to absorb surprises. Spend your credits here on reasoning-quality tuning + recording the demo runs.
 
-**Estimated spend with discipline: $5–8 of the $15.**
+**Estimated spend with discipline: $5–8.**
 
 ### Non-Negotiable Safeguards (build before any agent)
 - **Hard circuit breaker** in orchestrator: `max_calls` per run (~15, to cover debate tool-calling iterations) + a per-agent tool-iteration cap (2–3), kill switch if exceeded. One runaway tool loop can eat a third of the budget.
 - **Cost logging per run** — print estimated $ after every execution.
-- **Global spend counter** — check daily, treat $15 as a wall.
+- **Global spend counter** — check daily; keep an eye on cumulative spend.
 
 ### Local Model Caveats
 - Small models flakier at **clean JSON** — use Qwen, add defensive parsing.

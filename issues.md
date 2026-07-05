@@ -35,7 +35,7 @@ aggregate`), and the per-run `asyncio.Queue` event channel (ADR 0004). Every nod
 is a mock that emits hardcoded typed events (`agent_start`, `thesis`, `attack`,
 `rebuttal`, `adjudication`, `verdict`) with the small inter-event delay. A
 terminal pretty-printer consumes the SSE stream and renders the fake debate.
-This is the free skeleton PLAN's budget strategy demands before any real agent.
+This is the free skeleton PLAN's cost strategy demands before any real agent.
 
 #### Acceptance criteria
 - [x] `uvicorn` serves `GET /stream?ticker&as_of`; connecting yields the full
@@ -314,7 +314,7 @@ Confirm exact model pricing before paid runs; watch the global spend counter.
 - [ ] Full runs on `sonnet` produce grounded theses, attacks that genuinely land,
       and a coherent Judge adjudication on all demo tickers
 - [ ] Judge prompt tuned first; per-specialist stance trail reads credibly
-- [ ] Total spend tracked; well inside the $15 wall with buffer for recording
+- [ ] Total spend tracked, with buffer for recording
 - [ ] Each demo ticker's best run recorded as a replay event log (feeds #11)
 
 ---

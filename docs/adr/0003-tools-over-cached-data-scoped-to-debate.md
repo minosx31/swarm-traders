@@ -14,7 +14,7 @@ pipeline is built first; tool-calling layers on top of it.
 This is an agentic-AI hackathon, so a system with zero tool use reads as a pipeline
 in an agent costume — visible autonomy is rewarded. But live tools would both leak
 future data (breaking [ADR 0002](0002-point-in-time-integrity.md)) and burn the
-$15 budget unpredictably. Tools over cached data give real, dynamic tool-calling
+the API budget unpredictably. Tools over cached data give real, dynamic tool-calling
 with $0 live cost, full reproducibility for replay runs, and leakage that is
 *impossible by construction* (the tool cannot return anything after the As-Of
 Date). Scoping tools to the debate concentrates the extra cost and the model

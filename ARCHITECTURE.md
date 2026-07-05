@@ -199,7 +199,7 @@ the blackboard. Uncached tickers are refused, never live-fetched.
 | **SSE server** | `sse-starlette` `EventSourceResponse` | Correct SSE framing + disconnect handling over raw `StreamingResponse`. |
 | **Orchestration** | **LangGraph** (library) | Stateful graph maps onto the fixed debate: fan-out, fan-in wait, reducer-merged blackboard. Kept for orchestration, **not** streaming — display events go through an explicit queue instead, since `.stream()` can't see intra-node events (ADR 0004). Ignore the paid LangGraph Platform. |
 | **Structured I/O** | **Pydantic** models via LangChain | Thesis/Stance/Evidence/Attack/Verdict schemas — enforce clean JSON and make the grounding validator a typed function. Enforced two ways (ADR 0005): `.with_structured_output()` on no-tool thesis nodes; a terminal `submit_*` tool (schema = the Pydantic model) on tool-using debate nodes, since structured-output coercion is itself a tool call and would collide with the real tools. One validation-retry on the local backend. |
-| **LLM (demo)** | Anthropic SDK → **Claude Sonnet** (`claude-sonnet-5`) | Specialists + Judge all on Sonnet for the budget (no Opus). *(PLAN's budget was estimated on Sonnet-class $3/$15 pricing — confirm the exact model/pricing before the paid runs.)* |
+| **LLM (demo)** | Anthropic SDK → **Claude Sonnet** (`claude-sonnet-5`) | Specialists + Judge all on Sonnet (no Opus). Confirm the exact model/pricing before the paid runs. |
 | **LLM (dev)** | **Ollama** — Qwen 2.5 7B/14B | Free, local; Qwen is best at structured JSON + tool-calling. Groq free tier as no-local-compute fallback. |
 | **Provider abstraction** | LangChain chat models (`ChatOllama` / `ChatAnthropic`) | One config flag (`LLM_BACKEND = ollama|claude`) picks the chat-model class; `.bind_tools()` normalizes the tool-calling loop across both providers (ADR 0005). Replaces the hand-rolled wrapper — the "~20 min" estimate only held for the no-tools path; tool threading diverges sharply between providers. No new dependency (LangGraph already pulls `langchain-core`). |
 | **Prompt caching** | Anthropic `cache_control` | On system prompts + snapshot slices from day one (~90% off cached input). |
@@ -215,19 +215,19 @@ the blackboard. Uncached tickers are refused, never live-fetched.
 - **Circuit breaker** in a single LangChain `BaseCallbackHandler` (ADR 0005), not
   a per-node counter: `on_llm_start` counts calls and raises `BreakerTripped` past
   `max_calls ≈ 15` per run (covers debate tool iterations) + a per-agent
-  tool-iteration cap (2–3). Un-bypassable — one runaway tool loop can eat a third
-  of the $15 budget. The trip is caught at the SSE boundary (ADR 0004) and surfaced
+  tool-iteration cap (2–3). Un-bypassable — one runaway tool loop can rack up cost
+  fast. The trip is caught at the SSE boundary (ADR 0004) and surfaced
   as a terminal `error` event.
 - **Per-run cost logging** — same handler's `on_llm_end` accumulates token cost
   (and Anthropic `cache_read`/`cache_creation` counts for real cache accounting);
   print estimated `$` after every execution.
-- **Global spend counter** — treat $15 as a hard wall.
+- **Global spend counter** — accumulates estimated cost across runs.
 - **Replay mode** — a flag that re-streams a recorded good run's events through the
   same SSE pipeline; $0 in credits, lets you re-shoot a clean take.
 
 ---
 
-## 9. Non-goals (cut for the 1-week / $15 scope)
+## 9. Non-goals (cut for the 1-week scope)
 
 Multi-round debate & variance-based convergence · Macro agent · backtest/eval
 harness · live data fetching · autonomous tool use on the *initial* thesis ·

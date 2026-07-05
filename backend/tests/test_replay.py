@@ -34,6 +34,15 @@ async def test_every_run_writes_its_full_event_log(scripted):
     assert log["events"] == live  # exactly what went over the wire
 
 
+async def test_run_records_usage_for_comparison(scripted):
+    [e async for e in stream_run(**WHITELISTED, delay=0)]
+    log = json.loads(latest_run_path(**WHITELISTED).read_text())
+    usage = log["usage"]
+    assert usage["llm_calls"] > 0  # the scripted run made real (fake) calls
+    assert set(usage["tokens"]) == {"input", "output", "cache_read", "cache_creation"}
+    assert "cost_usd" in usage
+
+
 async def test_replay_streams_identically_with_zero_llm_calls(scripted):
     live = [e async for e in stream_run(**WHITELISTED, delay=0)]
 
