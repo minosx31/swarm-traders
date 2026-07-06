@@ -138,7 +138,7 @@ export default function App() {
     'appearance-none rounded-md border border-hairline bg-surface py-1.5 pl-2.5 pr-7 text-[14px] text-ink outline-none transition-colors focus:border-judge disabled:opacity-40'
 
   return (
-    <div className="atmosphere flex min-h-screen flex-col bg-page">
+    <div className="flex min-h-screen flex-col bg-page">
       <header className="flex flex-wrap items-end justify-between gap-4 border-b border-hairline px-5 py-4">
         <div>
           <h1 className="font-display text-2xl italic leading-none">
