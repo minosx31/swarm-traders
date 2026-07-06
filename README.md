@@ -11,6 +11,16 @@ theses, a Red-Team attacks them, each specialist gets one rebuttal, a Judge rule
 which attacks landed, and a computed aggregate produces the Verdict (or an honest
 No Call). The debate streams live over SSE, one event per agent step.
 
+Built for the professional analyst — augmentation, not replacement: bring a
+thesis, let the swarm **stress-test** it. The guarantees are structural, not
+prompted: specialists think in parallel with no shared context; every claim must
+cite and value-match the point-in-time snapshot or it is dropped (a hallucinated
+citation costs the specialist its vote); the Red-Team's attacks are held to the
+same grounding bar; the verdict is *computed*, never authored by any model; and
+when fewer than two specialists clear the grounding gate, the system says
+**No Call** instead of faking confidence. You can't prompt away confirmation
+bias — you have to structure it away. (Full pitch strategy: `docs/pitch.md`.)
+
 **Status:** Phases 0–3 complete. The full debate pipeline runs end-to-end on the
 free Ollama backend (pre-sliced #6 baseline); every run is recorded to a
 replayable JSON event log (#9), and the React frontend renders live or replayed
@@ -25,6 +35,26 @@ pass (#10–#11). See `issues.md` for the build plan and progress.
 
 ---
 
+## Data sources & point-in-time integrity
+
+All data is fetched into a curated **Snapshot** *before* any agent runs — agents
+never touch a live API (ADR 0002, 0006). Every datum carries an availability
+date, and a snapshot refuses to save if anything post-dates the as-of date.
+
+| Data | Source | Point-in-time rule |
+|---|---|---|
+| Prices | Yahoo Finance (yfinance) | 1 year of daily OHLCV, dated ≤ as-of |
+| Fundamentals | Yahoo Finance quarterly income statement + balance sheet | only the last quarter *reported* before as-of; availability stamped period-end + 45 days (the 10-Q deadline), so an ended-but-unfiled quarter cannot leak |
+| News | Finnhub company-news API — historical, date-ranged, stable IDs (`FINNHUB_API_KEY`); yfinance current headlines as fallback | 30-day lookback, capped at 50 items, publish date ≤ as-of |
+| Outcome | yfinance, 30 days *after* as-of | held in a separate file nothing on the run path reads; the UI reveals it only after the Verdict |
+
+Free-tier sources are a scope choice, not architecture: the Snapshot schema is
+the vendor abstraction, so a licensed feed (Polygon / FMP / Refinitiv) is one
+fetcher function per source — the grounding, citation, and leak-check machinery
+are unchanged.
+
+---
+
 ## Repository layout
 
 ### Design docs (read these first)
@@ -36,6 +66,7 @@ pass (#10–#11). See `issues.md` for the build plan and progress.
 | `CONTEXT.md` | Domain glossary — the shared vocabulary (Thesis, Stance, Grounded Evidence, No Call, …) |
 | `issues.md` | The build broken into 12 tracer-bullet slices with acceptance criteria; checkboxes track progress |
 | `docs/adr/0001–0006` | Decision records: advocacy/adjudication split, point-in-time integrity, tools-over-cached-data, event queue over LangGraph `.stream()`, LangChain chat models, on-demand snapshot build |
+| `docs/pitch.md` | Pitch strategy: target persona, differentiation, demo spine + run-of-show, data provenance, business model, real-time roadmap, Q&A bank |
 
 ### Backend (`backend/`)
 
@@ -86,7 +117,7 @@ React + Vite + TypeScript + Tailwind v4 static site (Bun tooling). Dark
 ## Setup
 
 Prereqs: [uv](https://docs.astral.sh/uv/), and [Ollama](https://ollama.com/)
-with a local model for free dev runs (currently `qwen3.5:9b`; override via
+with a local model for free dev runs (default `qwen2.5:7b`; override via
 `OLLAMA_MODEL`).
 
 ```bash

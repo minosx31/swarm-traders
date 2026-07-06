@@ -27,8 +27,9 @@
 
 ## Target persona (decided)
 
-**The professional research analyst at a small/mid fund or independent
-research shop.** Augmentation, not replacement.
+**The professional research analyst — concretely, our own in-house research
+desk** (internal-hackathon recast of the original "analyst at a small/mid
+fund"; see the journey section). Augmentation, not replacement.
 
 - **Their pain:** covers 15–30 names, deeply covers ~5, structurally biased on
   all of them — a published thesis anchors its author. Nobody staffs a
@@ -104,18 +105,121 @@ anchoring, the bear case never skipped, cited audit trail, honest abstention.
 
 | Time | Beat | Content |
 |---|---|---|
-| 0:00–0:45 | Cold open: the pain | In the persona's shoes: covers 20 names, deeply knows 5, anchored on all of them; nobody staffs a devil's advocate per stock. No "we built a multi-agent system." |
+| 0:00–0:45 | Cold open: the pain | In *our own* researcher's shoes: covers many names our clients hold, deeply knows a few, anchored on every published thesis; nobody staffs a devil's advocate per stock — and our clients only ever see the bull case. No "we built a multi-agent system." |
 | 0:45–1:30 | What it is | One sentence + the debate as acts (theses → attack → rebuttal → judge → verdict). One-liner: "you can't prompt away confirmation bias — you have to structure it away." No architecture diagram. |
-| 1:30–5:30 | The demo (~4 min) | Presenter-paced acts, one narrated arc, historical earnings pair. Ends on the Outcome reveal (mic-drop at ~5:30). |
+| 1:30–5:30 | The demo (~4 min) | Presenter-paced acts, one narrated arc, historical earnings pair. Frame it as the client surface: "what you're watching is what a client would see on the stock page." Ends on the Outcome reveal (mic-drop at ~5:30). |
 | 5:30–6:30 | "Why isn't this ChatGPT?" | Pre-empted on stage, said as the slide title. All 5 guarantees on the slide; speak independence, grounding gate, computed verdict. |
 | 6:30–7:15 | Honesty + scale | No Call / high-Dissent beat; ~30s a name, any day in history replayable → grading the process at scale is the roadmap, not a returns promise. |
-| 7:15–8:00 | Close | Persona recap ("the analyst still makes the call — having seen the strongest opposing case, every claim cited"), live-site URL/QR up. |
+| 7:15–8:00 | Close | The journey in one breath: our researcher stress-tests before publishing; our client watches the case against before buying; the platform that shows both sides keeps the client. Live-site URL/QR up. |
 
 Deliberate choices: demo gets half the time (differentiators are *visible*,
 footage beats slides); the ChatGPT question is disarmed before Q&A; URL/QR at
 the **close**, not the start (phones-out during the narrated arc kills it).
 Dependency: rehearse against the act-break player (#11 increment) — one
 presents, one drives, or solo with the keyboard.
+
+## Data provenance — the exact answer (know this cold)
+
+Where every datum comes from (source: `backend/alpha_swarms/ingest.py`,
+`snapshot.py`):
+
+- **Prices:** Yahoo Finance (via yfinance) — one year of daily OHLCV bars up
+  to and including the as-of date.
+- **Fundamentals:** Yahoo Finance quarterly income statement + balance sheet —
+  but only the last quarter *reported* before the as-of date, with
+  availability stamped `period_end + 45 days` (the 10-Q filing deadline).
+  Conservative by design: a quarter that ended but wasn't yet filed as of the
+  date **cannot** enter the snapshot.
+- **News:** Finnhub company-news API — date-ranged *historical* headlines +
+  summaries with stable IDs (30-day lookback, capped at 50 items), so the
+  swarm reads what was actually published before the as-of date. Falls back to
+  yfinance current headlines if no Finnhub key.
+- **Outcome:** yfinance prices for 30 days *after* as-of, stored in a separate
+  file nothing on the run path reads (+ the actual earnings print, added
+  manually for demo pairs per #10).
+
+Everything is fetched **offline or on-demand before any agent runs**,
+leak-validated on save (no datum dated after as-of), and agents only ever read
+the snapshot — never a live API.
+
+**If asked about data quality:** free-tier sources are a hackathon scope
+choice, not an architecture. The Snapshot schema *is* the vendor abstraction —
+swapping in a licensed feed (Polygon, FMP, Refinitiv/FactSet) is one fetcher
+function per source; the grounding, citation, and point-in-time machinery
+don't change. Known soft spot: news is headlines + summaries, not full
+articles (flagged for #10 review).
+
+## Target-audience journey (decided — internal-hackathon context)
+
+**Context that reframes the pitch:** this is an internal hackathon; the
+company is a retail investing platform whose in-house researchers publish
+reports/ideas that retail clients read in-app, and judges reward
+**client-facing innovation**.
+
+**The reconciling principle:** the researcher is the *operator*, the client is
+the *beneficiary*. Clients consume **published debates**; they never convene
+the swarm. This preserves every earlier decision (augmentation,
+stress-test-not-support, no self-serve advice trap) while still shipping a
+client-facing feature — the client-facing innovation is the *artifact*, not
+tool access. The researcher stays the gatekeeper: same compliance envelope as
+the human research they already publish.
+
+### The journey (one slide, five beats)
+
+| # | Actor | Beat |
+|---|---|---|
+| 1 | Researcher | **Sweep** — pre-open run over the covered/most-held names (~30s each); flagged only where the verdict changed or Dissent flipped vs. yesterday |
+| 2 | Researcher | **Stress-test** — drafting a report, convenes the swarm on their thesis; the bear case is forced into the record; they revise or publish stronger |
+| 3 | Researcher → platform | **Publish** — the report ships with the debate attached: cited evidence trail, conviction + dissent, the strongest opposing case, "what would change our mind" |
+| 4 | Client | **Watch** — on the stock page in-app, next to the human report, the client plays the **interactive debate replay**: watches the bull/bear fight, the verified citations, the honest No Call when evidence is thin |
+| 5 | Client | **Decide & return** — trades informed on-platform; "what would change our mind" is a built-in re-engagement trigger (they come back when that thing happens) |
+
+**Why the judges should care (the internal business case):**
+- **Differentiation:** "the only platform that shows you the case *against*
+  a stock before you buy" — competitor research is static PDFs and ratings.
+- **Engagement:** debate replays are watchable content on stock pages, not
+  documents; beat 5 creates recurring return visits.
+- **Trust/retention:** a platform that publishes No Calls and bear cases is
+  credibly on the client's side — trust is the retail-brokerage retention
+  currency.
+- **Research leverage:** the desk covers more names at the same headcount
+  (beat 1) and publishes more defensible work (beat 2–3).
+
+**The demo convergence (say this on stage):** the static replay site being
+demoed *is* the client experience — "what you're watching right now is what a
+client would see on the stock page." The demo is no longer insurance; it's the
+product.
+
+**Explicitly rejected:** client self-serve swarm access (arbitrary-ticker
+convening). It converts published research into on-demand unlicensed advice,
+invites the rationalization-engine failure mode, and breaks the
+researcher-as-gatekeeper compliance story. If asked "why can't users run it
+themselves?" — that *is* the roadmap's last step, but only behind the same
+review a human research note gets today; curation is the product, not a
+limitation.
+
+*(If ever pitched externally instead: the desk pays per seat, B2B — the
+journey above is the same with "platform" swapped for "fund" and beat 4's
+surface being client letters.)*
+
+## Real-time — the roadmap answer (decided)
+
+Point-in-time is a *discipline*, not a delay. "As-of = today" is just a
+snapshot built this morning — the on-demand build (ADR 0006, `POST /snapshots`)
+already does this. So real-time elements are additive, not a redesign:
+
+1. **Event-triggered convocations** — an earnings release, 8-K, or headline
+   spike auto-convenes the swarm on that name; the verdict lands minutes
+   later.
+2. **Morning coverage sweep** — run the whole coverage list pre-open (~30s a
+   name, cheap in parallel); alert only where the verdict *changed* or
+   Dissent flipped vs. yesterday. The day-over-day delta is the signal.
+3. **Auditability survives live mode** — every verdict stays permanently bound
+   to the exact snapshot it saw, so "what did we know when we said this?" is
+   always answerable.
+
+What it is **not**: tick-level / HFT. The product is reasoned research;
+30-second latency is a feature (it's the depth), not a bug.
 
 ## Q&A prep — the hard questions and the agreed answers
 
@@ -151,10 +255,12 @@ presents, one drives, or solo with the keyboard.
    off) — call it cents-per-name at scale, against analyst-hours. The 30s run
    time is the coverage story, not a corner cut: the debate is fixed-shape by
    design (assert → attack → one rebuttal → adjudicate).
-7. **"Is this financial advice? Regulatory exposure?"** It's an augmentation
-   tool for professionals — a research *process* with a cited audit trail, and
-   the analyst makes the call. An evidence trail where every claim resolves to
-   a dated source is compliance-*friendly*, not compliance-risky.
+7. **"Is this financial advice? Regulatory exposure?"** Clients never generate
+   output — they read debates our researchers convened, reviewed, and chose to
+   publish, exactly like the human research notes we publish today; same
+   compliance envelope, same gatekeeper. And an evidence trail where every
+   claim resolves to a dated source is compliance-*friendly*: it's the first
+   research format that shows the client the case against, not just the call.
 8. **"Why these three lenses? Where's macro?"** Deliberate 1-week scope cut. A
    lens is a node + prompt + tools; adding macro (or credit, or options flow)
    is additive, not architectural. Quorum and the aggregate already generalize
@@ -163,3 +269,23 @@ presents, one drives, or solo with the keyboard.
    history at scale, respecting training cutoffs); more + heterogeneous
    lenses; escalation — spend more debate rounds only where Dissent is high,
    which is exactly where extra reasoning pays.
+10. **"Where does the data come from?"** The exact provenance answer above —
+    prices + reported-only fundamentals from Yahoo Finance, historical
+    date-ranged news from Finnhub, all snapshotted and leak-validated before
+    any agent runs. Free-tier sources are scope, not architecture: the
+    Snapshot schema is the vendor abstraction; a licensed feed is one fetcher
+    per source.
+11. **"What's the business case for us?"** Three lines: research leverage
+    (the desk sweeps its whole coverage list daily at ~30s a name),
+    differentiated client product (interactive debates on stock pages vs.
+    competitors' static PDFs — the case *against* before you buy), and
+    retention (trust + the "what would change our mind" re-engagement loop).
+    See the journey section.
+12. **"Why can't clients run it themselves?"** They will be able to — behind
+    the same review a human research note gets today. Curation is the product:
+    an on-demand swarm is unlicensed advice; a published, researcher-reviewed
+    debate is research. Gatekeeping is the compliance story, not a limitation.
+13. **"Could this run in real time?"** As-of = today is just a snapshot built
+    this morning (the on-demand build already exists). Roadmap: event-triggered
+    convocations (earnings/8-K auto-convene) and the pre-open sweep alerting
+    on verdict *changes*. Not tick-level — 30-second latency is the depth.
