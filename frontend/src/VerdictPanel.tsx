@@ -30,9 +30,9 @@ const SEALED = 'var(--color-neutralpole)'
 
 /** Which lenses conceded an attack, and what kind — the "what would change our
  *  mind" material, derived straight from each specialist's judge ruling. */
-export function landedFromState(state: DebateState): { lens: Specialist; kind: string }[] {
+export function landedFromState(state: DebateState): { lens: Specialist; critique: string }[] {
   return SPECIALISTS.flatMap((s) =>
-    (state.lanes[s].adjudication?.attacks_landed ?? []).map((kind) => ({ lens: s, kind })),
+    (state.lanes[s].adjudication?.attacks_landed ?? []).map((critique) => ({ lens: s, critique })),
   )
 }
 
@@ -183,11 +183,11 @@ function StatCell({ label, value, color, pad, size }: { label: string; value: st
   )
 }
 
-export function LandedList({ landed }: { landed: { lens: Specialist; kind: string }[] }) {
+export function LandedList({ landed }: { landed: { lens: Specialist; critique: string }[] }) {
   if (landed.length === 0) return <p className="text-[12.5px] text-ink-3">No attacks landed this run.</p>
   return (
     <div className="flex flex-col gap-2.5">
-      {landed.map(({ lens, kind }, i) => (
+      {landed.map(({ lens, critique }, i) => (
         <div key={i} className="flex items-start gap-2.5">
           <span
             className="mt-px shrink-0 rounded-[4px] px-1.5 py-[3px] font-mono text-[8px] tracking-[0.06em]"
@@ -196,7 +196,7 @@ export function LandedList({ landed }: { landed: { lens: Specialist; kind: strin
             {LENS_LABEL[lens]}
           </span>
           <span className="text-[12.5px] leading-snug text-ink-2">
-            The {AGENT_NAME[lens].toLowerCase()} lens conceded a {kind} flaw — reversing this would lift the aggregate.
+            Landed against {AGENT_NAME[lens].toLowerCase()}: <span className="italic text-ink">“{critique}”</span> — refute it and the call shifts.
           </span>
         </div>
       ))}
