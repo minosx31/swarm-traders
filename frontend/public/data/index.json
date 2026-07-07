@@ -12,6 +12,35 @@
     ]
   },
   {
+    "ticker": "META",
+    "as_of": "2026-05-01",
+    "has_outcome": true,
+    "runs": [
+      {
+        "run": "META_2026-05-01_sonnet_20260707T153242Z_9459_733bb0105d80.json",
+        "model": "sonnet",
+        "recorded_at": "20260707T153242Z"
+      },
+      {
+        "run": "META_2026-05-01_haiku_20260707T152837Z_9459_733bb0eb3cc0.json",
+        "model": "haiku",
+        "recorded_at": "20260707T152837Z"
+      }
+    ]
+  },
+  {
+    "ticker": "META",
+    "as_of": "2026-06-12",
+    "has_outcome": true,
+    "runs": [
+      {
+        "run": "META_2026-06-12_haiku_20260707T151021Z_2186_76b3761d0580.json",
+        "model": "haiku",
+        "recorded_at": "20260707T151021Z"
+      }
+    ]
+  },
+  {
     "ticker": "MSFT",
     "as_of": "2026-05-01",
     "has_outcome": true,

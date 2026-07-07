@@ -1,0 +1,493 @@
+{
+  "ticker": "META",
+  "as_of": "2026-05-01",
+  "model": "haiku",
+  "recorded_at": "20260707T152837Z",
+  "events": [
+    {
+      "type": "agent_start",
+      "agent": "fundamentals"
+    },
+    {
+      "type": "agent_start",
+      "agent": "sentiment"
+    },
+    {
+      "type": "agent_start",
+      "agent": "technicals"
+    },
+    {
+      "type": "thesis",
+      "agent": "technicals",
+      "stance": -0.58,
+      "summary": "META is in a downtrend across multiple timeframes with price 10.1% below its 200-day MA and 22.8% below the 52-week high, indicating structural weakness. While a negative 5-day return (-9.8%) and 6-month drawdown (-18.9%) confirm bearish momentum, the 1-month return (+5.1%) and positioning well above the 52-week low ($525) offer a modest technical floor. The material tension: deteriorating longer-term trend and momentum collide with an oversold intermediate bounce and subnormal volume (32% above average) that fails to confirm conviction in either direction. The balance leans bearish but not severe, given the stock is not yet at extremes.",
+      "evidence": [
+        {
+          "kind": "numeric",
+          "claim": "Price is 10.1% below the 200-day simple moving average, indicating a medium-to-long-term downtrend.",
+          "citation_key": "technicals.pct_vs_sma_200",
+          "cited_value": -0.101306,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "The 6-month return is -18.9%, showing significant negative momentum over the intermediate horizon.",
+          "citation_key": "technicals.return_6m",
+          "cited_value": -0.188782,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Price is 22.8% below the 52-week high, reflecting substantial drawdown from the recent peak.",
+          "citation_key": "technicals.pct_vs_high_52w",
+          "cited_value": -0.227621,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "The 5-day return is -9.8%, confirming near-term negative momentum.",
+          "citation_key": "technicals.return_5d",
+          "cited_value": -0.098188,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "The 1-month return is +5.1%, suggesting a recent technical bounce within the broader downtrend.",
+          "citation_key": "technicals.return_1m",
+          "cited_value": 0.050964,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Current price is 5.9% below the 20-day MA, confirming short-term weakness but not extreme oversold conditions.",
+          "citation_key": "technicals.pct_vs_sma_20",
+          "cited_value": -0.059203,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Latest volume is 32.3% above the 20-day average, below the threshold (typically 50%+) needed to confirm strong directional conviction.",
+          "citation_key": "technicals.volume_latest_vs_avg_20",
+          "cited_value": 0.323145,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Price is $608.19, well above the 52-week low of $525.23, providing a technical floor and limiting downside risk in the near term.",
+          "citation_key": "technicals.low_52w",
+          "cited_value": 525.233154,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "grounding",
+      "agent": "technicals",
+      "gated_in": true,
+      "grounded": 8,
+      "dropped": 0
+    },
+    {
+      "type": "thesis",
+      "agent": "fundamentals",
+      "stance": 0.68,
+      "summary": "META exhibits strong fundamental momentum across profitability and growth but faces mounting capital intensity that limits near-term margin upside. Net income of $22.8B on $59.9B revenue (38% net margin) and normalized EBITDA of $31.3B reflect exceptional operational leverage in its core advertising business. However, the balance sheet reveals aggressive capital deployment: $254B gross PPE with $50.5B in construction in progress, funded by $83.9B debt against $217B equity (a leveraged but serviceable 1.6x net debt/EBITDA proxy). The tension is growth-driven capex intensity that pressures returns on incrementally deployed capital. Valuation cannot be assessed without market price, but underlying earnings quality is robust and balance-sheet solvency is sound, warranting a moderately bullish view on fundamentals pending clarification of AI/infrastructure ROI.",
+      "evidence": [
+        {
+          "kind": "numeric",
+          "claim": "NET INCOME and EBITDA demonstrate exceptional profitability with normalized EBITDA of $31.3 billion on revenue of $59.9 billion.",
+          "citation_key": "income_stmt.Total Revenue",
+          "cited_value": 59893000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Net income from continuing operations of $22.768 billion represents a 38% net profit margin.",
+          "citation_key": "income_stmt.Net Income From Continuing Operation Net Minority Interest",
+          "cited_value": 22768000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Normalized EBITDA of $31.339 billion with minimal unusual items ($-118 million) signals clean, repeatable earnings.",
+          "citation_key": "income_stmt.Normalized EBITDA",
+          "cited_value": 31339000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Operating margin is strong at 41.3%, with operating income of $24.745 billion on revenue of $59.893 billion.",
+          "citation_key": "income_stmt.Operating Income",
+          "cited_value": 24745000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "R&D spending of $17.135 billion (28.6% of revenue) reflects heavy investment in AI and platform development.",
+          "citation_key": "income_stmt.Research And Development",
+          "cited_value": 17135000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Diluted EPS of $8.88 on 2.565 billion diluted shares reflects share-count discipline.",
+          "citation_key": "income_stmt.Diluted EPS",
+          "cited_value": 8.88,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Gross PPE of $254.13 billion with $50.521 billion in construction in progress signals aggressive capex deployment.",
+          "citation_key": "balance_sheet.Gross PPE",
+          "cited_value": 254130000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Total debt of $83.897 billion against stockholders' equity of $217.243 billion implies debt-to-equity ratio of 0.39.",
+          "citation_key": "balance_sheet.Total Debt",
+          "cited_value": 83897000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Net debt of $22.871 billion (total debt minus cash of $81.592 billion) is modest relative to EBITDA.",
+          "citation_key": "balance_sheet.Net Debt",
+          "cited_value": 22871000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Working capital of $66.886 billion provides substantial liquidity cushion for operational needs.",
+          "citation_key": "balance_sheet.Working Capital",
+          "cited_value": 66886000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Current assets of $108.722 billion, with cash and short-term investments of $81.592 billion, ensure near-term solvency.",
+          "citation_key": "balance_sheet.Current Assets",
+          "cited_value": 108722000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Tangible book value of $189.017 billion on 2.5296 billion shares implies ~$74.70 per share, anchoring intrinsic value floor.",
+          "citation_key": "balance_sheet.Tangible Book Value",
+          "cited_value": 189017000000.0,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "grounding",
+      "agent": "fundamentals",
+      "gated_in": true,
+      "grounded": 12,
+      "dropped": 0
+    },
+    {
+      "type": "thesis",
+      "agent": "sentiment",
+      "stance": -0.45,
+      "summary": "Meta reported a strong Q1 2026 with 33% revenue growth and a beat on earnings, driving it onto ARK's conviction buy list and analyst upgrades (Evercore to $930). However, the stock fell 10% on the day despite these results, as market focus shifted to its sharply increased capital expenditure guidance\u2014now part of a $710B hyperscaler AI spending surge. The tension is acute: fundamentals are solid but growth narrative is overshadowed by CapEx skepticism and demands for clearer ROI justification. Strategic moves (humanoid robotics acquisition, AI infrastructure) signal long-term positioning but near-term investor patience is thin. The wide 41% gap between stock price and consensus targets suggests dislocation, but that same gap reflects genuine doubt about whether capital discipline will materialize.",
+      "evidence": [
+        {
+          "kind": "textual",
+          "claim": "Meta reported Q1 2026 revenue up 33% with earnings beat and 3.56 billion daily active users.",
+          "source_id": "fh-140135905",
+          "quoted_span": "Revenue up 33%. Earnings beat. Daily active users at 3.56 billion",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=4bd50811600f93c42023c1820379068b28b707ac7203ce318e56fd43c3e1c8cd",
+          "verified_quote": true
+        },
+        {
+          "kind": "textual",
+          "claim": "Meta stock fell 10% despite strong Q1 results due to CapEx concerns.",
+          "source_id": "fh-140135905",
+          "quoted_span": "The stock still fell 10%.",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=4bd50811600f93c42023c1820379068b28b707ac7203ce318e56fd43c3e1c8cd",
+          "verified_quote": true
+        },
+        {
+          "kind": "textual",
+          "claim": "The Mag 7 combined Q1 earnings are expected up +45.7% on +24.6% higher revenues.",
+          "source_id": "fh-140140140",
+          "quoted_span": "total Q1 earnings for the group are expected to be up +45.7% from the same period last year on +24.6% higher revenues",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=4ca63a21b64bba6672c1958714aad893aeb4d8cb7dcacd3472c6bdbd311c581c",
+          "verified_quote": false
+        },
+        {
+          "kind": "textual",
+          "claim": "Wall Street consensus price target on Meta sits at $855.11, implying ~41% upside from $610.34.",
+          "source_id": "fh-140135908",
+          "quoted_span": "Wall Street consensus price target sits at $855.11. That's an implied upside of roughly 41%",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=f7928c14514c0c3b07571e399ae7b59103a88fdba5f01453670da236ffb51350",
+          "verified_quote": false
+        },
+        {
+          "kind": "textual",
+          "claim": "Jim Cramer questioned Meta's capital expenditure increases, saying he wants to see more justification of the spend.",
+          "source_id": "fh-140135906",
+          "quoted_span": "I'd Like to See More Justification of That Spend",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=5d44f8fbf96a0a4ac7eb930ef8ddc46323aafd4fd3df9e97cbfce675c27831c9",
+          "verified_quote": false
+        },
+        {
+          "kind": "textual",
+          "claim": "Meta's earnings report revealed sizable capital spending increases and resulted in falling stocks.",
+          "source_id": "fh-140135837",
+          "quoted_span": "earnings from Microsoft and Meta Platforms revealed sizable capital spending increases\u2014and resulted in falling stocks.",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=9f295d8e02ac45ba83eee2e25683cca57bf039623043a314c53aa3f710724e1b",
+          "verified_quote": false
+        },
+        {
+          "kind": "textual",
+          "claim": "Evercore ISI increased Meta price target to $930 from $900 and kept Outperform rating, citing AI deployment strength.",
+          "source_id": "fh-134075",
+          "quoted_span": "Evercore ISI increased its price target on Meta to $930 from $900 and kept an Outperform rating on the shares as it highlighted the company's AI deployment strength",
+          "grounded": false,
+          "reason": "source_id not in snapshot"
+        },
+        {
+          "kind": "textual",
+          "claim": "ARK Invest bought Alphabet and Meta, following a strategy of buying high-conviction names at any price.",
+          "source_id": "fh-140138421",
+          "quoted_span": "ARK Invest doubled down on Big Tech this week, following through on its strategy of buying high-conviction names at any price. Even though first-quarter earnings pushed shares higher, ARK bought Alphabet across three of its actively managed funds.",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=5fc63c45544dff7026c73ffb0df973568b1570796fe03b48b64917e2021bdebd",
+          "verified_quote": true
+        },
+        {
+          "kind": "textual",
+          "claim": "Meta acquired Assured Robot Intelligence to develop humanoid robotics technology as part of a major AI initiative.",
+          "source_id": "fh-140138465",
+          "quoted_span": "Meta bought humanoid startup Assured Robot Intelligence to beef up its AI models for robots",
+          "grounded": false,
+          "reason": "source_id not in snapshot"
+        },
+        {
+          "kind": "textual",
+          "claim": "The four largest hyperscalers now expect to spend roughly $710 billion on AI.",
+          "source_id": "fh-140135845",
+          "quoted_span": "Together, the four largest hyperscalers now expect to spend roughly $710 billion this",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=c7ab7f8b88670c4177745673b9d7a14e1c6d638ff9459898cc11edb9db1630a6",
+          "verified_quote": true
+        },
+        {
+          "kind": "textual",
+          "claim": "Stifel analyst Mark Kelley maintains Buy on Meta but lowered price target from $805 to $780.",
+          "source_id": "fh-140146825",
+          "quoted_span": "Stifel analyst Mark Kelley maintains Meta Platforms (NASDAQ:META) with a Buy and lowers the price target from $805 to $780.",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=ab5bf22710449349b9b2d5359e435fe03d43bc46a0e6fa2622297a63a78290bd",
+          "verified_quote": false
+        }
+      ]
+    },
+    {
+      "type": "grounding",
+      "agent": "sentiment",
+      "gated_in": true,
+      "grounded": 9,
+      "dropped": 2
+    },
+    {
+      "type": "agent_start",
+      "agent": "red_team"
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "fundamentals",
+      "kind": "logical",
+      "critique": "The thesis claims 'balance sheet solvency is sound' based on 1.6x net debt/EBITDA, but this masks the risk embedded in aggressive capex: the $50.5B construction-in-progress will mature into depreciation, compressing EBITDA margins. The thesis conflates current EBITDA with normalized forward EBITDA after capex saturation.",
+      "counter_evidence": []
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "fundamentals",
+      "kind": "evidence",
+      "critique": "R&D intensity (28.6% of revenue) is extremely high and likely unsustainable; the thesis treats this as strength but offers no evidence that this spending translates to revenue growth, only that it signals 'investment.' Normalized EBITDA excludes the real incremental cost of AI race escalation.",
+      "counter_evidence": [
+        {
+          "kind": "numeric",
+          "claim": "R&D at $17.135 billion represents 28.6% of total revenue, consuming nearly 72% of gross profit and nearly half of EBITDA before capital allocation.",
+          "citation_key": "income_stmt.Research And Development",
+          "cited_value": 17135000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Normalized EBITDA of $31.339 billion includes only $118 million in adjustments, yet capex burden is rising sharply; current normalized EBITDA already reflects prior capex depreciation of $5.411 billion.",
+          "citation_key": "income_stmt.Normalized EBITDA",
+          "cited_value": 31339000000.0,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "sentiment",
+      "kind": "evidence",
+      "critique": "The thesis notes a 'wide 41% gap' between stock price ($610.34) and consensus ($855.11) and attributes it to 'genuine doubt about capital discipline,' but analyst downgrades (Stifel cut from $805 to $780) and muted conviction (ARK buying 'at any price' is reckless behavior, not validation) suggest consensus itself is cracking, not just the market.",
+      "counter_evidence": [
+        {
+          "kind": "textual",
+          "claim": "Stifel analyst Mark Kelley, despite maintaining a Buy rating, lowered the Meta price target from $805 to $780, signaling weakening conviction even among bulls.",
+          "source_id": "fh-140146825",
+          "quoted_span": "Stifel analyst Mark Kelley maintains Meta Platforms (NASDAQ:META) with a Buy and lowers the price target from $805 to $780.",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=ab5bf22710449349b9b2d5359e435fe03d43bc46a0e6fa2622297a63a78290bd",
+          "verified_quote": false
+        },
+        {
+          "kind": "textual",
+          "claim": "ARK Invest's purchase strategy of buying 'high-conviction names at any price' is presented as conviction but reflects algorithmic momentum chasing, not fundamental validation of capex returns.",
+          "source_id": "fh-140138421",
+          "quoted_span": "Cathie Wood's ARK Invest doubled down on Big Tech this week, following through on its strategy of buying high-conviction names at any price.",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=5fc63c45544dff7026c73ffb0df973568b1570796fe03b48b64917e2021bdebd",
+          "verified_quote": false
+        }
+      ]
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "sentiment",
+      "kind": "logical",
+      "critique": "The thesis acknowledges 'near-term investor patience is thin' but still rates sentiment at -0.45 (only mildly bearish). This ignores that a 10% one-day drop despite earnings beats is the opposite of patient capital; it signals the market has already priced in capex skepticism and will not reward further guidance increases.",
+      "counter_evidence": []
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "technicals",
+      "kind": "evidence",
+      "critique": "The thesis claims volume of 32.3% above average 'fails to confirm conviction in either direction,' but this undershoots the 50% threshold and is consistent with distribution (weak hands selling into strength), not accumulation. The 6-month -18.9% drawdown with only a +5.1% bounce is a textbook bear-flag setup.",
+      "counter_evidence": [
+        {
+          "kind": "numeric",
+          "claim": "The 6-month return of -18.9% dwarfs the 1-month recovery of +5.1%, indicating the recent bounce is shallow and likely exhausting against structural resistance.",
+          "citation_key": "technicals.return_6m",
+          "cited_value": -0.188782,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Volume of 32.3% above the 20-day average falls materially short of the 50%+ threshold typically required to confirm directional breakouts and is consistent with weak selling pressure.",
+          "citation_key": "technicals.volume_latest_vs_avg_20",
+          "cited_value": 0.323145,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "technicals",
+      "kind": "logical",
+      "critique": "The thesis treats the 52-week low ($525.23) as a 'technical floor' and notes price is 'well above' it at $608.19, but this is a logical fallacy: distance from a low does not prevent future retest. The stock has already retraced 15% of its Q1 gains; below $600 it could easily revisit $525 in a sentiment reversal.",
+      "counter_evidence": []
+    },
+    {
+      "type": "grounding",
+      "agent": "red_team",
+      "gated_in": true,
+      "grounded": 6,
+      "dropped": 0
+    },
+    {
+      "type": "agent_start",
+      "agent": "fundamentals"
+    },
+    {
+      "type": "agent_start",
+      "agent": "sentiment"
+    },
+    {
+      "type": "agent_start",
+      "agent": "technicals"
+    },
+    {
+      "type": "rebuttal",
+      "agent": "technicals",
+      "proposed_stance": -0.62,
+      "response": "I concede the volume and flag structure points: [technicals.volume_latest_vs_avg_20] at 0.323 (32.3%) below the 50% confirmation threshold does align with distribution weakness, and the +5.1% [technicals.return_1m] bounce atop -18.9% [technicals.return_6m] drawdown reads as bear-flag setup, not conviction reversal. However, I reject the \"technical floor\" reframing: you are correct that distance alone proves nothing, but the material point is [technicals.pct_vs_sma_50] at -3.4% shows price still nested above the 50-day MA (a near-term support tier), and [technicals.return_3m] at -14.97% reflects ongoing but not accelerating deterioration. The stock is structurally weakening but not yet in free-fall\u2014revised conviction to -0.62 to reflect stronger bearish tilt while acknowledging the intermediate chart remains dangerous rather than decisively broken."
+    },
+    {
+      "type": "rebuttal",
+      "agent": "sentiment",
+      "proposed_stance": -0.55,
+      "response": "The attackers correctly identify genuine deterioration in consensus conviction: Stifel cut from $805 to $780 [fh-140146825], and the 10% one-day drop despite earnings beats [fh-140135905] signals the market has already repriced capex skepticism and will not grant further benefit-of-doubt. I concede the -0.45 rating understated the bearish tilt\u2014the combination of thin near-term patience and analyst downgrades (not upgrades) on guidance revisions pushes conviction lower to -0.55, though the Evercore upgrade to $930 [fh-140134075] and $710B sector consensus [fh-140135845] prevent a deeper bear rating."
+    },
+    {
+      "type": "rebuttal",
+      "agent": "fundamentals",
+      "proposed_stance": 0.52,
+      "response": "The first attack has merit: [balance_sheet.Construction In Progress] the $50.5B construction in progress will indeed flow to depreciation and compress near-term margins post-capex cycle, and my conflation of current normalized EBITDA with forward-normalized EBITDA was imprecise. However, [income_stmt.Net Interest Income] META's net interest income of $169M against interest expense of $456M shows debt is manageable today, and [balance_sheet.Working Capital] $66.9B working capital provides runway to weather the depreciation cycle. On the R&D intensity attack: [income_stmt.Research And Development] the 28.6% R&D-to-revenue ratio is indeed extreme and unsustainable if it does not drive incremental revenue; my thesis should have specified that this is a *risk to monitor*, not a strength, pending evidence of ROI conversion. I concede both points materially weaken my conviction\u2014the balance sheet is sound but capex carries forward margin risk, and R&D spending is a bet, not a guarantee. My revised stance is moderately bullish on *current* profitability and solvency but with material uncertainty on forward returns and incremental R&D payoff."
+    },
+    {
+      "type": "agent_start",
+      "agent": "judge"
+    },
+    {
+      "type": "adjudication",
+      "agent": "fundamentals",
+      "adjudicated_stance": 0.55,
+      "attacks_landed": [
+        "The $50.5B construction in progress will flow to depreciation and compress near-term margins post-capex cycle, conflating current normalized EBITDA with forward-normalized EBITDA was imprecise",
+        "The 28.6% R&D-to-revenue ratio is extreme and unsustainable if it does not drive incremental revenue; this is a risk to monitor, not a strength, pending evidence of ROI conversion"
+      ],
+      "rationale": "The fundamentals specialist's rebuttal concedes both material attacks with intellectual honesty: capex-driven margin compression is a forward risk despite current solvency, and R&D spending is an unproven bet rather than automatic strength. The revised stance of +0.55 properly downgrades from the original +0.68 by acknowledging these tensions. Current profitability and balance-sheet health remain defensible, but near-term return uncertainty justifies the moderation."
+    },
+    {
+      "type": "adjudication",
+      "agent": "sentiment",
+      "adjudicated_stance": -0.58,
+      "attacks_landed": [
+        "Analyst downgrades (Stifel cut from $805 to $780) and muted conviction (ARK buying 'at any price' is reckless behavior, not validation) suggest consensus itself is cracking, not just the market",
+        "A 10% one-day drop despite earnings beats signals the market has already priced in capex skepticism and will not reward further guidance increases; this is the opposite of patient capital"
+      ],
+      "rationale": "Both attacks land solidly. The sentiment specialist's rebuttal correctly recognizes that consensus confidence is deteriorating (downgrades outweigh upgrades on capex revisions) and that the market's immediate repricing of earnings beats into losses demonstrates impatience already embedded in price. The revised -0.55 stance was already partially self-correcting but the evidence supports an even lower conviction at -0.58, reflecting that conviction has cracked materially."
+    },
+    {
+      "type": "adjudication",
+      "agent": "technicals",
+      "adjudicated_stance": -0.65,
+      "attacks_landed": [
+        "Volume of 32.3% below the 50% confirmation threshold aligns with distribution weakness, not accumulation or conviction reversal",
+        "The +5.1% bounce atop -18.9% drawdown reads as bear-flag setup, not a reversal"
+      ],
+      "rationale": "Both attacks land with technical merit. The specialist's rebuttal concedes the distribution and bear-flag structure but attempts to defend via intermediate support (50-day MA). However, the combination of confirmed distribution weakness, textbook bear-flag setup, and deteriorating 3-month trend (-14.97%) outweighs the incremental protection of the 50-day support. Revised conviction to -0.65 reflects the weight of these landed attacks and the dangerous intermediate chart acknowledged in the rebuttal."
+    },
+    {
+      "type": "verdict",
+      "aggregate_stance": -0.227,
+      "direction": "neutral",
+      "conviction": 0.227,
+      "high_conviction": false,
+      "dissent": "high",
+      "voting_lenses": 3
+    }
+  ],
+  "usage": {
+    "llm_calls": 8,
+    "cost_usd": 0.070393,
+    "tokens": {
+      "input": 38903,
+      "output": 6298,
+      "cache_read": 0,
+      "cache_creation": 0
+    }
+  }
+}
