@@ -1,0 +1,425 @@
+{
+  "ticker": "META",
+  "as_of": "2026-06-12",
+  "model": "haiku",
+  "recorded_at": "20260707T151021Z",
+  "events": [
+    {
+      "type": "agent_start",
+      "agent": "fundamentals"
+    },
+    {
+      "type": "agent_start",
+      "agent": "sentiment"
+    },
+    {
+      "type": "agent_start",
+      "agent": "technicals"
+    },
+    {
+      "type": "thesis",
+      "agent": "technicals",
+      "stance": -0.65,
+      "summary": "META exhibits strong bearish technical deterioration with price trading significantly below all major moving averages and down 28% from 52-week highs, compounded by declining momentum across all timeframes and below-average volume, indicating weakened buying pressure.",
+      "evidence": [
+        {
+          "kind": "numeric",
+          "claim": "Price is trading 13.8% below the 200-day simple moving average, indicating sustained downtrend.",
+          "citation_key": "technicals.pct_vs_sma_200",
+          "cited_value": -0.13758,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Stock has declined 28.1% from its 52-week high, showing significant weakness from recent peaks.",
+          "citation_key": "technicals.pct_vs_high_52w",
+          "cited_value": -0.280618,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Six-month return is negative 12.6%, indicating sustained downtrend over an extended period.",
+          "citation_key": "technicals.return_6m",
+          "cited_value": -0.126439,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Price is 8.8% below the 50-day moving average, signaling intermediate-term downward momentum.",
+          "citation_key": "technicals.pct_vs_sma_50",
+          "cited_value": -0.088204,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Latest volume is 19.2% below the 20-day average, suggesting diminished buying interest.",
+          "citation_key": "technicals.volume_latest_vs_avg_20",
+          "cited_value": -0.192255,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "One-month return is negative 8.1%, showing recent deterioration in price action.",
+          "citation_key": "technicals.return_1m",
+          "cited_value": -0.080518,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "grounding",
+      "agent": "technicals",
+      "gated_in": true,
+      "grounded": 6,
+      "dropped": 0
+    },
+    {
+      "type": "thesis",
+      "agent": "sentiment",
+      "stance": -0.55,
+      "summary": "Meta faces near-term operational headwinds from escalating AI transformation costs and workforce challenges, despite strong revenue growth and ambitious AI ambitions. CEO Zuckerberg has publicly admitted \"mistakes\" in AI workforce restructuring while the company implements strict internal AI cost controls, raising execution risk.",
+      "evidence": [
+        {
+          "kind": "textual",
+          "claim": "Meta's CEO Mark Zuckerberg acknowledged that the company has made mistakes in its rapid AI transformation.",
+          "source_id": "fh-140626795",
+          "quoted_span": "Given the complexity of these changes, we've made mistakes and will almost certainly make more",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=7fc48e0879cf162468a74c8cf3ff02733b0ce3a847fed3eb066b1b5fa33201a1",
+          "verified_quote": false
+        },
+        {
+          "kind": "textual",
+          "claim": "Meta's AI unit employing 6,500 people is experiencing severe workforce morale issues, described as being on the verge of revolt.",
+          "source_id": "fh-140624131",
+          "quoted_span": "A new report suggests the unit, which employs 6,500 people, is on the verge of revolt",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=0e50cfd264e177357571d7224b44cf3a39864add493a2375a87bf5910b68c8a5",
+          "verified_quote": true
+        },
+        {
+          "kind": "textual",
+          "claim": "Meta is implementing strict internal controls to track and curtail employee AI usage as costs soar to billions of dollars annually.",
+          "source_id": "fh-140624132",
+          "quoted_span": "Meta is building an internal platform to track AI usage and spending in real time as it prepares for tighter budgeting and rising AI costs in the coming years",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=c79efff1b66c6931269fce6644b3315d03f86dddff6142457679250e4b382ba0",
+          "verified_quote": true
+        },
+        {
+          "kind": "textual",
+          "claim": "Meta is aggressively controlling internal token consumption to manage ballooning AI infrastructure costs.",
+          "source_id": "fh-140627980",
+          "quoted_span": "Meta Moves To Curb Employee AI Usage As AI Costs Reach Billions; In Memo, Meta Says It Plans To Crack Down On Employee Token Use As AI Costs Soar; Internal AI Usage Projected To Cost Meta Billions In 2026",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=8361e63faa85914e6cf0574dd5ab6886697d0b489242b4071225b56599f498a1",
+          "verified_quote": true
+        },
+        {
+          "kind": "textual",
+          "claim": "Meta has unwound a $2 billion investment in Manus due to Beijing's regulatory order.",
+          "source_id": "fh-140617313",
+          "quoted_span": "Meta Unwinds $2B Manus Deal \u2014 Beijing's order forces Meta to separate operations from the AI startup",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=550ddedc4b77f1c8d9e337dc5bed1f63c35841c24527e4d578f95f599bf7f130",
+          "verified_quote": false
+        }
+      ]
+    },
+    {
+      "type": "grounding",
+      "agent": "sentiment",
+      "gated_in": true,
+      "grounded": 5,
+      "dropped": 0
+    },
+    {
+      "type": "thesis",
+      "agent": "fundamentals",
+      "stance": 0.65,
+      "summary": "META demonstrates strong fundamental health with robust profitability (26.8B net income, 47.9% net margin), excellent EBITDA generation (29.6B normalized), and solid balance sheet with significant cash position ($81.2B) offsetting debt, though elevated leverage and substantial R&D spending warrant monitoring.",
+      "evidence": [
+        {
+          "kind": "numeric",
+          "claim": "META generated $26.77 billion in net income in Q1 2026.",
+          "citation_key": "income_stmt.Net Income",
+          "cited_value": 26773000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "META achieved a net profit margin of 47.5% with $56.31B in total revenue and $26.77B net income.",
+          "citation_key": "income_stmt.Total Revenue",
+          "cited_value": 56311000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Normalized EBITDA reached $29.62 billion, demonstrating strong underlying operational cash generation.",
+          "citation_key": "income_stmt.Normalized EBITDA",
+          "cited_value": 29615000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Diluted EPS was $10.44 based on 2.564 billion diluted shares outstanding.",
+          "citation_key": "income_stmt.Diluted EPS",
+          "cited_value": 10.44,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "META holds $81.18 billion in cash and short-term investments, providing substantial liquidity.",
+          "citation_key": "balance_sheet.Cash Cash Equivalents And Short Term Investments",
+          "cited_value": 81180000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Total debt stands at $86.77 billion, with net debt of $35.32 billion after cash consideration.",
+          "citation_key": "balance_sheet.Total Debt",
+          "cited_value": 86769000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Stockholders' equity reached $243.68 billion, reflecting a strong capital base.",
+          "citation_key": "balance_sheet.Stockholders Equity",
+          "cited_value": 243681000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Research and Development expenses of $17.70 billion represent 31.4% of revenue, indicating significant investment in innovation.",
+          "citation_key": "income_stmt.Research And Development",
+          "cited_value": 17699000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Gross profit margin is strong at 81.9% with gross profit of $46.09 billion on $56.31B revenue.",
+          "citation_key": "income_stmt.Gross Profit",
+          "cited_value": 46093000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Operating income reached $22.87 billion with an operating margin of 40.6%.",
+          "citation_key": "income_stmt.Operating Income",
+          "cited_value": 22872000000.0,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "grounding",
+      "agent": "fundamentals",
+      "gated_in": true,
+      "grounded": 10,
+      "dropped": 0
+    },
+    {
+      "type": "agent_start",
+      "agent": "red_team"
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "fundamentals",
+      "kind": "logical",
+      "critique": "The thesis conflates normalized EBITDA (an adjusted metric excluding unusual items) with 'strong underlying operational cash generation,' but the data shows EBITDA of $28.31B versus normalized EBITDA of $29.62B, meaning $1.31B in unusual losses were excluded\u2014the company's actual cash flow from operations is weaker than presented.",
+      "counter_evidence": []
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "fundamentals",
+      "kind": "evidence",
+      "critique": "The thesis ignores that R&D spending of $17.7B (31.4% of revenue) is not merely 'substantial investment in innovation' but represents a massive drag on profitability that directly reduces operating leverage and may not convert to profitable returns.",
+      "counter_evidence": [
+        {
+          "kind": "numeric",
+          "claim": "Research and Development expenses consume 31.4% of revenue, reducing net profitability by the equivalent of 5.8 percentage points relative to gross margin.",
+          "citation_key": "income_stmt.Research And Development",
+          "cited_value": 17699000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Operating margin of 40.6% is substantially eroded by the high R&D burden.",
+          "citation_key": "income_stmt.Operating Income",
+          "cited_value": 22872000000.0,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "fundamentals",
+      "kind": "evidence",
+      "critique": "Net debt of $35.32B is material and the thesis downplays leverage risk by only mentioning 'offsetting' cash against debt; the company carries $86.77B in total debt, which is 35.6% of stockholders' equity and requires ongoing debt service.",
+      "counter_evidence": [
+        {
+          "kind": "numeric",
+          "claim": "Total debt of $86.77 billion exceeds cash and short-term investments of $81.18 billion, leaving material net debt exposure.",
+          "citation_key": "balance_sheet.Total Debt",
+          "cited_value": 86769000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Net debt position of $35.32 billion represents leverage that amplifies downside risk in a downturn.",
+          "citation_key": "balance_sheet.Net Debt",
+          "cited_value": 35322000000.0,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "sentiment",
+      "kind": "logical",
+      "critique": "The thesis acknowledges CEO 'mistakes' in AI transformation but treats workforce morale issues and cost-control measures as isolated headwinds; however, the evidence of a 6,500-person unit 'on the verge of revolt' and new tracking systems to curtail AI usage suggests systemic execution risk, not just near-term friction.",
+      "counter_evidence": []
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "sentiment",
+      "kind": "evidence",
+      "critique": "The $2B Manus investment unwound due to Beijing's regulatory order demonstrates real geopolitical execution risk and capital loss that undermines the narrative of 'ambitious AI ambitions' without execution constraints.",
+      "counter_evidence": [
+        {
+          "kind": "textual",
+          "claim": "Meta unwound a $2 billion investment in Manus due to Beijing's regulatory order, materializing regulatory and geopolitical risk.",
+          "source_id": "fh-140617313",
+          "quoted_span": "Meta Unwinds $2B Manus Deal \u2014 Beijing's order forces Meta to separate operations from the AI startup.",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=550ddedc4b77f1c8d9e337dc5bed1f63c35841c24527e4d578f95f599bf7f130",
+          "verified_quote": false
+        }
+      ]
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "technicals",
+      "kind": "evidence",
+      "critique": "The thesis correctly identifies bearish deterioration but understates severity; a 28.1% decline from 52-week highs combined with trading 13.8% below the 200-day moving average and negative returns across all time horizons (6-month: -12.6%, 1-month: -8.1%) indicates a sustained breakdown in trend structure, not temporary weakness.",
+      "counter_evidence": [
+        {
+          "kind": "numeric",
+          "claim": "The 6-month return of negative 12.6% confirms a sustained downtrend over an extended period.",
+          "citation_key": "technicals.return_6m",
+          "cited_value": -0.126439,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "The stock's 28.1% decline from its 52-week high represents a significant loss of investor conviction.",
+          "citation_key": "technicals.pct_vs_high_52w",
+          "cited_value": -0.280618,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "technicals",
+      "kind": "logical",
+      "critique": "Volume declining 19.2% below the 20-day average during an extended downtrend typically reflects capitulation selling by weak hands, not institutional accumulation; low volume on declines reduces the credibility of the price discovery process and increases risk of further selling shocks.",
+      "counter_evidence": []
+    },
+    {
+      "type": "grounding",
+      "agent": "red_team",
+      "gated_in": true,
+      "grounded": 7,
+      "dropped": 0
+    },
+    {
+      "type": "agent_start",
+      "agent": "fundamentals"
+    },
+    {
+      "type": "agent_start",
+      "agent": "sentiment"
+    },
+    {
+      "type": "agent_start",
+      "agent": "technicals"
+    },
+    {
+      "type": "rebuttal",
+      "agent": "technicals",
+      "proposed_stance": -0.75,
+      "response": "The attacks correctly identify that my thesis understated severity\u2014the data supports escalation: trading 13.8% below the 200-day SMA [technicals.pct_vs_sma_200 = -0.13758] combined with a 28.1% decline from 52-week highs [technicals.pct_vs_high_52w = -0.280618] and negative returns across all measured horizons (6-month: -12.6% [technicals.return_6m = -0.126439], 1-month: -8.1% [technicals.return_1m = -0.080518]) confirms a sustained structural breakdown rather than temporary weakness. However, I note the volume decline of 19.2% below average [technicals.volume_latest_vs_avg_20 = -0.192255] during extended downtrend does suggest capitulation dynamics, but without concurrent data on institutional flows or price discovery metrics, I cannot definitively attribute this to weak-hand capitulation versus tactical pullback\u2014this remains an inference beyond the data provided. I concede the magnitude of deterioration warrants a strengthened bearish stance from -0.65 to -0.75."
+    },
+    {
+      "type": "rebuttal",
+      "agent": "sentiment",
+      "proposed_stance": -0.4,
+      "response": "The attacks validly sharpen the execution risk framing: the 6,500-person unit \"on the verge of revolt\" [fh-140624131] and aggressive token-tracking systems [fh-140627980] do reflect systemic strain, not mere friction. I concede the magnitude of execution risk is more acute than \"near-term headwinds\" suggests. However, the $2B Manus unwinding [fh-140617313] is a geopolitical capital loss, but Meta's continued $115M commitment to US workforce training and aggressive India data center buildout [fh-140620174] suggest adaptation, not capitulation. The thesis moderates to -0.40: near-term execution risk is real and structural (not temporary), but Meta's scale, revenue growth (33% YoY) [fh-140618636], and infrastructure pivots partially offset the constraints."
+    },
+    {
+      "type": "rebuttal",
+      "agent": "fundamentals",
+      "proposed_stance": 0.55,
+      "response": "I concede the first attack: I conflated normalized and reported EBITDA without acknowledging the $1.31B gap. [income_stmt.EBITDA] reported EBITDA of $28.31B versus [income_stmt.Normalized EBITDA] normalized EBITDA of $29.62B reflects real unusual losses\u2014primarily [income_stmt.Gain On Sale Of Security] a $1.302B loss on security sales\u2014that materially weaken stated cash generation. On R&D, I concede the framing was too benign: $17.7B is [income_stmt.Research And Development] 31.4% of revenue, a structural profitability headwind that deserves scrutiny beyond \"monitoring.\" However, I defend the leverage characterization: while [balance_sheet.Total Debt] total debt of $86.77B appears large, [balance_sheet.Cash Cash Equivalents And Short Term Investments] $81.18B in liquid assets reduces net debt to [balance_sheet.Net Debt] $35.32B, or 14.5% of [balance_sheet.Stockholders Equity] stockholders' equity of $243.68B\u2014material but not destabilizing. The core thesis holds: fundamentals remain sound, but visibility on R&D ROI and normalized cash flows warrant meaningful downside protection. Revised stance: +0.55 (from +0.65)."
+    },
+    {
+      "type": "agent_start",
+      "agent": "judge"
+    },
+    {
+      "type": "adjudication",
+      "agent": "fundamentals",
+      "adjudicated_stance": 0.55,
+      "attacks_landed": [
+        "The thesis conflates normalized EBITDA (an adjusted metric excluding unusual items) with 'strong underlying operational cash generation,' but the data shows EBITDA of $28.31B versus normalized EBITDA of $29.62B, meaning $1.31B in unusual losses were excluded\u2014the company's actual cash flow from operations is weaker than presented.",
+        "The thesis ignores that R&D spending of $17.7B (31.4% of revenue) is not merely 'substantial investment in innovation' but represents a massive drag on profitability that directly reduces operating leverage and may not convert to profitable returns."
+      ],
+      "rationale": "The rebuttal credibly concedes both substantive attacks: the $1.31B gap between reported and normalized EBITDA is real and material, and the R&D framing was too benign. The leverage defense holds on quantitative grounds (14.5% of equity is manageable), but the concessions on cash flow quality and R&D burden warrant a moderating adjustment from +0.65 to +0.55. The revised stance appropriately reflects that fundamentals remain sound but with material visibility constraints."
+    },
+    {
+      "type": "adjudication",
+      "agent": "sentiment",
+      "adjudicated_stance": -0.4,
+      "attacks_landed": [
+        "The thesis acknowledges CEO 'mistakes' in AI transformation but treats workforce morale issues and cost-control measures as isolated headwinds; however, the evidence of a 6,500-person unit 'on the verge of revolt' and new tracking systems to curtail AI usage suggests systemic execution risk, not just near-term friction."
+      ],
+      "rationale": "The first attack validly reframes workforce morale and cost controls as systemic rather than transient, which the rebuttal appropriately concedes. The second attack on Manus does not land\u2014a single $2B geopolitical loss is not evidence of broader execution constraints, especially when offset by $115M US training and India expansion. The rebuttal's -0.40 stance correctly elevates execution risk from 'headwind' to 'structural' while acknowledging offsetting scale and growth dynamics."
+    },
+    {
+      "type": "adjudication",
+      "agent": "technicals",
+      "adjudicated_stance": -0.75,
+      "attacks_landed": [
+        "The thesis correctly identifies bearish deterioration but understates severity; a 28.1% decline from 52-week highs combined with trading 13.8% below the 200-day moving average and negative returns across all time horizons (6-month: -12.6%, 1-month: -8.1%) indicates a sustained breakdown in trend structure, not temporary weakness."
+      ],
+      "rationale": "The first attack lands squarely: the rebuttal's own data confirms the deterioration is structural and sustained across all timeframes, justifying escalation. The second attack on volume-induced capitulation risk does not land\u2014the rebuttal correctly identifies this as inference beyond available data (no institutional flow or price discovery data provided). The revised -0.75 stance appropriately reflects the magnitude of technical breakdown while avoiding overreach on unsubstantiated capitulation claims."
+    },
+    {
+      "type": "verdict",
+      "aggregate_stance": -0.2,
+      "direction": "neutral",
+      "conviction": 0.2,
+      "high_conviction": false,
+      "dissent": "high",
+      "voting_lenses": 3
+    }
+  ],
+  "usage": {
+    "llm_calls": 8,
+    "cost_usd": 0.061292,
+    "tokens": {
+      "input": 35642,
+      "output": 5130,
+      "cache_read": 0,
+      "cache_creation": 0
+    }
+  }
+}
