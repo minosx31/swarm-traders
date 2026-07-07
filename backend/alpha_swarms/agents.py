@@ -157,20 +157,47 @@ async def _produce(coro):
 
 STANCE_RUBRIC = (
     "Stance is one signed number in [-1, +1]: sign is direction (negative=bear, "
-    "positive=bull), magnitude is strength. Cite ONLY the data provided below — "
-    "every claim needs an exact citation. Fabricated or mis-copied citations are "
-    "dropped by a deterministic validator and cost you your vote."
+    "positive=bull), magnitude is conviction. Calibrate magnitude to the weight of "
+    "evidence, not to how strongly you feel:\n"
+    "  |0.75-1.0| — multiple independent signals agree and you found no material contrary data.\n"
+    "  |0.40-0.70| — the evidence leans clearly one way, but at least one signal cuts against it.\n"
+    "  |0.15-0.35| — mixed or thin evidence; a weak tilt only.\n"
+    "  <0.15 — genuinely balanced or insufficient data; do not manufacture conviction.\n"
+    "Cite ONLY the data provided below — every claim needs an exact citation. "
+    "Fabricated or mis-copied citations are dropped by a deterministic validator "
+    "and cost you your vote."
 )
 
 SPECIALIST_BRIEFS = {
-    "fundamentals": ("You are the fundamentals analyst: valuation, earnings, balance-sheet health. "
-                     "Use numeric evidence: cite an exact citation_key and its value."),
-    "sentiment": ("You are the sentiment analyst: news flow and narrative. "
-                  "Use textual evidence: cite an exact source_id and quote a short verbatim span. "
+    "fundamentals": ("You are the fundamentals analyst. Judge the business across four axes: "
+                     "(1) valuation — is the price justified by earnings/revenue and their trajectory; "
+                     "(2) profitability & margins — the direction and quality of earnings; "
+                     "(3) balance-sheet health — leverage, liquidity, solvency risk; "
+                     "(4) growth — is the top and bottom line expanding or contracting. "
+                     "Reason across all four, name the tension explicitly when they disagree "
+                     "(e.g. cheap but deteriorating, growing but unprofitable), and let that balance — "
+                     "not any single metric — set your stance. "
+                     "Use numeric evidence: cite an exact citation_key and its value for every claim."),
+    "sentiment": ("You are the sentiment analyst. Judge the narrative across four axes: "
+                  "(1) catalyst vs. noise — is an item materially price-moving or routine coverage; "
+                  "(2) tone & direction — is the balance of coverage constructive or damaging; "
+                  "(3) momentum — is the narrative building or fading across the window; "
+                  "(4) breadth & credibility — one outlet's take or corroborated across sources. "
+                  "Reason across all four, name the tension explicitly when they disagree "
+                  "(e.g. loud but one-sourced, positive but stale), and let that balance — not any "
+                  "single headline — set your stance. "
+                  "Use textual evidence: cite an exact source_id and quote a short verbatim span for every claim. "
                   "If no news is provided, say so in your summary and take a stance near 0 "
                   "with an empty evidence list — do NOT invent sources."),
-    "technicals": ("You are the technicals analyst: price action, momentum, volume. "
-                   "Use numeric evidence: cite an exact citation_key and its value."),
+    "technicals": ("You are the technicals analyst. Judge price action across four axes: "
+                   "(1) trend — price relative to its moving averages and the structure of higher/lower highs; "
+                   "(2) momentum — the rate and direction of returns across the available horizons; "
+                   "(3) volume — does participation confirm the move or diverge from it; "
+                   "(4) position — distance from 52-week extremes and any stretched/overextended reading. "
+                   "Reason across all four, name the tension explicitly when they disagree "
+                   "(e.g. downtrend but oversold, up but on thinning volume), and let that balance — "
+                   "not any single indicator — set your stance. "
+                   "Use numeric evidence: cite an exact citation_key and its value for every claim."),
 }
 
 

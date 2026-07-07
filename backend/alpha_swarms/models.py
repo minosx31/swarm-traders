@@ -34,7 +34,9 @@ Evidence = NumericEvidence | TextualEvidence
 
 class Thesis(BaseModel):
     stance: float = Field(ge=-1, le=1, description="Signed stance: -1 strong bear ... +1 strong bull")
-    summary: str = Field(description="1-2 sentence thesis summary (this is what other agents see)")
+    summary: str = Field(description="Your thesis in 2-4 sentences: the core call plus the reasoning "
+                         "that drives it, including the main tension or risk you weighed. This is what "
+                         "other agents see, so make the load-bearing logic explicit.")
     evidence: list[Evidence] = Field(description="Cited evidence backing the stance")
 
 
