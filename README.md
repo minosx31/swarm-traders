@@ -85,7 +85,7 @@ One FastAPI app with LangGraph running in-process — nothing else to host.
 | `alpha_swarms/scoring.py` | Pure-Python Verdict: mean of adjudicated stances → direction bands / conviction / dissent / quorum No-Call. Never authored by the Judge |
 | `alpha_swarms/events.py` | The display-event channel (ADR 0004): per-run `asyncio.Queue` the nodes emit typed events into; the endpoint drains it with the inter-event delay |
 | `alpha_swarms/runner.py` | Run lifecycle: owns the queue, attaches the safeguards handler globally, catches mid-graph failures and surfaces them as a terminal `error` event |
-| `alpha_swarms/llm.py` | Provider abstraction (ADR 0005): `LLM_BACKEND` env flag picks the *default* LangChain chat model (`ollama` / `groq` / `haiku` / `sonnet`); a live request can override backend+model per-run via a contextvar. `available_models()` lists choices for the UI; wires Anthropic `cache_control` for system prompts |
+| `alpha_swarms/llm.py` | Provider abstraction (ADR 0005): `LLM_BACKEND` env flag picks the *default* LangChain chat model (`ollama` / `haiku` / `sonnet`); a live request can override backend+model per-run via a contextvar. `available_models()` lists choices for the UI; wires Anthropic `cache_control` for system prompts |
 | `alpha_swarms/safeguards.py` | Budget safeguards: circuit breaker (kills a run past 15 LLM calls), per-run cost estimate incl. cache accounting, persistent global spend counter (`data/spend.json`) |
 | `alpha_swarms/snapshot.py` | Point-in-time Snapshot layer (ADR 0002): Pydantic models, the leak validator (no datum dated after as-of), whitelist (= snapshot files on disk), loader that never touches Outcomes |
 | `alpha_swarms/ingest.py` | Snapshot ingestion (ADR 0006): prices + last *reported* fundamentals from yfinance, date-ranged historical news from Finnhub (`FINNHUB_API_KEY`; yfinance current-news fallback), leak-validated and persisted with the held-out Outcome. Runs via the CLI or `POST /snapshots` — always completes before any agent runs |
@@ -169,11 +169,11 @@ uv run pytest
 
 | Variable | Purpose | Default |
 |---|---|---|
-| `LLM_BACKEND` | *Default* chat model: `ollama` \| `groq` \| `haiku` \| `sonnet`. Required at startup (`LLM_BACKEND=ollama` for free dev). The UI can override backend+model per live run (`GET /models`); a run never switches model mid-flight | unset |
+| `LLM_BACKEND` | *Default* chat model: `ollama` \| `haiku` \| `sonnet`. Required at startup (`LLM_BACKEND=ollama` for free dev). The UI can override backend+model per live run (`GET /models`); a run never switches model mid-flight | unset |
 | `OLLAMA_MODEL` | Default local model for the `ollama` backend (the UI model dropdown overrides it per-run) | `qwen2.5:7b` |
 | `DEBATE_TOOLS` | Enable the debate-phase tool-calling increment (#8): Red-Team + rebuttals fetch cached evidence via tools. Off = the pre-sliced #6 baseline | unset (off) |
 | `RESILIENT` | When set, a debate node whose LLM output fails *abstains* (contributes nothing) so the run still reaches a verdict, instead of aborting with a terminal `error`. Set it when recording local demo takes on the flaky local models; leave off for the honest fail-loud default. The budget breaker always stays loud | unset (off) |
-| `ANTHROPIC_API_KEY` / `GROQ_API_KEY` | Provider keys, needed only for their backends | — |
+| `ANTHROPIC_API_KEY` | Provider key, needed only for the Claude backends | — |
 | `FINNHUB_API_KEY` | When set, snapshot builds source historical date-ranged company news from Finnhub (window = `NEWS_DAYS`) instead of yfinance current-news. Optional — falls back to yfinance when unset. Free key at [finnhub.io](https://finnhub.io); put it in `backend/.env` (auto-loaded) | unset |
 | `NEWS_DAYS` | Finnhub news lookback window (days before as-of) when building a snapshot | `30` |
 | `NEWS_CAP` | Max news items kept per snapshot. Raising it enlarges the Sentiment + Red-Team prompts — mind the model's context window | `50` |

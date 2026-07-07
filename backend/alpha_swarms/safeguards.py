@@ -17,7 +17,7 @@ from langchain_core.callbacks import BaseCallbackHandler
 MAX_CALLS_PER_RUN = 15  # covers ~10-12 calls of a full tool-calling run
 
 # $ per M tokens, matched by model-name prefix: (input, output, cache_write, cache_read)
-# Non-Anthropic backends (ollama, groq free tier) fall through to $0.
+# Non-Anthropic backends (ollama) fall through to $0.
 PRICES_PER_MTOK = {
     "claude-sonnet": (3.0, 15.0, 3.75, 0.30),
     "claude-haiku": (1.0, 5.0, 1.25, 0.10),

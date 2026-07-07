@@ -120,7 +120,7 @@ def test_global_spend_counter_persists_across_runs(tmp_path, monkeypatch):
 
 
 def test_all_planned_backends_registered():
-    assert set(BACKENDS) == {"ollama", "groq", "haiku", "sonnet"}
+    assert set(BACKENDS) == {"ollama", "haiku", "sonnet"}
 
 
 def test_unknown_backend_fails_fast(monkeypatch):

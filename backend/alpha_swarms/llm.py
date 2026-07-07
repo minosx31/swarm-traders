@@ -33,12 +33,6 @@ def _ollama(model=None):
     return ChatOllama(model=model, num_ctx=8192, **kwargs)
 
 
-def _groq(model=None):
-    from langchain_groq import ChatGroq
-
-    return ChatGroq(model=model or "llama-3.3-70b-versatile")
-
-
 def _haiku(model=None):
     from langchain_anthropic import ChatAnthropic
 
@@ -51,7 +45,7 @@ def _sonnet(model=None):
     return ChatAnthropic(model=model or "claude-sonnet-5")
 
 
-BACKENDS.update(ollama=_ollama, groq=_groq, haiku=_haiku, sonnet=_sonnet)
+BACKENDS.update(ollama=_ollama, haiku=_haiku, sonnet=_sonnet)
 
 ANTHROPIC_BACKENDS = {"haiku", "sonnet"}
 

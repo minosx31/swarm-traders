@@ -109,7 +109,7 @@ export interface WhitelistPair {
 
 /** A selectable (backend, model) pair from GET /models. */
 export interface ModelOption {
-  backend: string // llm.py backend name: ollama | haiku | sonnet | groq
+  backend: string // llm.py backend name: ollama | haiku | sonnet
   model: string
   label: string
   paid: boolean // true ⇒ real API credits (Claude); UI warns + confirms
