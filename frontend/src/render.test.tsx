@@ -12,11 +12,13 @@ import { join } from 'node:path'
 import { cleanup, render, screen } from '@testing-library/react'
 
 afterEach(cleanup)
-import { Lane } from './Lane'
+import { Thread } from './Thread'
 import { VerdictPanel } from './VerdictPanel'
 import { Provenance } from './Provenance'
 import { debateReducer, initialState } from './reducer'
 import type { DebateEvent } from './types'
+
+const noOutcome = { outcome: null, onReveal: () => {}, outcomeError: null }
 
 const FIXTURES = join(import.meta.dir, 'fixtures')
 const loadFixture = (name: string): { events: DebateEvent[] } =>
@@ -28,16 +30,16 @@ test('a recorded verdict run reduces and renders: lanes, gate results, verdict',
 
   render(
     <main>
-      <Lane agent="fundamentals" lane={state.lanes.fundamentals} />
-      <Lane agent="sentiment" lane={state.lanes.sentiment} />
-      <Lane agent="technicals" lane={state.lanes.technicals} />
-      <VerdictPanel state={state} ticker="NVDA" asOf="2026-07-02" />
+      <Thread agent="fundamentals" lane={state.lanes.fundamentals} />
+      <Thread agent="sentiment" lane={state.lanes.sentiment} />
+      <Thread agent="technicals" lane={state.lanes.technicals} />
+      <VerdictPanel state={state} {...noOutcome} />
     </main>,
   )
 
-  expect(screen.getByText('FUNDAMENTALS')).toBeTruthy()
+  expect(screen.getByText('Fundamentals')).toBeTruthy()
   // this frozen fixture: sentiment gated out, verdict BEAR, N=2
-  expect(screen.getByText('GATED OUT · NO VOTE')).toBeTruthy()
+  expect(screen.getByText('ABSTAINED · NO VOTE')).toBeTruthy()
   expect(screen.getByText('BEAR')).toBeTruthy()
   expect(screen.getByText('N=2')).toBeTruthy()
   // structural invariants that hold for ANY verdict run, whatever the model said:
@@ -53,7 +55,7 @@ test('the provenance manifest derives grounded ratio + voting lenses from state'
   const { events } = loadFixture('verdict-run.json')
   const state = events.reduce(debateReducer, initialState)
 
-  render(<Provenance state={state} ticker="NVDA" asOf="2026-07-02" replay={false} />)
+  render(<Provenance state={state} ticker="NVDA" asOf="2026-07-02" />)
 
   // specialist grounding across the three lanes: 2 + 0 + 4 = 6 grounded of 7 cited
   expect(screen.getByText('6')).toBeTruthy()
@@ -69,12 +71,12 @@ test('an error-terminated recorded run still renders lanes without crashing', ()
   expect(state.phase).toBe('error')
   const { unmount } = render(
     <main>
-      <Lane agent="fundamentals" lane={state.lanes.fundamentals} />
-      <Lane agent="sentiment" lane={state.lanes.sentiment} />
-      <Lane agent="technicals" lane={state.lanes.technicals} />
+      <Thread agent="fundamentals" lane={state.lanes.fundamentals} />
+      <Thread agent="sentiment" lane={state.lanes.sentiment} />
+      <Thread agent="technicals" lane={state.lanes.technicals} />
     </main>,
   )
-  // lanes that got a thesis before the error still render it
-  expect(screen.getByText('FUNDAMENTALS')).toBeTruthy()
+  // threads that got a thesis before the error still render it
+  expect(screen.getByText('Fundamentals')).toBeTruthy()
   unmount()
 })
