@@ -6,11 +6,10 @@
 import { SPECIALISTS } from './types'
 import type { DebateState } from './reducer'
 
-export function Provenance({ state, ticker, asOf, replay }: {
+export function Provenance({ state, ticker, asOf }: {
   state: DebateState
   ticker: string
   asOf: string
-  replay: boolean
 }) {
   const lanes = SPECIALISTS.map((s) => state.lanes[s])
   const grounded = lanes.reduce((n, l) => n + (l.grounding?.grounded ?? 0), 0)
@@ -22,10 +21,10 @@ export function Provenance({ state, ticker, asOf, replay }: {
   const pct = cited > 0 ? Math.round((grounded / cited) * 100) : 0
 
   return (
-    <div className="flex flex-wrap items-center gap-x-5 gap-y-2 border-b border-hairline bg-surface/60 px-5 py-2.5">
+    <div className="flex flex-wrap items-center gap-x-5 gap-y-2 border-b border-hairline bg-surface/60 px-[30px] py-[11px]">
       <div className="flex items-center gap-2">
         <span className="rounded-[4px] border border-hairline px-2 py-[3px] font-mono text-[9.5px] font-semibold tracking-[0.16em] text-ink-3">
-          {replay ? 'REPLAY' : 'SNAPSHOT'}
+          SNAPSHOT
         </span>
         {ticker && asOf ? (
           <span className="tnum text-[14px] text-ink">
@@ -98,7 +97,7 @@ export function Provenance({ state, ticker, asOf, replay }: {
       <span className="ml-auto flex items-center gap-2 text-[10px] tracking-[0.14em] text-ink-3">
         POINT-IN-TIME ≤ AS-OF
         <span className="text-ink-3/40" aria-hidden>·</span>
-        <span style={{ color: '#d9a441' }}>⬗ OUTCOME SEALED</span>
+        <span style={{ color: 'var(--color-neutralpole)' }}>◈ OUTCOME SEALED</span>
       </span>
     </div>
   )

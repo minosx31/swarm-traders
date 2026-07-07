@@ -2,33 +2,41 @@
 @import '@fontsource/ibm-plex-mono/400.css';
 @import '@fontsource/ibm-plex-mono/500.css';
 @import '@fontsource/ibm-plex-mono/600.css';
-@import '@fontsource/instrument-serif/400.css';
-@import '@fontsource/instrument-serif/400-italic.css';
+@import '@fontsource/space-grotesk/400.css';
+@import '@fontsource/space-grotesk/500.css';
+@import '@fontsource/space-grotesk/600.css';
+@import '@fontsource/space-grotesk/700.css';
+@import '@fontsource/spectral/400.css';
+@import '@fontsource/spectral/500.css';
+@import '@fontsource/spectral/600.css';
+@import '@fontsource/spectral/400-italic.css';
+@import '@fontsource/spectral/500-italic.css';
 
 @theme {
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
-  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-sans: 'Space Grotesk', system-ui, sans-serif;
+  --font-display: 'Spectral', Georgia, serif;
 
-  /* terminal-courtroom surfaces (validated as chart surface #0e1210) */
-  --color-page: #0a0d0b;
-  --color-surface: #0e1210;
-  --color-raised: #141a16;
-  --color-ink: #f2f4ef;
-  --color-ink-2: #c2c9bd;
-  --color-ink-3: #929c91;
-  --color-hairline: rgba(242, 244, 239, 0.09);
+  /* ink-on-slate surfaces (Swarm Traders redesign) */
+  --color-page: #14161b;
+  --color-surface: #1c1f26;
+  --color-raised: #232733;
+  --color-ink: #e9eaee;
+  --color-ink-2: #b3b7c2;
+  --color-ink-3: #7d828f;
+  --color-hairline: rgba(255, 255, 255, 0.08);
 
-  /* agent identity — categorical, fixed order, CVD-validated on #0e1210 */
-  --color-fundamentals: #3987e5;
-  --color-sentiment: #d55181;
-  --color-technicals: #c98500;
-  --color-redteam: #d95926;
-  --color-judge: #199e70;
+  /* agent identity — categorical, fixed order */
+  --color-fundamentals: #6aa8f0;
+  --color-sentiment: #e08ab0;
+  --color-technicals: #e0b062;
+  --color-redteam: #e58a6a;
+  --color-judge: #6cc9a4;
 
   /* polarity (status roles, always paired with a label/icon, never alone) */
-  --color-bull: #0ca30c;
-  --color-bear: #d03b3b;
-  --color-neutralpole: #898781;
+  --color-bull: #5fbf8f;
+  --color-bear: #e07a6a;
+  --color-neutralpole: #d9b877;
 }
 
 html {
@@ -37,53 +45,58 @@ html {
 
 body {
   margin: 0;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   color: var(--color-ink);
   font-size: 14px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── atmosphere: vignette + faint scanlines ─────────────────────────── */
-.atmosphere::before {
-  content: '';
+/* ── atmosphere: two soft radial washes from the top (rendered as a fixed
+   background layer behind the app content — see App's <div class="atmosphere">) */
+.atmosphere {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 50;
+  z-index: 0;
   background:
-    radial-gradient(120% 90% at 50% 0%, transparent 55%, rgba(4, 6, 5, 0.55) 100%),
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.014) 0 1px, transparent 1px 3px);
+    radial-gradient(120% 80% at 50% -8%, rgba(108, 201, 164, 0.06), transparent 60%),
+    radial-gradient(90% 60% at 100% 0%, rgba(106, 168, 240, 0.05), transparent 55%);
 }
 
 /* ── event entrance ─────────────────────────────────────────────────── */
 @keyframes card-in {
-  from { opacity: 0; transform: translateY(9px); }
+  from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 .card-in {
-  animation: card-in 0.45s cubic-bezier(0.2, 0.9, 0.25, 1) both;
+  animation: card-in 0.5s cubic-bezier(0.2, 0.9, 0.25, 1) both;
 }
 
 /* ── "thinking" cursor pulse ────────────────────────────────────────── */
-@keyframes blink { 0%, 55% { opacity: 1; } 56%, 100% { opacity: 0.15; } }
+@keyframes blink { 0%, 55% { opacity: 1; } 56%, 100% { opacity: 0.12; } }
 .thinking-dot { animation: blink 1.1s steps(1) infinite; }
 
 /* ── the verdict stamp ──────────────────────────────────────────────── */
 @keyframes stamp {
-  0% { opacity: 0; transform: scale(2.1) rotate(-9deg); }
-  62% { opacity: 1; transform: scale(0.94) rotate(-2deg); }
-  80% { transform: scale(1.04) rotate(-3deg); }
-  100% { transform: scale(1) rotate(-3deg); }
+  0% { opacity: 0; transform: scale(1.6) rotate(-6deg); }
+  60% { opacity: 1; transform: scale(0.97) rotate(-1.5deg); }
+  100% { transform: scale(1) rotate(-2deg); }
 }
 .stamp {
-  animation: stamp 0.5s cubic-bezier(0.2, 0.8, 0.3, 1.2) both;
+  animation: stamp 0.55s cubic-bezier(0.2, 0.8, 0.3, 1.2) both;
 }
 
 /* ── stance meter fill ──────────────────────────────────────────────── */
 .meter-fill {
-  transition: width 0.7s cubic-bezier(0.25, 1, 0.35, 1);
+  transition: width 0.7s cubic-bezier(0.25, 1, 0.35, 1), left 0.7s cubic-bezier(0.25, 1, 0.35, 1);
 }
+
+/* ── orchestration diagram: node halo + flowing edges ───────────────── */
+@keyframes halo { 0%, 100% { opacity: 0.85; } 50% { opacity: 0.28; } }
+.halo { animation: halo 2s ease-in-out infinite; }
+@keyframes flow-dash { to { stroke-dashoffset: -100; } }
+.flow-dash { animation: flow-dash 2.4s linear infinite; }
 
 .tnum {
   font-variant-numeric: tabular-nums;
@@ -91,8 +104,8 @@ body {
 
 /* ── selection: judge-green wash ─────────────────────────────────────── */
 ::selection {
-  background: rgba(25, 158, 112, 0.32);
-  color: var(--color-ink);
+  background: rgba(108, 201, 164, 0.3);
+  color: #f4f6f2;
 }
 
 /* ── disclosure: the "N citations failed validation" expander ───────────
@@ -115,11 +128,15 @@ details.disc[open] > summary { color: var(--color-ink-2); }
 details.disc[open] .disc-caret::before { transform: rotate(90deg); }
 details.disc[open] .disc-body { animation: card-in 0.3s cubic-bezier(0.2, 0.9, 0.25, 1) both; }
 
+/* ── evidence row hover (click-to-verify) ───────────────────────────── */
+.ev-row { transition: background 0.15s ease; }
+.ev-row:hover { background: rgba(255, 255, 255, 0.03); }
+
 /* ── segmented control (LIVE / REPLAY) active thumb slide ─────────────── */
 .seg-active {
   transition: background 0.2s ease, color 0.2s ease;
 }
 
 /* ── LIVE indicator: a slow breathing pulse ─────────────────────────────── */
-@keyframes live-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-.live-dot { animation: live-pulse 1.6s ease-in-out infinite; }
+@keyframes live-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+.live-dot { animation: live-pulse 1.7s ease-in-out infinite; }
