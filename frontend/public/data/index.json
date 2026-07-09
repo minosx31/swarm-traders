@@ -13,25 +13,37 @@
   },
   {
     "ticker": "MSFT",
-    "as_of": "2026-05-01",
+    "as_of": "2026-05-30",
     "has_outcome": true,
     "runs": [
       {
-        "run": "MSFT_2026-05-01_llama3.1-latest_20260705T142549Z_10470_75d1f42ea380.json",
-        "model": "llama3.1-latest",
-        "recorded_at": "20260705T142549Z"
+        "run": "MSFT_2026-05-30_haiku_20260709T152824Z_42072_747fc4e55100.json",
+        "model": "haiku",
+        "recorded_at": "20260709T152824Z"
       }
     ]
   },
   {
-    "ticker": "PLTR",
-    "as_of": "2026-06-01",
+    "ticker": "MSFT",
+    "as_of": "2026-06-03",
     "has_outcome": true,
     "runs": [
       {
-        "run": "PLTR_2026-06-01_llama3.1-latest_20260705T151426Z_72932_7935ce24fe80.json",
-        "model": "llama3.1-latest",
-        "recorded_at": "20260705T151426Z"
+        "run": "MSFT_2026-06-03_haiku_20260709T153038Z_42072_747fc4d535c0.json",
+        "model": "haiku",
+        "recorded_at": "20260709T153038Z"
+      }
+    ]
+  },
+  {
+    "ticker": "SPCX",
+    "as_of": "2026-06-29",
+    "has_outcome": true,
+    "runs": [
+      {
+        "run": "SPCX_2026-06-29_haiku_20260709T142723Z_83804_7835b877ef40.json",
+        "model": "haiku",
+        "recorded_at": "20260709T142723Z"
       }
     ]
   }

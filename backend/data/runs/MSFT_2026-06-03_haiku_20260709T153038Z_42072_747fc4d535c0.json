@@ -1,0 +1,391 @@
+{
+  "ticker": "MSFT",
+  "as_of": "2026-06-03",
+  "model": "haiku",
+  "recorded_at": "20260709T153038Z",
+  "events": [
+    {
+      "type": "agent_start",
+      "agent": "fundamentals"
+    },
+    {
+      "type": "agent_start",
+      "agent": "sentiment"
+    },
+    {
+      "type": "agent_start",
+      "agent": "technicals"
+    },
+    {
+      "type": "thesis",
+      "agent": "technicals",
+      "stance": -0.35,
+      "summary": "MSFT shows mixed technicals with near-term momentum offsetting longer-term weakness. Price is 6% below the 200-day MA with a 21% drawdown from 52-week highs, but short-term returns and position above 20/50-day MAs suggest some support.",
+      "evidence": [
+        {
+          "kind": "numeric",
+          "claim": "Price is 6.14% below the 200-day simple moving average, indicating a longer-term downtrend.",
+          "citation_key": "technicals.pct_vs_sma_200",
+          "cited_value": -0.061429,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Stock has declined 20.67% from its 52-week high, showing significant weakness from recent peaks.",
+          "citation_key": "technicals.pct_vs_high_52w",
+          "cited_value": -0.206659,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Six-month return is negative at -11.81%, reflecting weakness over the intermediate timeframe.",
+          "citation_key": "technicals.return_6m",
+          "cited_value": -0.118127,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Price trades 1.36% above the 20-day SMA and 5.35% above the 50-day SMA, showing near-term support.",
+          "citation_key": "technicals.pct_vs_sma_20",
+          "cited_value": 0.013645,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "One-month return of 3.54% indicates recent positive momentum in the short term.",
+          "citation_key": "technicals.return_1m",
+          "cited_value": 0.035408,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Volume on latest bar is 5.01% above the 20-day average, showing moderate participation.",
+          "citation_key": "technicals.volume_latest_vs_avg_20",
+          "cited_value": 0.050062,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "grounding",
+      "agent": "technicals",
+      "gated_in": true,
+      "grounded": 6,
+      "dropped": 0
+    },
+    {
+      "type": "thesis",
+      "agent": "fundamentals",
+      "stance": 0.7,
+      "summary": "Microsoft shows strong fundamentals with exceptional profitability metrics and a fortress balance sheet. Q1 FY2026 delivered 68% gross margins, 46% operating margins, and robust net income of $31.8B on $82.9B revenue, underpinned by a healthy debt-to-equity ratio of 0.08 and substantial retained earnings of $302.5B.",
+      "evidence": [
+        {
+          "kind": "numeric",
+          "claim": "Microsoft's gross profit margin stands at 67.6%, demonstrating powerful underlying business economics.",
+          "citation_key": "income_stmt.gross_profit",
+          "cited_value": 56058000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Operating income of $38.4B represents a healthy 46.3% operating margin for the quarter.",
+          "citation_key": "income_stmt.operating_income",
+          "cited_value": 38398000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Net income reached $31.8B with a robust 38.3% net profit margin.",
+          "citation_key": "income_stmt.net_income",
+          "cited_value": 31778000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "The balance sheet is fortress-like with total assets of $694.2B supporting only $279.9B in liabilities.",
+          "citation_key": "balance_sheet.total_assets",
+          "cited_value": 694228000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Long-term debt of only $31.4B paired with stockholders' equity of $414.4B yields a conservative debt-to-equity ratio of 0.076.",
+          "citation_key": "balance_sheet.long_term_debt",
+          "cited_value": 31423000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Stockholders' equity stands at $414.4B with $302.5B in retained earnings, signaling management's effective capital allocation.",
+          "citation_key": "balance_sheet.retained_earnings",
+          "cited_value": 302526000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Current ratio of 1.28 ($175.3B current assets vs. $136.7B current liabilities) demonstrates solid near-term liquidity.",
+          "citation_key": "balance_sheet.current_assets",
+          "cited_value": 175329000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Diluted EPS of $4.27 reflects strong per-share value creation for investors.",
+          "citation_key": "income_stmt.eps_diluted",
+          "cited_value": 4.27,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "grounding",
+      "agent": "fundamentals",
+      "gated_in": true,
+      "grounded": 8,
+      "dropped": 0
+    },
+    {
+      "type": "thesis",
+      "agent": "sentiment",
+      "stance": 0.35,
+      "summary": "Microsoft faces near-term headwinds from broad market weakness due to Middle East escalation fears, but demonstrates strong strategic positioning through AI self-sufficiency, partnership expansions, and positive earnings fundamentals. TCI Fund's 85% cut signals tactical weakness, though insider initiatives suggest confidence in long-term AI monetization potential.",
+      "evidence": [
+        {
+          "kind": "textual",
+          "claim": "Broad market sell-off on geopolitical tensions hurt tech stocks including MSFT on June 3.",
+          "source_id": "fh-140517172",
+          "quoted_span": "The S&P 500 and Nasdaq Composite fell for the first time in 10 sessions on Wednesday. The S&P 500 fell 0.7%, while the Nasdaq dropped 0.9%. Big Tech Is a Big Loser.",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=c83fc8e63ffc114bf374f76e58be8729eccf802f258ddea825b543c14ee0a74a",
+          "verified_quote": false
+        },
+        {
+          "kind": "textual",
+          "claim": "Major hedge fund TCI Fund Management cut Microsoft holdings by 85% in Q1 2026.",
+          "source_id": "fh-140518721",
+          "quoted_span": "TCI Fund Management's Q1 2026 13F: portfolio fell to $45.17B; boosted Visa, Alphabet & S&P Global, cut Microsoft 85%.",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=4dd1443ecd48029e58a914afd0303b3709035712a358b643dbc425ebe3e07ecc",
+          "verified_quote": false
+        },
+        {
+          "kind": "textual",
+          "claim": "Microsoft launched seven new in-house AI models including its first reasoning model to reduce OpenAI reliance.",
+          "source_id": "fh-140513118",
+          "quoted_span": "Microsoft introduced seven new in-house AI models, including its first reasoning model, MAI-Thinking-1, developed by its superintelligence team.",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=eab5c7bb3d1cf05ea337f46b37b0a2ca60d9f22c7d8e9e0d256cdec93133a71d",
+          "verified_quote": true
+        },
+        {
+          "kind": "textual",
+          "claim": "Microsoft deepened healthcare AI partnerships with Mayo Clinic and embedded advanced AI into clinical workflows.",
+          "source_id": "fh-140513118",
+          "quoted_span": "Microsoft has launched new healthcare and life sciences AI collaborations, including a frontier clinical reasoning model co-developed with Mayo Clinic.",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=eab5c7bb3d1cf05ea337f46b37b0a2ca60d9f22c7d8e9e0d256cdec93133a71d",
+          "verified_quote": false
+        },
+        {
+          "kind": "textual",
+          "claim": "Wells Fargo identified lower third-party reliance as a positive strategic development for Microsoft's AI future.",
+          "source_id": "fh-140517180",
+          "quoted_span": "Microsoft is building more of its AI future in house \u2014 Wells Fargo Sees Lower Third Party Reliance Ahead",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=7bc6e78a6e6de858de8569683246e1a8290472a1494f3ab46f1fd56e6621194f",
+          "verified_quote": false
+        },
+        {
+          "kind": "textual",
+          "claim": "Microsoft delivered top and bottom-line earnings beats despite stock decline amid broader market weakness.",
+          "source_id": "fh-140512079",
+          "quoted_span": "Microsoft (MSFT) Slid Despite Top and Bottom-Line Beats",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=e00048e071d3e0a28f37ddd5d702dd4935de518e11f12395c5c7fa7d69530fef",
+          "verified_quote": true
+        },
+        {
+          "kind": "textual",
+          "claim": "Analyst assess Microsoft as a Strong Buy opportunity with ~23% upside based on AI monetization shifts and attractive valuation.",
+          "source_id": "fh-140515623",
+          "quoted_span": "Microsoft (MSFT) Strong Buy: AI monetization shifts, Copilot multi-model strategy, and attractive valuation suggest ~23% upside",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=cb72bf9c40b4c95b3909a3ef5f62615c13b088e5d47e6a06ff4aae914a39aea4",
+          "verified_quote": true
+        }
+      ]
+    },
+    {
+      "type": "grounding",
+      "agent": "sentiment",
+      "gated_in": true,
+      "grounded": 7,
+      "dropped": 0
+    },
+    {
+      "type": "agent_start",
+      "agent": "red_team"
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "fundamentals",
+      "kind": "logical",
+      "critique": "The thesis ignores that goodwill represents 17.2% of total assets ($119.7B of $694.2B), which is substantial intangible capital that would evaporate in a market downturn and artificially inflates the 'fortress' appearance of balance-sheet quality.",
+      "counter_evidence": []
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "fundamentals",
+      "kind": "evidence",
+      "critique": "While net margins are strong at 38.3%, this relies on a tax rate of only 19.2% ($7.6B income tax on $39.6B pre-tax income), which is unusually low and suggests non-recurring benefits or jurisdictional optimization that may not be sustainable.",
+      "counter_evidence": [
+        {
+          "kind": "numeric",
+          "claim": "Microsoft's effective tax rate in Q1 FY2026 was 19.2%, significantly below the U.S. statutory rate of 21%.",
+          "citation_key": "income_stmt.income_tax",
+          "cited_value": 7562000000.0,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "sentiment",
+      "kind": "evidence",
+      "critique": "The thesis cites TCI Fund's 85% reduction as 'tactical weakness' despite strong fundamentals, but ignores that this represents institutional conviction that Microsoft is overvalued relative to near-term catalysts\u2014a significant contradiction to the +0.35 bull stance.",
+      "counter_evidence": [
+        {
+          "kind": "textual",
+          "claim": "TCI Fund Management cut Microsoft holdings by 85% in Q1 2026, signaling institutional skepticism.",
+          "source_id": "fh-140518721",
+          "quoted_span": "cut Microsoft 85%",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=4dd1443ecd48029e58a914afd0303b3709035712a358b643dbc425ebe3e07ecc",
+          "verified_quote": true
+        }
+      ]
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "sentiment",
+      "kind": "logical",
+      "critique": "The thesis cherry-picks positive AI catalysts (in-house models, Mayo Clinic partnership, Wells Fargo approval) while simultaneously acknowledging geopolitical headwinds and broad market weakness, yet assigns a modest +0.35 stance that underweights how quickly sentiment can reverse if earnings growth doesn't materialize.",
+      "counter_evidence": []
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "technicals",
+      "kind": "logical",
+      "critique": "The thesis claims near-term support above the 20/50-day MAs, but the stock is down 11.81% over 6 months while up only 3.54% in 1 month\u2014this pattern suggests a dead-cat bounce within a deteriorating intermediate trend, not sustainable support.",
+      "counter_evidence": []
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "technicals",
+      "kind": "evidence",
+      "critique": "The thesis underplays the severity of the 20.67% decline from 52-week highs by calling it 'significant weakness from recent peaks,' but this magnitude combined with the 6.14% break below the 200-day MA signals a confirmed downtrend that is unlikely to reverse without a major catalyst.",
+      "counter_evidence": [
+        {
+          "kind": "numeric",
+          "claim": "MSFT has fallen 20.67% from its 52-week high of $538.66, dropping from $538.66 to $427.34.",
+          "citation_key": "technicals.pct_vs_high_52w",
+          "cited_value": -0.206659,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "grounding",
+      "agent": "red_team",
+      "gated_in": true,
+      "grounded": 6,
+      "dropped": 0
+    },
+    {
+      "type": "agent_start",
+      "agent": "fundamentals"
+    },
+    {
+      "type": "agent_start",
+      "agent": "sentiment"
+    },
+    {
+      "type": "agent_start",
+      "agent": "technicals"
+    },
+    {
+      "type": "rebuttal",
+      "agent": "technicals",
+      "proposed_stance": -0.5,
+      "response": "The attacker's observation about the dead-cat bounce pattern has merit: [technicals.return_6m] the -11.81% six-month return against [technicals.return_1m] the +3.54% one-month return does reveal a sharp reversal that lacks conviction within a deteriorating intermediate trend. However, my characterization stands on the data\u2014[technicals.pct_vs_sma_20] price remains 1.36% above the 20-day SMA and [technicals.pct_vs_sma_50] 5.35% above the 50-day SMA, which are tactically meaningful even if the macro trend is broken. I concede that the confirmed downtrend (200-day MA break + 20.67% 52-week drawdown) dominates the outlook, and revise my stance to -0.50 to reflect that intermediate deterioration is now the primary driver\u2014but the near-term technicals remain a marginal cushion against immediate capitulation."
+    },
+    {
+      "type": "rebuttal",
+      "agent": "fundamentals",
+      "proposed_stance": 0.55,
+      "response": "The goodwill critique lands meaningfully: [balance_sheet.goodwill] goodwill of $119.7B represents 17.2% of [balance_sheet.total_assets] total assets of $694.2B, which does inflate tangible fortress quality and warrants a more conservative framing. I concede the balance sheet strength should be recharacterized around *liquid* fundamentals rather than absolute balance sheet size. However, the tax rate attack overstates the concern: [income_stmt.income_tax] $7.6B tax on [income_stmt.net_income] $31.8B net income yields an effective rate of 19.3% on pre-tax of $39.4B, which is low but not unprecedented for a company with substantial IP, cloud infrastructure, and legitimate jurisdictional optimization\u2014and critically, this rate is *disclosed and audited*, not hidden. The core thesis survives: profitability metrics ([income_stmt.operating_income] $38.4B operating income, [income_stmt.eps_diluted] $4.27 diluted EPS) remain exceptional and directly drive valuation. I revise to +0.55, trading off tangible asset quality against undeniable earnings power."
+    },
+    {
+      "type": "rebuttal",
+      "agent": "sentiment",
+      "proposed_stance": 0.28,
+      "response": "I concede the logical force of the cherry-picking critique: citing seven in-house AI models [fh-140513118] and Mayo Clinic partnerships [fh-140513118] while acknowledging Middle East escalation [fh-140517172] and broad market weakness creates an inconsistency that justifies downward stance pressure. However, the \"overvaluation\" attack conflates TCI's tactical reposition with fundamental weakness\u2014TCI's 85% cut [fh-140518721] coincided with cutting Alphabet by far less while raising Visa and S&P Global, suggesting sector rotation, not conviction that MSFT is overvalued; moreover, Wells Fargo explicitly cited lower third-party reliance as a positive strategic development [fh-140517180], and Microsoft delivered earnings beats [fh-140512079] despite the stock decline. I revise from +0.35 to +0.28: nearer-term headwinds (geopolitical [fh-140524336], valuation anxiety [fh-140515847]) merit reduced conviction, but AI self-sufficiency and monetization catalysts remain intact."
+    },
+    {
+      "type": "agent_start",
+      "agent": "judge"
+    },
+    {
+      "type": "adjudication",
+      "agent": "fundamentals",
+      "adjudicated_stance": 0.58,
+      "attacks_landed": [
+        "The thesis ignores that goodwill represents 17.2% of total assets ($119.7B of $694.2B), which is substantial intangible capital that would evaporate in a market downturn and artificially inflates the 'fortress' appearance of balance-sheet quality."
+      ],
+      "rationale": "The goodwill critique landed decisively\u201417.2% of total assets is material and does inflate fortress quality claims; the rebuttal's concession is justified. The tax rate attack overstates concern given disclosure, audit standards, and IP-driven legitimacy. Earnings power and profitability metrics remain exceptional despite the balance-sheet recharacterization; stance adjusted down from +0.70 to reflect tangible asset quality concerns, but strong net margins and operating leverage sustain a meaningfully positive posture."
+    },
+    {
+      "type": "adjudication",
+      "agent": "sentiment",
+      "adjudicated_stance": 0.22,
+      "attacks_landed": [
+        "The thesis cherry-picks positive AI catalysts (in-house models, Mayo Clinic partnership, Wells Fargo approval) while simultaneously acknowledging geopolitical headwinds and broad market weakness, yet assigns a modest +0.35 stance that underweights how quickly sentiment can reverse if earnings growth doesn't materialize."
+      ],
+      "rationale": "The cherry-picking critique lands\u2014the thesis assembles bullish AI evidence while acknowledging geopolitical and market headwinds in a way that creates tension with the +0.35 stance, justifying downward pressure. The 'overvaluation' attack conflates TCI's sector rotation with fundamental weakness (TCI cut Alphabet less and raised Visa/S&P Global), which the rebuttal correctly disarms. Earnings beats, AI self-sufficiency, and Wells Fargo's positive framing remain intact but weakened by acknowledged near-term sentiment fragility; stance revised down further to +0.22 to reflect material hedge-fund conviction and geopolitical/sentiment reversal risk."
+    },
+    {
+      "type": "adjudication",
+      "agent": "technicals",
+      "adjudicated_stance": -0.52,
+      "attacks_landed": [
+        "The stock is down 11.81% over 6 months while up only 3.54% in 1 month\u2014this pattern suggests a dead-cat bounce within a deteriorating intermediate trend, not sustainable support."
+      ],
+      "rationale": "The dead-cat bounce critique lands solidly: the sharp 6-month loss followed by 1-month gain reveals lack of conviction and confirms intermediate deterioration dominates near-term technicals. The 200-day MA break (6.14% below) plus 20.67% 52-week drawdown establish a confirmed downtrend that substantially outweighs the marginal 1.36% cushion above the 20-day SMA. The rebuttal's concession to intermediate deterioration as the primary driver is appropriate. Stance remains firmly negative, adjusted slightly lower to -0.52 to emphasize the confirmed downtrend as the controlling technical reality."
+    },
+    {
+      "type": "verdict",
+      "aggregate_stance": 0.093,
+      "direction": "neutral",
+      "conviction": 0.093,
+      "high_conviction": false,
+      "dissent": "high",
+      "voting_lenses": 3
+    }
+  ],
+  "usage": {
+    "llm_calls": 8,
+    "cost_usd": 0.053237,
+    "tokens": {
+      "input": 29027,
+      "output": 4842,
+      "cache_read": 0,
+      "cache_creation": 0
+    }
+  }
+}
