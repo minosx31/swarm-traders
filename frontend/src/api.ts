@@ -1,4 +1,4 @@
-import type { DebateEvent, ModelOption, Outcome, RunOption, WhitelistPair } from './types'
+import type { DebateEvent, ModelOption, Outcome, RunOption, SnapshotManifest, WhitelistPair } from './types'
 
 export const API_BASE = import.meta.env.VITE_API_BASE ?? 'http://localhost:8000'
 
@@ -79,6 +79,17 @@ export async function fetchWhitelist(): Promise<WhitelistPair[]> {
   if (STATIC) return (await loadIndex()).map(({ ticker, as_of }) => ({ ticker, as_of }))
   const res = await fetch(`${API_BASE}/whitelist`)
   if (!res.ok) throw new Error(`whitelist fetch failed: ${res.status}`)
+  return res.json()
+}
+
+/** The exact point-in-time snapshot fed to the agents — for the Provenance
+ *  manifest panel + per-citation cross-check. 404s when the pair isn't whitelisted. */
+export async function fetchSnapshotManifest(ticker: string, asOf: string): Promise<SnapshotManifest> {
+  const url = STATIC
+    ? asset(`data/snapshots/${ticker}_${asOf}.json`)
+    : `${API_BASE}/snapshot?ticker=${ticker}&as_of=${asOf}`
+  const res = await fetch(url)
+  if (!res.ok) throw new Error(`snapshot fetch failed: ${res.status}`)
   return res.json()
 }
 

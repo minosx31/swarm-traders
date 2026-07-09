@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { ensureSnapshot, fetchModels, fetchOutcome, fetchRuns, fetchWhitelist, STATIC } from './api'
+import { ensureSnapshot, fetchModels, fetchOutcome, fetchRuns, fetchSnapshotManifest, fetchWhitelist, STATIC } from './api'
 import { AgentChip } from './components'
 import { Orchestration } from './Orchestration'
 import { Provenance } from './Provenance'
@@ -7,7 +7,7 @@ import { Thread } from './Thread'
 import { useDebateStream } from './useDebateStream'
 import { VerdictFinale } from './VerdictFinale'
 import { VerdictPanel } from './VerdictPanel'
-import { SPECIALISTS, type ModelOption, type Outcome, type RunOption, type WhitelistPair } from './types'
+import { SPECIALISTS, type ModelOption, type Outcome, type RunOption, type SnapshotManifest, type WhitelistPair } from './types'
 
 // 20260704T031559Z -> "07-04 03:15" for the cached-run picker
 function fmtStamp(s: string): string {
@@ -31,6 +31,8 @@ export default function App() {
   // the sealed Outcome — held in App so the verdict rail and the finale reveal as one
   const [outcome, setOutcome] = useState<Outcome | null>(null)
   const [outcomeError, setOutcomeError] = useState<string | null>(null)
+  // the point-in-time snapshot the swarm is fed — non-fatal if it fails to load
+  const [manifest, setManifest] = useState<SnapshotManifest | null>(null)
 
   // The UI only ever presents "live". With a real backend that's a genuine live run;
   // in the bundled static demo (no backend) it transparently re-streams a cached run —
@@ -80,6 +82,18 @@ export default function App() {
     () => whitelist.some((p) => p.ticker === ticker.toUpperCase() && p.as_of === asOf),
     [whitelist, ticker, asOf],
   )
+
+  // the exact snapshot fed to the agents, for the Provenance manifest panel —
+  // only fetched for a whitelisted pair; a failure just means it renders without it
+  useEffect(() => {
+    if (!whitelisted) {
+      setManifest(null)
+      return
+    }
+    const t = ticker.toUpperCase()
+    fetchSnapshotManifest(t, asOf).then(setManifest, () => setManifest(null))
+  }, [whitelisted, ticker, asOf])
+
   const selected = useMemo(
     () => models.find((m) => `${m.backend}::${m.model}` === sel),
     [models, sel],
@@ -324,7 +338,7 @@ export default function App() {
         </div>
       )}
 
-      <Provenance state={state} ticker={ticker.toUpperCase()} asOf={asOf} />
+      <Provenance state={state} ticker={ticker.toUpperCase()} asOf={asOf} manifest={manifest} />
 
       {state.redTeam.toolActivity.length > 0 && (
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-redteam/30 bg-redteam/5 px-[30px] py-1.5 text-[12px] text-redteam">
@@ -363,7 +377,7 @@ export default function App() {
             ) : (
               <div className="flex flex-col gap-4">
                 {activeThreads.map((agent) => (
-                  <Thread key={agent} agent={agent} lane={state.lanes[agent]} />
+                  <Thread key={agent} agent={agent} lane={state.lanes[agent]} manifest={manifest} />
                 ))}
               </div>
             )}

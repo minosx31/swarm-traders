@@ -1,9 +1,10 @@
 """FastAPI app: GET /stream?ticker&as_of — the SSE live-debate feed.
 
 Also serves the small UI-facing reads: the whitelist (so the frontend can offer
-valid pairs) and the Outcome (revealed only after the Verdict — ADR 0002; it
-never touches the run path). replay=1 re-streams the latest recorded run
-through the same endpoint with the graph bypassed (#9).
+valid pairs), the Outcome (revealed only after the Verdict — ADR 0002; it
+never touches the run path), and the Snapshot manifest (exactly what data the
+agents were fed). replay=1 re-streams the latest recorded run through the same
+endpoint with the graph bypassed (#9).
 """
 
 import asyncio
@@ -19,9 +20,10 @@ from sse_starlette.sse import EventSourceResponse
 
 from .ingest import IngestError, ingest_pair
 from .llm import BACKENDS, available_models, validate_backend
+from .manifest import build_manifest
 from .replay import list_runs, resolve_run_path, stream_replay
 from .runner import stream_run
-from .snapshot import is_whitelisted, list_whitelisted, load_outcome
+from .snapshot import is_whitelisted, list_whitelisted, load_outcome, load_snapshot
 
 load_dotenv(Path(__file__).parent.parent / ".env")  # FINNHUB_API_KEY, provider keys, …
 
@@ -108,3 +110,15 @@ async def outcome(ticker: str, as_of: str):
     if data is None:
         raise HTTPException(status_code=404, detail=f"no outcome for ({ticker}, {as_of})")
     return data
+
+
+@app.get("/snapshot")
+async def snapshot(ticker: str, as_of: str):
+    """The manifest of exactly what data the agents were fed — same slices and
+    leak check the run path uses, never a re-derivation."""
+    if not is_whitelisted(ticker, as_of):
+        raise HTTPException(
+            status_code=404,
+            detail=f"({ticker}, {as_of}) is not a whitelisted snapshot",
+        )
+    return build_manifest(load_snapshot(ticker, as_of))

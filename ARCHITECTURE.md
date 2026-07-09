@@ -183,7 +183,9 @@ A **Snapshot** is a curated JSON bundle per `(ticker, as_of)` on a whitelist of
 2–3 hand-picked pairs. Every datum is stamped with an availability date and hard-
 filtered to `≤ as_of`; fundamentals are the last *reported* figures (checked by
 filing date, not period). The **Outcome** is stored separately and never reaches
-the blackboard. Uncached tickers are refused, never live-fetched.
+the blackboard. Uncached tickers are refused, never live-fetched. `GET /snapshot`
+exposes a read-only manifest of exactly what a Snapshot contains (bar counts,
+grounding key space, news) so the UI can show the agents' inputs.
 
 ---
 

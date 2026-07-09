@@ -9,20 +9,22 @@
 import { afterEach, expect, test } from 'bun:test'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 
 afterEach(cleanup)
 import { Thread } from './Thread'
 import { VerdictPanel } from './VerdictPanel'
 import { Provenance } from './Provenance'
+import { EvidenceList } from './components'
 import { debateReducer, initialState } from './reducer'
-import type { DebateEvent } from './types'
+import type { DebateEvent, SnapshotManifest } from './types'
 
 const noOutcome = { outcome: null, onReveal: () => {}, outcomeError: null }
 
 const FIXTURES = join(import.meta.dir, 'fixtures')
 const loadFixture = (name: string): { events: DebateEvent[] } =>
   JSON.parse(readFileSync(join(FIXTURES, name), 'utf8'))
+const manifest: SnapshotManifest = JSON.parse(readFileSync(join(FIXTURES, 'manifest.json'), 'utf8'))
 
 test('a recorded verdict run reduces and renders: lanes, gate results, verdict', () => {
   const { events } = loadFixture('verdict-run.json')
@@ -79,4 +81,74 @@ test('an error-terminated recorded run still renders lanes without crashing', ()
   // threads that got a thesis before the error still render it
   expect(screen.getByText('Fundamentals')).toBeTruthy()
   unmount()
+})
+
+test('the provenance strip renders manifest chips from a fixture manifest', () => {
+  const { events } = loadFixture('verdict-run.json')
+  const state = events.reduce(debateReducer, initialState)
+
+  render(<Provenance state={state} ticker="NVDA" asOf="2026-07-02" manifest={manifest} />)
+
+  // identity flips to "frozen {as_of}" once a manifest has loaded
+  expect(screen.getByText(/frozen 2026-07-02/)).toBeTruthy()
+  expect(screen.getByText(/Prices — 250d EOD/)).toBeTruthy()
+  expect(screen.getByText(/Fundamentals — 2026-04-30 \(10-Q\)/)).toBeTruthy()
+  expect(screen.getByText(/News — 2 sources/)).toBeTruthy()
+  // no leak violations in the fixture ⇒ the green "0 sources post-date as-of" chip
+  expect(screen.getByText(/0 sources post-date as-of/)).toBeTruthy()
+  expect(screen.getByText(/VIEW MANIFEST/)).toBeTruthy()
+})
+
+test('the manifest toggle expands fundamentals/technicals keys and news links', () => {
+  const { events } = loadFixture('verdict-run.json')
+  const state = events.reduce(debateReducer, initialState)
+
+  render(<Provenance state={state} ticker="NVDA" asOf="2026-07-02" manifest={manifest} />)
+
+  fireEvent.click(screen.getByText(/VIEW MANIFEST/))
+
+  expect(screen.getByText('income_stmt.Normalized EBITDA')).toBeTruthy()
+  expect(screen.getByText('technicals.return_1m')).toBeTruthy()
+  expect(screen.getByText('NVIDIA shares slide amid broader chip sector pullback')).toBeTruthy()
+})
+
+test('EvidenceRow shows the snapshot value + a source link when the manifest resolves the citation key', () => {
+  render(
+    <EvidenceList
+      evidence={[{
+        kind: 'numeric',
+        claim: 'The return over the past month is -0.124598',
+        citation_key: 'technicals.return_1m',
+        cited_value: -0.124598,
+        grounded: true,
+      }]}
+      manifest={manifest}
+    />,
+  )
+
+  // expand the row to reveal the cross-check
+  fireEvent.click(screen.getByRole('button', { expanded: false }))
+
+  expect(screen.getByText('snapshot')).toBeTruthy()
+  const link = screen.getByText('↗ open source') as HTMLAnchorElement
+  expect(link.getAttribute('href')).toBe('https://finance.yahoo.com/quote/NVDA/history')
+})
+
+test('EvidenceRow does not crash on a comma-separated bad citation_key and simply shows no cross-check', () => {
+  render(
+    <EvidenceList
+      evidence={[{
+        kind: 'numeric',
+        claim: 'The price is below both 20-day and 50-day SMAs',
+        citation_key: 'technicals.pct_vs_sma_20, technicals.pct_vs_sma_50',
+        cited_value: -0.042534,
+        grounded: false,
+        reason: 'citation_key not in snapshot',
+      }]}
+      manifest={manifest}
+    />,
+  )
+
+  fireEvent.click(screen.getByRole('button', { expanded: false }))
+  expect(screen.queryByText('snapshot')).toBeNull()
 })

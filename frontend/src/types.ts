@@ -107,6 +107,43 @@ export interface WhitelistPair {
   as_of: string
 }
 
+/** GET /snapshot?ticker&as_of — the exact point-in-time data fed to the agents
+ *  (ADR 0002), for the Provenance manifest panel + per-citation cross-check.
+ *  `fundamentals` is null when the pair has none reported as-of the cutoff. */
+export interface SnapshotPrices {
+  bars: number
+  first_date: string
+  last_date: string
+  source_url: string
+}
+export interface SnapshotFundamentals {
+  period_end: string
+  available_at: string
+  source_url: string
+  keys: Record<string, number>
+}
+export interface SnapshotTechnicals {
+  keys: Record<string, number>
+}
+export interface SnapshotNewsItem {
+  source_id: string
+  title: string
+  published_at: string
+  url?: string | null
+}
+export interface SnapshotLeakCheck {
+  violations: string[]
+}
+export interface SnapshotManifest {
+  ticker: string
+  as_of: string
+  prices: SnapshotPrices
+  fundamentals: SnapshotFundamentals | null
+  technicals: SnapshotTechnicals
+  news: SnapshotNewsItem[]
+  leak_check: SnapshotLeakCheck
+}
+
 /** A selectable (backend, model) pair from GET /models. */
 export interface ModelOption {
   backend: string // llm.py backend name: ollama | haiku | sonnet | groq

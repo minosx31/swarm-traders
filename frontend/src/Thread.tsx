@@ -12,7 +12,7 @@ import {
   Pill,
 } from './components'
 import type { LaneState } from './reducer'
-import type { AgentName, Specialist } from './types'
+import type { AgentName, SnapshotManifest, Specialist } from './types'
 
 const REDTEAM = 'var(--color-redteam)'
 const JUDGE = 'var(--color-judge)'
@@ -28,7 +28,7 @@ type ChallengeEntry = {
   landed?: { text: string; won: boolean }
 }
 
-export function Thread({ agent, lane }: { agent: Specialist; lane: LaneState }) {
+export function Thread({ agent, lane, manifest }: { agent: Specialist; lane: LaneState; manifest?: SnapshotManifest | null }) {
   const abstained = lane.grounding ? !lane.grounding.gated_in : false
 
   // researching, no thesis on the floor yet — a light live placeholder
@@ -80,7 +80,7 @@ export function Thread({ agent, lane }: { agent: Specialist; lane: LaneState }) 
           <div className="mb-2 font-mono text-[9.5px] tracking-[0.18em] text-ink-3">
             EVIDENCE · TAP A CITATION TO VERIFY
           </div>
-          <EvidenceList evidence={lane.thesis.evidence} />
+          <EvidenceList evidence={lane.thesis.evidence} manifest={manifest ?? undefined} />
         </div>
       )}
 
