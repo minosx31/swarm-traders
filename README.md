@@ -21,17 +21,190 @@ when fewer than two specialists clear the grounding gate, the system says
 **No Call** instead of faking confidence. You can't prompt away confirmation
 bias — you have to structure it away. (Full pitch strategy: `docs/pitch.md`.)
 
-**Status:** Phases 0–3 complete. The full debate pipeline runs end-to-end on the
-free Ollama backend (pre-sliced #6 baseline); every run is recorded to a
-replayable JSON event log (#9), and the React frontend renders live or replayed
-debates in per-agent lanes. The debate-phase tool-calling increment (#8,
-`DEBATE_TOOLS=1`) lets the Red-Team and rebuttal agents autonomously fetch
-cached, as-of-filtered evidence to attack/defend, streaming `tool_call` /
-`tool_result` events into the lanes. Tool-mode is **off by default** — the local
-qwen models fetch reliably but don't consistently emit the nested `submit_*`
-exit, so it's tuned for the capable demo backends (ADR 0003 graceful fallback:
-the default free-backend path is the unchanged baseline). Next: the Sonnet demo
-pass (#10–#11). See `issues.md` for the build plan and progress.
+---
+
+## How it works: an architectural overview
+
+This section explains the whole system in plain language — what data goes in,
+how the AI agents are organized, why they're organized that way, and how to read
+what comes out. If you only read one section, read this one.
+
+### The one-sentence version
+
+You hand the system a stock and a date ("Was Palantir a buy as of June 1st?").
+A team of specialist AI agents each research it independently, argue with each
+other, an AI judge referees the argument, and the system does the final math to
+produce a scored verdict — or an honest **"No Call"** when the evidence isn't
+there. Nothing about that verdict is invented by an AI: it is *calculated* from
+positions that each had to survive being fact-checked and attacked.
+
+### 1. Where the data comes from
+
+Before a single agent runs, the system assembles a **Snapshot**: a frozen
+package of everything known about the stock *as of the chosen date*, and nothing
+that came after. The agents only ever see this Snapshot — they never call a live
+market feed. That is the core integrity guarantee: the system cannot accidentally
+"cheat" by peeking at information from the future.
+
+Four kinds of data go into (or alongside) a Snapshot:
+
+- **Prices** — one year of daily trading history from Yahoo Finance.
+- **Fundamentals** — the company's most recent *reported* quarterly income
+  statement and balance sheet from Yahoo Finance. Crucially, a quarter that had
+  *ended* but hadn't been *filed* yet is excluded, because in real life nobody
+  would have had those numbers on the chosen date.
+- **News** — up to 30 days of company news headlines from Finnhub (with Yahoo
+  Finance as a fallback), all published on or before the chosen date.
+- **Outcome** — what the stock actually did in the 30 days *after* the chosen
+  date. This is deliberately kept in a separate file that nothing in the agent
+  pipeline is allowed to read; the interface only reveals it *after* the verdict,
+  so you can grade the swarm honestly.
+
+A validator refuses to save a Snapshot if any datum is dated after the chosen
+date, so a leak is impossible by construction rather than by good intentions.
+(Free data sources are a scope choice, not a design limit — swapping in a
+professional feed is a single fetcher function, because the Snapshot is the
+abstraction everything else is built on.) The precise point-in-time rules are in
+the table below.
+
+**No snapshot, no run — this is enforced, not merely intended.** When you convene
+a stock-and-date pair, the backend first checks whether that Snapshot already
+exists on disk. If it does, it's reused exactly as-is (never re-fetched, so a
+given date always tells the same story on every run). If it doesn't, the system
+builds it — fetch, leak-check, save — *before* the debate is allowed to start.
+And the endpoint that actually runs the agents flatly **refuses** any pair with no
+saved Snapshot: it returns an error rather than quietly falling back to a live
+fetch. So there is no path through the system in which an agent runs without a
+frozen, leak-checked Snapshot already sitting in front of it.
+
+### 2. How the agents are orchestrated — and why
+
+The agents run through a **fixed pipeline** (not a free-for-all chat). Picture an
+assembly line with two moments of parallel work:
+
+```
+        ┌─ Fundamentals ─┐                    ┌─ rebuttal ─┐
+START ──┼─ Sentiment    ─┼─ Red-Team attacks ─┼─ rebuttal ─┼─ Judge ─ (compute) ─ Verdict
+        └─ Technicals   ─┘                    └─ rebuttal ─┘
+```
+
+1. **Three specialists research in parallel, in isolation.** A Fundamentals
+   analyst, a Sentiment analyst, and a Technicals analyst each write a thesis and
+   a stance at the same time — *without seeing each other's work*. This isolation
+   is deliberate: it stops the agents from anchoring on each other and
+   manufacturing false consensus (the classic failure of a group chat where
+   everyone agrees with whoever spoke first).
+2. **A Red-Team attacks every surviving thesis** with the strongest counter-case
+   it can find — the "never skip the bear case" step.
+3. **Each attacked specialist gets exactly one rebuttal** to concede what landed
+   and defend what didn't. These, too, run in parallel.
+4. **A Judge referees** — it rules which attacks genuinely landed and sets each
+   specialist's *final* stance. The Judge is explicitly a neutral referee with no
+   opinion of its own on the stock.
+5. **The system computes the verdict** with plain arithmetic. No AI writes the
+   headline number.
+
+The deep reason for this shape is a separation of powers we call the
+**advocacy/adjudication split**: the agents that *argue* are never the ones that
+*decide the score*. An AI is good at building a case and good at critiquing one,
+but you don't want the same model that just argued a position to also grade
+itself — that's how confirmation bias creeps back in. So arguing, judging, and
+final scoring are three separate stages, and the last one isn't an AI at all.
+
+### 3. How each agent knows its role
+
+Each agent's "job description" is delivered two ways every time it runs:
+
+- **A written brief** (its system prompt). The Fundamentals agent is told it
+  analyzes valuation and earnings and must cite exact numbers; the Sentiment
+  agent is told it reads news narrative and must quote real headlines; the
+  Red-Team is told to attack; the Judge is told to referee neutrally and *not* to
+  compute an overall verdict. The role isn't something the agent decides — it's
+  assigned.
+- **A tailored slice of data.** The Fundamentals agent is only handed the
+  financial line items; Technicals only gets price-derived metrics; Sentiment
+  only gets the news. An agent literally cannot cite data outside its lane
+  because it was never shown it.
+
+On top of the brief, every agent must answer in a **strict form** (a schema): a
+thesis *must* include a stance number between −1 and +1 and a list of cited
+evidence. It can't just write an essay.
+
+**What "grounding" means.** To *ground* a claim is to trace it back to the
+Snapshot and confirm it's actually there — think of it as **fact-checking with
+receipts**. A claim isn't trusted because an articulate AI asserted it; it's
+trusted only if it can be tied to an exact number or a real headline in the data
+everyone agreed to work from. (We keep the word "grounding" because it's the
+standard term in AI for anchoring a model's output to real source data instead of
+letting it free-associate — but "sourced" or "fact-checked against the data" mean
+the same thing here.)
+
+**The grounding gate — the mechanism that makes this more than roleplay.** Every
+piece of evidence an agent cites is put through this fact-check by a deterministic
+(non-AI) validator:
+
+- A numeric claim must reference a real data key *and* the number must match the
+  Snapshot within 1%. Cite a figure that isn't there, or fudge it, and the claim
+  is silently dropped.
+- A news claim must reference a real headline; an exact verbatim quote earns a
+  "Verified Quote" badge.
+
+If an agent's claims all fail this check, **it loses its vote entirely**. This is
+why the guarantees are "structural, not prompted": you're not *asking* the model
+nicely not to hallucinate — a hallucinated citation is mechanically deleted and
+costs the agent its seat at the table. The Red-Team is held to the exact same
+bar, so it can't win with vague fear-mongering; an attack only counts if it's
+backed by grounded counter-evidence or points to a genuine logical flaw.
+
+### 4. Why the model you choose changes the quality
+
+The same pipeline runs on anything from a free local model (Ollama running
+`qwen2.5`) to Groq's Llama-70B to Claude Haiku or Sonnet. The choice of model is
+a knob for **quality and depth**, not for integrity — and that distinction
+matters:
+
+- **Bigger, more capable models** (e.g. Claude Sonnet) write sharper theses,
+  find more incisive attacks, follow the citation rules more reliably, and can
+  drive the optional "fetch your own evidence" tool mode. You get a richer, more
+  convincing debate.
+- **Small local models** are free and private but weaker at following
+  instructions precisely and at producing clean structured output. The system
+  compensates with format enforcement and a one-shot "you got it wrong, try
+  again" retry, but a weaker model will ground fewer claims and argue less
+  crisply.
+
+Here's the key point for a non-technical reader: because the verdict is
+*computed* and the fact-checking is *deterministic*, a weaker model **cannot fake
+confidence**. Its worst-case failure is to ground too little evidence — which
+simply produces a more cautious result or an honest **No Call**, never a
+confident-but-wrong number. So swapping models trades off *how insightful and
+complete* the debate is, while the *honesty* of the output is guaranteed by the
+machinery regardless of model.
+
+### 5. How to read the final verdict
+
+The verdict is a small set of numbers, each a different view of one underlying
+figure — the **average of the surviving specialists' final stances** (one lens,
+one equal vote):
+
+- **Direction** — Bull, Bear, or Neutral. Anything close to zero (within ±0.25)
+  is Neutral, matching the industry "Hold" convention.
+- **Conviction** — how far from zero the average is. A conviction above 0.75 is
+  flagged as high.
+- **Dissent** — how much the specialists *disagreed* (the spread between the most
+  bullish and most bearish surviving lens), reported as low / medium / high.
+- **No Call** — if fewer than two specialists cleared the grounding gate, the
+  system refuses to render a verdict at all. It would rather say "not enough
+  solid evidence" than fake a number.
+
+**How to actually use it:** treat this as a stress-tested second opinion, not a
+trade signal. Never read conviction alone — read it *with* dissent and *with* the
+list of attacks that landed and the strongest opposing view. A high-conviction
+Bull with high dissent is telling you something very different from a
+high-conviction Bull with low dissent. The product is built for a professional
+analyst to *challenge their own thesis*: you bring the idea, the swarm brings the
+bear case you'd rather not think about. It augments judgment; it does not replace
+it.
 
 ---
 
