@@ -12,6 +12,7 @@ from pathlib import Path
 import httpx
 import yfinance as yf
 
+from .sec_edgar import fetch_edgar_fundamentals
 from .snapshot import (
     FILING_LAG_DAYS,
     NewsItem,
@@ -143,8 +144,20 @@ def ingest_pair(ticker: str, as_of: date, window_days: int = 365, outcome_days: 
     news_source = "finnhub" if os.environ.get("FINNHUB_API_KEY") else "yfinance"
     news = (fetch_finnhub_news(ticker, as_of, news_days) if news_source == "finnhub"
             else fetch_news(t, as_of))
+    # SEC EDGAR (real filing dates, as-reported values) for US tickers; yfinance
+    # otherwise or if EDGAR is unreachable — same graceful-fallback shape as news.
+    try:
+        fundamentals = fetch_edgar_fundamentals(ticker, as_of)
+    except httpx.HTTPError:
+        fundamentals = None  # EDGAR down / rate-limited → fall through to yfinance
+    if fundamentals is not None:
+        fundamentals_source = "sec-edgar"
+    else:
+        fundamentals, fundamentals_source = fetch_fundamentals(t, as_of), "yfinance"
     snapshot = Snapshot(ticker=ticker.upper(), as_of=as_of, prices=prices,
-                        fundamentals=fetch_fundamentals(t, as_of), news=news)
+                        fundamentals=fundamentals, news=news,
+                        provenance={"prices": "yfinance",
+                                    "fundamentals": fundamentals_source, "news": news_source})
     path = save_snapshot(snapshot)  # refuses to save a leaky snapshot
     outcome_path = save_outcome(ticker, as_of.isoformat(), build_outcome(t, as_of, outcome_days))
     return snapshot, news_source, path, outcome_path

@@ -42,7 +42,7 @@ def main() -> int:
     print(f"snapshot  {path}")
     print(f"  prices: {len(snapshot.prices)} bars <= {args.as_of}")
     print(f"  fundamentals: period_end={f.period_end if f else None} "
-          f"available_at={f.available_at if f else None}")
+          f"available_at={f.available_at if f else None} (source: {f.source if f else None})")
     print(f"  news: {len(snapshot.news)} items (source: {news_source})")
     print(f"  leak check: PASSED (0 violations)")
     print(f"outcome   {outcome_path}  (held out of agent state)")

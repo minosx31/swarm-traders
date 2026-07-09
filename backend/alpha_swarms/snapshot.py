@@ -33,9 +33,10 @@ class PriceBar(BaseModel):
 
 class ReportedFundamentals(BaseModel):
     period_end: date
-    available_at: date  # period_end + FILING_LAG_DAYS
+    available_at: date  # sec-edgar: real filing date; yfinance: period_end + FILING_LAG_DAYS
     income_stmt: dict[str, float]
     balance_sheet: dict[str, float]
+    source: str = "yfinance"  # provider; default keeps pre-EDGAR snapshots valid
 
 
 class NewsItem(BaseModel):
@@ -53,6 +54,7 @@ class Snapshot(BaseModel):
     prices: list[PriceBar]
     fundamentals: ReportedFundamentals | None
     news: list[NewsItem]
+    provenance: dict[str, str] = {}  # {prices, fundamentals, news} → source; empty for older snapshots
 
 
 def snapshot_dir() -> Path:
