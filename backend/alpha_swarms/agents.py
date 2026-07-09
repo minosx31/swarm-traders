@@ -13,6 +13,7 @@ Non-gated specialists are skipped in the debate — no vote, no calls.
 
 import json
 import os
+import time
 
 from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
 from pydantic import ValidationError
@@ -108,8 +109,11 @@ async def call_with_tools(submit_model, read_tools, *, system, user, agent, emit
                 messages.append(ToolMessage(content=f"unknown tool {tc['name']}", tool_call_id=tc["id"]))
                 continue
             await emit({"type": "tool_call", "agent": agent, "tool": tc["name"], "args": tc["args"]})
+            start = time.perf_counter()
             data = impl.invoke(tc["args"])  # reads only the cached, as-of-filtered Snapshot
-            await emit({"type": "tool_result", "agent": agent, "tool": tc["name"], "data": data})
+            dt = time.perf_counter() - start
+            await emit({"type": "tool_result", "agent": agent, "tool": tc["name"], "data": data,
+                        "duration_s": round(dt, 2)})
             messages.append(ToolMessage(content=json.dumps(data, default=str), tool_call_id=tc["id"]))
         if submit_call is not None:
             try:

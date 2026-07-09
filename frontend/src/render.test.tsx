@@ -12,7 +12,7 @@ import { join } from 'node:path'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 
 afterEach(cleanup)
-import { Thread } from './Thread'
+import { LayerFeed } from './Layers'
 import { VerdictPanel } from './VerdictPanel'
 import { Provenance } from './Provenance'
 import { EvidenceList } from './components'
@@ -26,20 +26,18 @@ const loadFixture = (name: string): { events: DebateEvent[] } =>
   JSON.parse(readFileSync(join(FIXTURES, name), 'utf8'))
 const manifest: SnapshotManifest = JSON.parse(readFileSync(join(FIXTURES, 'manifest.json'), 'utf8'))
 
-test('a recorded verdict run reduces and renders: lanes, gate results, verdict', () => {
+test('a recorded verdict run reduces and renders: layers, gate results, verdict', () => {
   const { events } = loadFixture('verdict-run.json')
   const state = events.reduce(debateReducer, initialState)
 
   render(
     <main>
-      <Thread agent="fundamentals" lane={state.lanes.fundamentals} />
-      <Thread agent="sentiment" lane={state.lanes.sentiment} />
-      <Thread agent="technicals" lane={state.lanes.technicals} />
+      <LayerFeed state={state} />
       <VerdictPanel state={state} {...noOutcome} />
     </main>,
   )
 
-  expect(screen.getByText('Fundamentals')).toBeTruthy()
+  expect(screen.getAllByText('Fundamentals').length).toBeGreaterThan(0)
   // this frozen fixture: sentiment gated out, verdict BEAR, N=2
   expect(screen.getByText('ABSTAINED · NO VOTE')).toBeTruthy()
   expect(screen.getByText('BEAR')).toBeTruthy()
@@ -51,6 +49,9 @@ test('a recorded verdict run reduces and renders: lanes, gate results, verdict',
   // outcome absent from the DOM until explicitly revealed
   expect(screen.queryByText(/what actually happened/)).toBeNull()
   expect(screen.getByText('▣ REVEAL THE OUTCOME')).toBeTruthy()
+  // layer 04's ruling table renders a row per adjudication
+  expect(screen.getByText('Judgment')).toBeTruthy()
+  expect(screen.getAllByText('Complete').length).toBeGreaterThan(0)
 })
 
 test('the provenance manifest derives grounded ratio + voting lenses from state', () => {
@@ -67,19 +68,22 @@ test('the provenance manifest derives grounded ratio + voting lenses from state'
   expect(screen.getByText('NVDA')).toBeTruthy()
 })
 
-test('an error-terminated recorded run still renders lanes without crashing', () => {
+test('an error-terminated recorded run still renders the layer feed without crashing', () => {
   const { events } = loadFixture('error-run.json')
   const state = events.reduce(debateReducer, initialState)
   expect(state.phase).toBe('error')
   const { unmount } = render(
     <main>
-      <Thread agent="fundamentals" lane={state.lanes.fundamentals} />
-      <Thread agent="sentiment" lane={state.lanes.sentiment} />
-      <Thread agent="technicals" lane={state.lanes.technicals} />
+      <LayerFeed state={state} />
     </main>,
   )
-  // threads that got a thesis before the error still render it
+  // layer 01 (theses) rendered before the error still shows
   expect(screen.getByText('Fundamentals')).toBeTruthy()
+  expect(screen.getByText('Theses')).toBeTruthy()
+  // sentiment gated out before red-team ever attacked it — layer 02 shows only
+  // its "stands down" card, no red-team tool activity, no rulings table
+  expect(screen.getByText('STANDS DOWN')).toBeTruthy()
+  expect(screen.queryByText('Judgment')).toBeNull()
   unmount()
 })
 
@@ -132,6 +136,34 @@ test('EvidenceRow shows the snapshot value + a source link when the manifest res
   expect(screen.getByText('snapshot')).toBeTruthy()
   const link = screen.getByText('↗ open source') as HTMLAnchorElement
   expect(link.getAttribute('href')).toBe('https://finance.yahoo.com/quote/NVDA/history')
+})
+
+// The red-team activity strip moved into layer 02's card (#14) — reduce a
+// duration_s-bearing tool loop through the real LayerFeed and check the
+// stamp (#13) renders in its new home.
+test('layer 02 renders a duration stamp when tool_result carries duration_s', () => {
+  const state = [
+    { type: 'agent_start', agent: 'red_team' },
+    { type: 'tool_call', agent: 'red_team', tool: 'get_financials', args: {} },
+    { type: 'tool_result', agent: 'red_team', tool: 'get_financials', data: {}, duration_s: 0.6 },
+  ].reduce(debateReducer, initialState)
+
+  render(<LayerFeed state={state} />)
+
+  expect(screen.getByText(/✓ 0\.6s/)).toBeTruthy()
+})
+
+test('layer 02 falls back to a bare check on older recordings without duration_s', () => {
+  const state = [
+    { type: 'agent_start', agent: 'red_team' },
+    { type: 'tool_call', agent: 'red_team', tool: 'get_news', args: {} },
+    { type: 'tool_result', agent: 'red_team', tool: 'get_news', data: [] }, // no duration_s
+  ].reduce(debateReducer, initialState)
+
+  render(<LayerFeed state={state} />)
+
+  expect(screen.getByText(/⚙ get_news ✓/)).toBeTruthy()
+  expect(screen.queryByText(/✓ .*s$/)).toBeNull()
 })
 
 test('EvidenceRow does not crash on a comma-separated bad citation_key and simply shows no cross-check', () => {

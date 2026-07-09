@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { ensureSnapshot, fetchModels, fetchOutcome, fetchRuns, fetchSnapshotManifest, fetchWhitelist, STATIC } from './api'
 import { AgentChip } from './components'
+import { LayerFeed } from './Layers'
 import { Orchestration } from './Orchestration'
 import { Provenance } from './Provenance'
-import { Thread } from './Thread'
 import { useDebateStream } from './useDebateStream'
 import { VerdictFinale } from './VerdictFinale'
 import { VerdictPanel } from './VerdictPanel'
@@ -149,8 +149,8 @@ export default function App() {
   }
 
   const streaming = state.phase === 'streaming'
-  // specialists that have taken the floor — a thread appears the moment one starts
-  const activeThreads = SPECIALISTS.filter(
+  // any specialist having taken the floor is enough to leave the pre-run empty state
+  const feedStarted = SPECIALISTS.some(
     (s) => state.lanes[s].status !== 'idle' || state.lanes[s].thesis,
   )
   const fieldCls =
@@ -340,18 +340,6 @@ export default function App() {
 
       <Provenance state={state} ticker={ticker.toUpperCase()} asOf={asOf} manifest={manifest} />
 
-      {state.redTeam.toolActivity.length > 0 && (
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-redteam/30 bg-redteam/5 px-[30px] py-1.5 text-[12px] text-redteam">
-          <span className="font-semibold tracking-[0.2em]">RED-TEAM GATHERING</span>
-          {state.redTeam.toolActivity.map((t, i) => (
-            <span key={i} className="tnum">
-              ⚙ {t.tool}
-              {t.type === 'tool_result' ? ' ✓' : '…'}
-            </span>
-          ))}
-        </div>
-      )}
-
       <main className="mx-auto flex w-full max-w-[1200px] flex-wrap items-start gap-[26px] px-[30px] pb-10 pt-[26px]">
         <section className="flex min-w-0 flex-1 basis-[560px] flex-col gap-[22px]">
           <Orchestration state={state} />
@@ -363,7 +351,7 @@ export default function App() {
               <span className="font-mono text-[11px] text-ink-3">{state.eventCount} events</span>
             </div>
 
-            {activeThreads.length === 0 ? (
+            {!feedStarted ? (
               <div className="rounded-[14px] border border-dashed border-hairline px-6 py-11 text-center">
                 <div className="mb-2.5 text-[26px] text-judge/80">✦</div>
                 <p className="font-display text-[18px] text-ink-2">
@@ -375,11 +363,7 @@ export default function App() {
                 </p>
               </div>
             ) : (
-              <div className="flex flex-col gap-4">
-                {activeThreads.map((agent) => (
-                  <Thread key={agent} agent={agent} lane={state.lanes[agent]} manifest={manifest} />
-                ))}
-              </div>
+              <LayerFeed state={state} manifest={manifest} />
             )}
           </div>
         </section>

@@ -124,7 +124,7 @@ event. Recording the queue's output is the replay artifact.
 | 1 | `agent_start` | `agent` |
 | 2 | `thesis` | `agent`, `stance` (−1…+1), `evidence[]` (each grounded or dropped) |
 | 3 | `attack` | `agent:"red_team"`, `target`, `kind:"evidence"\|"logical"`, `critique`, `counter_evidence[]` |
-| 4 | `tool_call` / `tool_result` | `agent`, `tool`, `args` / `data` (debate phase only) |
+| 4 | `tool_call` / `tool_result` | `agent`, `tool`, `args` / `data`, optional `duration_s` on `tool_result` (debate phase only) |
 | 5 | `rebuttal` | `agent`, `proposed_stance` (advocacy, not final) |
 | 6 | `adjudication` | `agent`, `adjudicated_stance`, `attacks_landed[]` |
 | 7 | `verdict` | `aggregate_stance`, `direction`, `conviction`, `dissent`, `voting_lenses` — **or** `direction:"no_call"`, `reason` |

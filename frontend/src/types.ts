@@ -54,6 +54,7 @@ export interface ToolResultEvent {
   agent: AgentName
   tool: string
   data: unknown
+  duration_s?: number // absent on older recordings (#13)
 }
 export interface RebuttalEvent {
   type: 'rebuttal'

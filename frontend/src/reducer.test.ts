@@ -66,6 +66,19 @@ test('red-team tool activity is captured, not dropped, and survives its gate (#8
   expect(state.redTeam.grounding?.gated_in).toBe(true) // grounding did not wipe toolActivity
 })
 
+test('a tool_result carries duration_s verbatim; older events without it still reduce fine (#13)', () => {
+  const state = run([
+    { type: 'agent_start', agent: 'red_team' },
+    { type: 'tool_call', agent: 'red_team', tool: 'get_news', args: {} },
+    { type: 'tool_result', agent: 'red_team', tool: 'get_news', data: [], duration_s: 0.6 },
+    { type: 'tool_call', agent: 'red_team', tool: 'get_financials', args: {} },
+    { type: 'tool_result', agent: 'red_team', tool: 'get_financials', data: {} }, // no duration_s
+  ])
+  expect(state.redTeam.toolActivity).toHaveLength(4)
+  expect(state.redTeam.toolActivity[1]?.duration_s).toBe(0.6)
+  expect(state.redTeam.toolActivity[3]?.duration_s).toBeUndefined()
+})
+
 test('unknown event types never crash the reducer', () => {
   const state = run([
     { type: 'agent_start', agent: 'fundamentals' },
