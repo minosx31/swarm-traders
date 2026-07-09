@@ -6,7 +6,6 @@ import { Orchestration } from './Orchestration'
 import { Provenance } from './Provenance'
 import { useDebateStream } from './useDebateStream'
 import { VerdictFinale } from './VerdictFinale'
-import { VerdictPanel } from './VerdictPanel'
 import { SPECIALISTS, type ModelOption, type Outcome, type RunOption, type SnapshotManifest, type WhitelistPair } from './types'
 
 // 20260704T031559Z -> "07-04 03:15" for the cached-run picker
@@ -153,6 +152,10 @@ export default function App() {
   const feedStarted = SPECIALISTS.some(
     (s) => state.lanes[s].status !== 'idle' || state.lanes[s].thesis,
   )
+  // the model behind this run — the recorded run's in replay, the picked one live
+  const verdictModel = replay
+    ? runs.find((r) => r.run === selRun)?.model
+    : selected?.label
   const fieldCls =
     'appearance-none rounded-[9px] border border-hairline bg-surface py-2 pl-3 pr-8 font-mono text-[13px] text-ink outline-none transition-colors focus:border-judge disabled:opacity-40'
 
@@ -340,50 +343,44 @@ export default function App() {
 
       <Provenance state={state} ticker={ticker.toUpperCase()} asOf={asOf} manifest={manifest} />
 
-      <main className="mx-auto flex w-full max-w-[1200px] flex-wrap items-start gap-[26px] px-[30px] pb-10 pt-[26px]">
-        <section className="flex min-w-0 flex-1 basis-[560px] flex-col gap-[22px]">
-          <Orchestration state={state} />
+      <main className="mx-auto flex w-full max-w-[960px] flex-col gap-[22px] px-[30px] pb-10 pt-[26px]">
+        <Orchestration state={state} />
 
-          <div>
-            <div className="mb-3.5 flex items-center gap-2.5">
-              <span className="font-display text-[18px] italic text-ink-2">The Debate</span>
-              <span className="h-px flex-1 bg-hairline" />
-              <span className="font-mono text-[11px] text-ink-3">{state.eventCount} events</span>
-            </div>
-
-            {!feedStarted ? (
-              <div className="rounded-[14px] border border-dashed border-hairline px-6 py-11 text-center">
-                <div className="mb-2.5 text-[26px] text-judge/80">✦</div>
-                <p className="font-display text-[18px] text-ink-2">
-                  Three specialists, a red-team, and a judge are standing by.
-                </p>
-                <p className="mt-2 text-[13px] text-ink-3">
-                  Press <b className="font-semibold text-judge">Start Analysis</b> to convene the swarm
-                  and watch each thesis get challenged live.
-                </p>
-              </div>
-            ) : (
-              <LayerFeed state={state} manifest={manifest} />
-            )}
+        <div>
+          <div className="mb-3.5 flex items-center gap-2.5">
+            <span className="font-display text-[18px] italic text-ink-2">The Debate</span>
+            <span className="h-px flex-1 bg-hairline" />
+            <span className="font-mono text-[11px] text-ink-3">{state.eventCount} events</span>
           </div>
-        </section>
 
-        <VerdictPanel
-          state={state}
-          outcome={outcome}
-          onReveal={revealOutcome}
-          outcomeError={outcomeError}
-        />
+          {!feedStarted ? (
+            <div className="rounded-[14px] border border-dashed border-hairline px-6 py-11 text-center">
+              <div className="mb-2.5 text-[26px] text-judge/80">✦</div>
+              <p className="font-display text-[18px] text-ink-2">
+                Three specialists, a red-team, and a judge are standing by.
+              </p>
+              <p className="mt-2 text-[13px] text-ink-3">
+                Press <b className="font-semibold text-judge">Start Analysis</b> to convene the swarm
+                and watch each thesis get challenged live.
+              </p>
+            </div>
+          ) : (
+            <LayerFeed state={state} manifest={manifest} />
+          )}
+        </div>
+
+        {state.verdict && (
+          <VerdictFinale
+            state={state}
+            outcome={outcome}
+            onReveal={revealOutcome}
+            outcomeError={outcomeError}
+            ticker={ticker.toUpperCase()}
+            asOf={asOf}
+            model={verdictModel}
+          />
+        )}
       </main>
-
-      {state.verdict && (
-        <VerdictFinale
-          state={state}
-          outcome={outcome}
-          onReveal={revealOutcome}
-          outcomeError={outcomeError}
-        />
-      )}
 
       <footer className="flex flex-wrap items-center justify-between gap-2 border-t border-hairline px-[30px] py-3 font-mono text-[11px] tracking-[0.1em] text-ink-3">
         <span className="flex items-center gap-3.5">

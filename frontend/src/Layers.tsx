@@ -47,7 +47,7 @@ function layerStatus(hasContent: boolean, laterHasContent: boolean, done: boolea
 function LayerHeading({ n, label }: { n: number; label: string }) {
   const tint = LAYER_TINT[n - 1]
   return (
-    <div className="mb-[15px] mt-10 flex items-center gap-3 first:mt-0">
+    <div className="mb-[15px] mt-14 flex items-center gap-3 first:mt-0">
       <span
         className="rounded-[5px] border font-mono text-[12px] tracking-[0.08em]"
         style={{ color: tint, borderColor: `color-mix(in oklab, ${tint} 35%, transparent)`, padding: '2px 8px' }}
@@ -120,7 +120,7 @@ export function LayerFeed({ state, manifest }: { state: DebateState; manifest?: 
       )}
 
       {hasL2 && (
-        <div>
+        <div className="mt-5">
           <LayerHeading n={2} label="Adversarial Review" />
           <div className="rounded-2xl border border-hairline bg-surface">
             <LayerCardHeader title="Attacks" status={s2} sub={`${totalAttacks} attacks filed`} />
@@ -156,7 +156,7 @@ export function LayerFeed({ state, manifest }: { state: DebateState; manifest?: 
                       <p className="font-display text-[14px] leading-relaxed text-ink">{attack.critique}</p>
                       {attack.counter_evidence.length > 0 && (
                         <div className="mt-[11px] border-t border-hairline pt-2.5">
-                          <EvidenceList evidence={attack.counter_evidence} manifest={manifest ?? undefined} />
+                          <EvidenceList evidence={attack.counter_evidence} manifest={manifest ?? undefined} collapsible />
                         </div>
                       )}
                     </div>
@@ -181,7 +181,7 @@ export function LayerFeed({ state, manifest }: { state: DebateState; manifest?: 
       )}
 
       {hasL3 && (
-        <div>
+        <div className="mt-5">
           <LayerHeading n={3} label="Right of Reply" />
           <div className="rounded-2xl border border-hairline bg-surface">
             <LayerCardHeader title="Rebuttals" status={s3} sub="one reply per contested lens" />
@@ -196,7 +196,7 @@ export function LayerFeed({ state, manifest }: { state: DebateState; manifest?: 
                       <Avatar agent={s} size={28} />
                       <span className="text-[11px] font-bold uppercase tracking-[0.09em] text-ink-2">{AGENT_NAME[s]}</span>
                     </div>
-                    <p className="font-display text-[13.5px] italic leading-relaxed text-ink-2">{lane.rebuttal!.response}</p>
+                    <p className="font-display text-[14px] leading-relaxed text-ink-2">{lane.rebuttal!.response}</p>
                     <div className="tnum flex items-center gap-1.5 font-mono text-[11px] font-semibold">
                       <span style={{ color: poleColor(from) }}>{from >= 0 ? '+' : ''}{from.toFixed(2)}</span>
                       <span className="text-ink-3">→</span>
@@ -211,7 +211,7 @@ export function LayerFeed({ state, manifest }: { state: DebateState; manifest?: 
       )}
 
       {hasL4 && (
-        <div>
+        <div className="mt-5"> 
           <LayerHeading n={4} label="Ruling" />
           <div className="rounded-2xl border border-hairline bg-surface">
             <LayerCardHeader title="Judgment" status={s4} sub={`${adjudications.length} attacks ruled on`} />
@@ -226,6 +226,14 @@ export function LayerFeed({ state, manifest }: { state: DebateState; manifest?: 
                   <RulingRow key={s} agent={s} lane={lanes[s]} />
                 ))}
               </div>
+              <p className="mt-3.5 border-t border-hairline pt-3 text-[11.5px] leading-relaxed text-ink-3">
+                A <b className="font-semibold text-ink-2">logical challenge</b> disputes the reasoning; an{' '}
+                <b className="font-semibold text-ink-2">evidence challenge</b> disputes a cited number. The judge's ruling —{' '}
+                <span className="font-semibold" style={{ color: 'var(--color-bear)' }}>LANDED</span> /{' '}
+                <span className="font-semibold" style={{ color: 'var(--color-neutralpole)' }}>PARTIAL</span> /{' '}
+                <span className="font-semibold" style={{ color: 'var(--color-bull)' }}>DEFLECTED</span> — is whether the
+                thesis conceded to the challenge, conceded in part, or held.
+              </p>
               <GroundingGateNote state={state} />
             </div>
           </div>
@@ -253,18 +261,32 @@ function ThesisCard({ agent, lane, manifest }: { agent: Specialist; lane: LaneSt
   }
 
   const abstained = lane.grounding ? !lane.grounding.gated_in : false
+  const stance = lane.thesis.stance
+  const stanceWord = stance > 0.001 ? 'Bull' : stance < -0.001 ? 'Bear' : 'Neutral'
+  const stanceColor = poleColor(stance)
 
   return (
     <div className="card-in flex flex-col gap-[11px] rounded-xl border border-hairline bg-raised/20 p-[15px]">
+      {/* header: identity left, compact stance-word pill right (the signed value
+          moves to its own row below — a wide meter here overflowed the 3-up grid) */}
       <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-[9px]">
+        <div className="flex min-w-0 items-center gap-[9px]">
           <Avatar agent={agent} size={30} />
-          <div>
-            <div className="text-[11px] font-bold uppercase tracking-[0.09em] text-ink-2">{AGENT_NAME[agent]}</div>
-            <div className="text-[10.5px] text-ink-3">{AGENT_ROLE[agent]}</div>
+          <div className="min-w-0">
+            <div className="truncate text-[11px] font-bold uppercase tracking-[0.09em] text-ink-2">{AGENT_NAME[agent]}</div>
+            <div className="truncate text-[10.5px] text-ink-3">{AGENT_ROLE[agent]}</div>
           </div>
         </div>
-        <MiniStance value={lane.thesis.stance} />
+        <span
+          className="shrink-0 rounded-full px-2.5 py-1 font-mono text-[10.5px] font-bold tracking-[0.05em]"
+          style={{ color: stanceColor, background: `color-mix(in oklab, ${stanceColor} 15%, transparent)` }}
+        >
+          {stanceWord}
+        </span>
+      </div>
+      <div className="flex items-center gap-2">
+        <span className="font-mono text-[9px] tracking-[0.14em] text-ink-3">STANCE</span>
+        <MiniStance value={stance} />
       </div>
       {abstained && (
         <span className="w-fit rounded-[5px] border border-hairline px-2 py-[3px] font-mono text-[9.5px] font-semibold tracking-[0.1em] text-ink-3">
@@ -274,18 +296,25 @@ function ThesisCard({ agent, lane, manifest }: { agent: Specialist; lane: LaneSt
       <p className="font-display text-[14.5px] leading-relaxed text-ink">{lane.thesis.summary}</p>
       {lane.thesis.evidence.length > 0 && (
         <div className="border-t border-hairline pt-[9px]">
-          <div className="mb-[7px] font-mono text-[9px] tracking-[0.14em] text-ink-3">EVIDENCE · TAP TO VERIFY</div>
-          <EvidenceList evidence={lane.thesis.evidence} manifest={manifest ?? undefined} />
+          <EvidenceList evidence={lane.thesis.evidence} manifest={manifest ?? undefined} collapsible />
         </div>
       )}
     </div>
   )
 }
 
+/** The two challenge kinds the red-team can raise. The SSE contract only carries
+ *  the bare `kind`, so we Title-case it and gloss it here (in the legend below the
+ *  table) rather than leaving a cryptic lowercase "logical challenge" in the cell. */
+const CHALLENGE_LABEL: Record<'evidence' | 'logical', string> = {
+  evidence: 'Evidence challenge',
+  logical: 'Logical challenge',
+}
+
 /** One 04-layer row: derives the Attack/Ruling cells from the lane's own
  *  attacks + adjudication — the contract has no title field, so "Attack" is
- *  described by kind (e.g. "logical challenge"), and Ruling is computed from
- *  attacks_landed.length against the lane's own attack count. */
+ *  described by kind (Title-cased via CHALLENGE_LABEL), and Ruling is computed
+ *  from attacks_landed.length against the lane's own attack count. */
 function RulingRow({ agent, lane }: { agent: Specialist; lane: LaneState }) {
   const adj = lane.adjudication!
   const attackCount = lane.attacks.length
@@ -293,7 +322,7 @@ function RulingRow({ agent, lane }: { agent: Specialist; lane: LaneState }) {
 
   const attackDesc = attackCount === 0
     ? '—'
-    : lane.attacks.map((a) => `${a.kind} challenge`).join(', ')
+    : [...new Set(lane.attacks.map((a) => CHALLENGE_LABEL[a.kind]))].join(', ')
 
   const ruling: 'LANDED' | 'PARTIAL' | 'DEFLECTED' =
     attackCount > 0 && landed >= attackCount ? 'LANDED' : landed > 0 ? 'PARTIAL' : 'DEFLECTED'

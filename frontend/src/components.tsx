@@ -243,18 +243,37 @@ function EvidenceRow({ item, manifest }: { item: EvidenceItem; manifest?: Snapsh
   )
 }
 
-/** The tappable evidence stack for a thesis or attack. */
-export function EvidenceList({ evidence, emptyLabel, manifest }: {
+/** The tappable evidence stack for a thesis or attack. When `collapsible`, the
+ *  whole stack folds behind a `EVIDENCE · N` toggle (closed by default) so a long
+ *  citation list doesn't dominate the card; each row still taps open to verify. */
+export function EvidenceList({ evidence, emptyLabel, manifest, collapsible = false }: {
   evidence: EvidenceItem[]
   emptyLabel?: string
   manifest?: SnapshotManifest
+  collapsible?: boolean
 }) {
+  const [open, setOpen] = useState(!collapsible)
   if (evidence.length === 0) {
     return emptyLabel ? <p className="text-[10.5px] italic text-ink-3">{emptyLabel}</p> : null
   }
-  return (
+  const rows = (
     <div className="flex flex-col gap-[5px]">
       {evidence.map((item, i) => <EvidenceRow key={i} item={item} manifest={manifest} />)}
+    </div>
+  )
+  if (!collapsible) return rows
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="flex w-full items-center gap-1.5 font-mono text-[9px] tracking-[0.14em] text-ink-3 transition-colors hover:text-ink-2"
+        aria-expanded={open}
+      >
+        <span className="text-[8px]">{open ? '▾' : '▸'}</span>
+        <span>EVIDENCE · {evidence.length} · TAP TO VERIFY</span>
+      </button>
+      {open && <div className="mt-[7px]">{rows}</div>}
     </div>
   )
 }

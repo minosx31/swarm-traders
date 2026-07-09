@@ -13,7 +13,7 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 
 afterEach(cleanup)
 import { LayerFeed } from './Layers'
-import { VerdictPanel } from './VerdictPanel'
+import { VerdictFinale } from './VerdictFinale'
 import { Provenance } from './Provenance'
 import { EvidenceList } from './components'
 import { debateReducer, initialState } from './reducer'
@@ -33,19 +33,21 @@ test('a recorded verdict run reduces and renders: layers, gate results, verdict'
   render(
     <main>
       <LayerFeed state={state} />
-      <VerdictPanel state={state} {...noOutcome} />
+      <VerdictFinale state={state} ticker="NVDA" asOf="2026-07-02" {...noOutcome} />
     </main>,
   )
 
   expect(screen.getAllByText('Fundamentals').length).toBeGreaterThan(0)
   // this frozen fixture: sentiment gated out, verdict BEAR, N=2
   expect(screen.getByText('ABSTAINED · NO VOTE')).toBeTruthy()
+  // the finale restates the verdict as a "VERIFIED" card
+  expect(screen.getByText('Computed Verdict')).toBeTruthy()
   expect(screen.getByText('BEAR')).toBeTruthy()
-  expect(screen.getByText('N=2')).toBeTruthy()
-  // structural invariants that hold for ANY verdict run, whatever the model said:
-  // conviction is never shown without N and dissent
-  expect(screen.getByText('CONVICTION')).toBeTruthy()
-  expect(screen.getByText('DISSENT')).toBeTruthy()
+  expect(screen.getByText('Conviction score')).toBeTruthy()
+  // stats footer: 2 of 3 lenses survived the grounding gate (also shown in the
+  // gate note), 1 of 1 attacks landed
+  expect(screen.getAllByText('2 / 3').length).toBeGreaterThan(0)
+  expect(screen.getByText('1 / 1')).toBeTruthy()
   // outcome absent from the DOM until explicitly revealed
   expect(screen.queryByText(/what actually happened/)).toBeNull()
   expect(screen.getByText('▣ REVEAL THE OUTCOME')).toBeTruthy()

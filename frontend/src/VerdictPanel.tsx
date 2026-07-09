@@ -1,11 +1,8 @@
-/** The sticky verdict rail: verdict stamp, aggregate BEAR↔BULL axis, conviction +
- *  N + dissent, what-would-change-our-mind, then the sealed → unsealed Outcome.
- *  Its stamp / axis / stat-grid / landed-list / outcome pieces are exported and
- *  reused by the full-width VerdictFinale, so the two never drift. */
+/** Shared verdict pieces — the stamp, the aggregate BEAR↔BULL axis, and the
+ *  sealed → unsealed Outcome reveal. Imported by the full-width VerdictFinale. */
 
-import { AGENT_COLOR, AGENT_NAME, poleColor, SectionTag } from './components'
-import type { DebateState } from './reducer'
-import { SPECIALISTS, type Outcome, type Specialist, type VerdictEvent } from './types'
+import { poleColor } from './components'
+import type { Outcome, VerdictEvent } from './types'
 
 export const DIRECTION_STYLE: Record<string, { word: string; color: string; icon: string }> = {
   bull: { word: 'BULL', color: 'var(--color-bull)', icon: '▲' },
@@ -14,90 +11,7 @@ export const DIRECTION_STYLE: Record<string, { word: string; color: string; icon
   no_call: { word: 'NO CALL', color: 'var(--color-ink-3)', icon: '∅' },
 }
 
-const LENS_LABEL: Record<Specialist, string> = {
-  fundamentals: 'FUND',
-  sentiment: 'SENT',
-  technicals: 'TECH',
-}
-
-const DISSENT_COLOR: Record<string, string> = {
-  low: 'var(--color-judge)',
-  med: 'var(--color-neutralpole)',
-  high: 'var(--color-bear)',
-}
-
 const SEALED = 'var(--color-neutralpole)'
-
-/** Which lenses conceded an attack, and what kind — the "what would change our
- *  mind" material, derived straight from each specialist's judge ruling. */
-export function landedFromState(state: DebateState): { lens: Specialist; kind: string }[] {
-  return SPECIALISTS.flatMap((s) =>
-    (state.lanes[s].adjudication?.attacks_landed ?? []).map((kind) => ({ lens: s, kind })),
-  )
-}
-
-export function VerdictPanel({ state, outcome, onReveal, outcomeError }: {
-  state: DebateState
-  outcome: Outcome | null
-  onReveal: () => void
-  outcomeError: string | null
-}) {
-  const verdict = state.verdict
-
-  return (
-    <aside
-      className="sticky top-5 flex w-full flex-1 basis-[320px] max-w-[380px] min-w-[300px] flex-col gap-[18px] self-start rounded-2xl border border-hairline p-5"
-      style={{ background: 'linear-gradient(180deg,#1b1e25,#17191f)' }}
-    >
-      <div className="font-mono text-[10.5px] tracking-[0.24em] text-ink-3">VERDICT</div>
-
-      {!verdict && (
-        <p className="text-[13px] text-ink-3">
-          {state.phase === 'streaming' ? (
-            <>the swarm is deliberating<span className="thinking-dot">▊</span></>
-          ) : (
-            'no run yet'
-          )}
-        </p>
-      )}
-
-      {verdict && (
-        <div className="card-in flex flex-col gap-[18px]">
-          <div className="flex justify-center py-1">
-            <VerdictStamp verdict={verdict} />
-          </div>
-
-          {verdict.direction === 'no_call' ? (
-            <div className="flex flex-col gap-3">
-              <p className="text-[13px] text-ink-2">
-                Honest abstention — {verdict.reason}. The swarm does not force a number it cannot ground.
-              </p>
-              <div className="flex items-center gap-2 border-y border-hairline py-2">
-                <span className="font-mono text-[10px] tracking-[0.14em] text-ink-3">VOTING LENSES</span>
-                <span className="tnum font-mono text-[15px] font-semibold text-ink">N={verdict.voting_lenses}</span>
-                <span className="text-[12px] text-ink-3">· quorum needs 2</span>
-              </div>
-            </div>
-          ) : (
-            <>
-              <AggregateAxis value={verdict.aggregate_stance ?? 0} />
-              <StatGrid verdict={verdict} />
-            </>
-          )}
-
-          <div>
-            <SectionTag>WHAT WOULD CHANGE OUR MIND</SectionTag>
-            <div className="mt-2.5">
-              <LandedList landed={landedFromState(state)} />
-            </div>
-          </div>
-
-          <OutcomeReveal outcome={outcome} onReveal={onReveal} error={outcomeError} variant="rail" />
-        </div>
-      )}
-    </aside>
-  )
-}
 
 /** The rubber-stamp verdict word. `variant` scales it up for the finale. */
 export function VerdictStamp({ verdict, variant = 'rail' }: { verdict: VerdictEvent; variant?: 'rail' | 'finale' }) {
@@ -162,63 +76,23 @@ export function AggregateAxis({ value, variant = 'rail', n }: { value: number; v
   )
 }
 
-export function StatGrid({ verdict, variant = 'rail' }: { verdict: VerdictEvent; variant?: 'rail' | 'finale' }) {
-  const pad = variant === 'finale' ? 'px-1.5 py-4' : 'px-1 py-[11px]'
-  const size = variant === 'finale' ? 'text-[24px]' : 'text-[18px]'
-  return (
-    <div className="grid grid-cols-3 overflow-hidden rounded-[10px] border border-hairline" style={{ gap: '1px', background: 'var(--color-hairline)' }}>
-      <StatCell label="CONVICTION" value={(verdict.conviction ?? 0).toFixed(2)} pad={pad} size={size} />
-      <StatCell label="LENSES" value={`N=${verdict.voting_lenses}`} pad={pad} size={size} />
-      <StatCell label="DISSENT" value={(verdict.dissent ?? '—').toUpperCase()} color={DISSENT_COLOR[verdict.dissent ?? '']} pad={pad} size={size} />
-    </div>
-  )
-}
-
-function StatCell({ label, value, color, pad, size }: { label: string; value: string; color?: string; pad: string; size: string }) {
-  return (
-    <div className={`bg-surface text-center ${pad}`}>
-      <div className="mb-1.5 font-mono text-[8.5px] tracking-[0.1em] text-ink-3">{label}</div>
-      <div className={`tnum font-mono font-semibold ${size}`} style={{ color: color ?? 'var(--color-ink)' }}>{value}</div>
-    </div>
-  )
-}
-
-export function LandedList({ landed }: { landed: { lens: Specialist; kind: string }[] }) {
-  if (landed.length === 0) return <p className="text-[12.5px] text-ink-3">No attacks landed this run.</p>
-  return (
-    <div className="flex flex-col gap-2.5">
-      {landed.map(({ lens, kind }, i) => (
-        <div key={i} className="flex items-start gap-2.5">
-          <span
-            className="mt-px shrink-0 rounded-[4px] px-1.5 py-[3px] font-mono text-[8px] tracking-[0.06em]"
-            style={{ color: AGENT_COLOR[lens], background: `color-mix(in oklab, ${AGENT_COLOR[lens]} 14%, transparent)` }}
-          >
-            {LENS_LABEL[lens]}
-          </span>
-          <span className="text-[12.5px] leading-snug text-ink-2">
-            The {AGENT_NAME[lens].toLowerCase()} lens conceded a {kind} flaw — reversing this would lift the aggregate.
-          </span>
-        </div>
-      ))}
-    </div>
-  )
-}
-
 /** Absent from the DOM until requested, and requestable only after the verdict.
  *  Before reveal it reads as a sealed envelope; after, the held-out truth.
  *  State lives in App so the rail and the finale reveal together. */
-export function OutcomeReveal({ outcome, onReveal, error, variant = 'rail' }: {
+export function OutcomeReveal({ outcome, onReveal, error, variant = 'rail', reality }: {
   outcome: Outcome | null
   onReveal: () => void
   error: string | null
   variant?: 'rail' | 'finale'
+  /** the swarm's call scored against what actually happened — the third column */
+  reality?: { word: string; ok: boolean }
 }) {
   const finale = variant === 'finale'
 
   if (outcome) {
     const prices = outcome.prices_after
     if (prices.length === 0) {
-      return <p className="text-[13px] text-ink-3">outcome window has no trading days yet</p>
+      return <p className="text-center text-[13px] text-ink-3">outcome window has no trading days yet</p>
     }
     const first = prices[0]
     const last = prices[prices.length - 1]
@@ -227,27 +101,38 @@ export function OutcomeReveal({ outcome, onReveal, error, variant = 'rail' }: {
     const color = up ? 'var(--color-bull)' : 'var(--color-bear)'
     return (
       <div
-        className={`card-in rounded-[12px] border ${finale ? 'flex flex-1 flex-col justify-center p-5' : 'p-[15px]'}`}
+        className="card-in rounded-[14px] border px-10 py-8 text-center"
         style={{
           borderColor: `color-mix(in oklab, ${color} 30%, transparent)`,
           background: `linear-gradient(180deg, color-mix(in oklab, ${color} 6%, transparent), transparent)`,
         }}
       >
-        <div className="mb-3 flex items-center gap-2 font-mono text-[9.5px] tracking-[0.14em] text-ink-3">
+        <div className="mb-5 flex items-center justify-center gap-2 font-mono text-[10px] tracking-[0.14em] text-ink-3">
           <span style={{ color: SEALED }}>◈ UNSEALED</span>
           <span className="text-ink-3/50">·</span>
           <span>WHAT ACTUALLY HAPPENED</span>
         </div>
-        <div className="flex items-baseline gap-3">
-          <span style={{ color, fontSize: finale ? 26 : 20 }}>{up ? '▲' : '▼'}</span>
-          <span className="tnum font-mono font-semibold leading-none" style={{ color, fontSize: finale ? 52 : 38 }}>
-            {up ? '+' : ''}{change.toFixed(1)}%
-          </span>
+        <div className="flex flex-wrap items-start justify-center gap-x-11 gap-y-6 text-left">
+          <div>
+            <div className="mb-1.5 text-[11px] uppercase tracking-[0.08em] text-ink-3">{prices.length}-session return</div>
+            <div className="tnum font-display leading-none" style={{ color, fontSize: 34 }}>
+              {up ? '+' : ''}{change.toFixed(1)}%
+            </div>
+          </div>
+          <div>
+            <div className="mb-1.5 text-[11px] uppercase tracking-[0.08em] text-ink-3">Window</div>
+            <div className="mt-2 font-mono text-[13px] leading-relaxed text-ink-2">{first.date} → {last.date}</div>
+            <div className="font-mono text-[11px] text-ink-3">{first.close.toFixed(2)} → {last.close.toFixed(2)}</div>
+          </div>
+          {reality && (
+            <div>
+              <div className="mb-1.5 text-[11px] uppercase tracking-[0.08em] text-ink-3">Verdict vs. reality</div>
+              <div className="font-display leading-none" style={{ color: reality.ok ? 'var(--color-bull)' : 'var(--color-bear)', fontSize: 34 }}>
+                {reality.word}
+              </div>
+            </div>
+          )}
         </div>
-        <div className="mt-3 font-mono text-[11px] leading-relaxed text-ink-3">
-          {first.date} close {first.close.toFixed(2)} → {last.date} close {last.close.toFixed(2)}
-        </div>
-        <div className="font-mono text-[10px] text-ink-3">{prices.length} sessions after as-of</div>
       </div>
     )
   }
