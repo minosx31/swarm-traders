@@ -124,7 +124,7 @@ event. Recording the queue's output is the replay artifact.
 | 1 | `agent_start` | `agent` |
 | 2 | `thesis` | `agent`, `stance` (−1…+1), `evidence[]` (each grounded or dropped) |
 | 3 | `attack` | `agent:"red_team"`, `target`, `kind:"evidence"\|"logical"`, `critique`, `counter_evidence[]` |
-| 4 | `tool_call` / `tool_result` | `agent`, `tool`, `args` / `data` (debate phase only) |
+| 4 | `tool_call` / `tool_result` | `agent`, `tool`, `args` / `data`, optional `duration_s` on `tool_result` (debate phase only) |
 | 5 | `rebuttal` | `agent`, `proposed_stance` (advocacy, not final) |
 | 6 | `adjudication` | `agent`, `adjudicated_stance`, `attacks_landed[]` |
 | 7 | `verdict` | `aggregate_stance`, `direction`, `conviction`, `dissent`, `voting_lenses` — **or** `direction:"no_call"`, `reason` |
@@ -183,7 +183,9 @@ A **Snapshot** is a curated JSON bundle per `(ticker, as_of)` on a whitelist of
 2–3 hand-picked pairs. Every datum is stamped with an availability date and hard-
 filtered to `≤ as_of`; fundamentals are the last *reported* figures (checked by
 filing date, not period). The **Outcome** is stored separately and never reaches
-the blackboard. Uncached tickers are refused, never live-fetched.
+the blackboard. Uncached tickers are refused, never live-fetched. `GET /snapshot`
+exposes a read-only manifest of exactly what a Snapshot contains (bar counts,
+grounding key space, news) so the UI can show the agents' inputs.
 
 ---
 

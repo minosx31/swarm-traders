@@ -1,7 +1,7 @@
 /** Shared atoms: agent identity, stance meters, avatars, click-to-verify evidence. */
 
 import { useState, type ReactNode } from 'react'
-import type { AgentName, EvidenceItem, GroundingEvent } from './types'
+import type { AgentName, EvidenceItem, GroundingEvent, SnapshotManifest } from './types'
 
 export const AGENT_COLOR: Record<AgentName, string> = {
   fundamentals: 'var(--color-fundamentals)',
@@ -128,7 +128,10 @@ export function MiniStance({ value }: { value: number }) {
   )
 }
 
-const fmtVal = (v?: number): string => {
+/** Shared numeric formatter — percentages for fractional values, $B/$M for large
+ *  magnitudes, otherwise a plain localized number. Used for both the cited value
+ *  and its snapshot cross-check, so the two are visually comparable. */
+export const fmtVal = (v?: number): string => {
   if (v == null) return '—'
   const a = Math.abs(v)
   if (a < 1) return (v * 100).toFixed(2) + '%'
@@ -137,13 +140,40 @@ const fmtVal = (v?: number): string => {
   return v.toLocaleString()
 }
 
+/** Resolve a citation_key against the snapshot's key spaces (fundamentals +
+ *  technicals) for the value cross-check and the source link. Exact-match only —
+ *  a comma-separated bad key (multiple citations in one string) simply won't
+ *  resolve, which is the correct "can't verify" outcome, not a crash. */
+function resolveSnapshotKey(citationKey: string | undefined, manifest: SnapshotManifest | undefined) {
+  if (!citationKey || !manifest) return null
+  if (citationKey.startsWith('income_stmt.') || citationKey.startsWith('balance_sheet.')) {
+    const keys = manifest.fundamentals?.keys
+    if (keys && citationKey in keys) {
+      return { value: keys[citationKey], sourceUrl: manifest.fundamentals!.source_url }
+    }
+    return null
+  }
+  if (citationKey.startsWith('technicals.')) {
+    const keys = manifest.technicals.keys
+    if (citationKey in keys) {
+      return { value: keys[citationKey], sourceUrl: manifest.prices.source_url }
+    }
+    return null
+  }
+  return null
+}
+
 /** One citation, collapsed to a claim + key with a grounded/dropped accent,
  *  expanding on tap to the cited value, its validation verdict, and any source.
- *  This is the "tap a citation to verify" contract from the design. */
-function EvidenceRow({ item }: { item: EvidenceItem }) {
+ *  This is the "tap a citation to verify" contract from the design. When a
+ *  `manifest` is available, numeric citations also show the snapshot's own value
+ *  under the same key — a direct, user-checkable cross-check — plus a link to
+ *  where that datum came from. */
+function EvidenceRow({ item, manifest }: { item: EvidenceItem; manifest?: SnapshotManifest }) {
   const [open, setOpen] = useState(false)
   const grounded = item.grounded
   const cite = item.citation_key ?? item.source_id ?? '—'
+  const snapshotMatch = resolveSnapshotKey(item.citation_key, manifest)
   return (
     <div className="overflow-hidden rounded-lg">
       <button
@@ -179,6 +209,12 @@ function EvidenceRow({ item }: { item: EvidenceItem }) {
               {grounded ? 'GROUNDED' : 'DROPPED'}
             </span>
           </div>
+          {snapshotMatch && (
+            <div className="mt-1 flex flex-wrap items-center gap-2 font-mono text-[11px]">
+              <span className="text-ink-3">snapshot</span>
+              <span className="font-semibold text-ink">{fmtVal(snapshotMatch.value)}</span>
+            </div>
+          )}
           <p className="mt-1.5 text-[11.5px] leading-relaxed text-ink-3">
             {grounded
               ? `Value matched the point-in-time snapshot under key ${cite}.`
@@ -195,23 +231,49 @@ function EvidenceRow({ item }: { item: EvidenceItem }) {
               ↗ open source
             </a>
           )}
+          {!item.url && snapshotMatch && (
+            <a href={snapshotMatch.sourceUrl} target="_blank" rel="noopener noreferrer"
+               className="mt-1.5 inline-block text-[12px] text-fundamentals hover:underline">
+              ↗ open source
+            </a>
+          )}
         </div>
       )}
     </div>
   )
 }
 
-/** The tappable evidence stack for a thesis or attack. */
-export function EvidenceList({ evidence, emptyLabel }: {
+/** The tappable evidence stack for a thesis or attack. When `collapsible`, the
+ *  whole stack folds behind a `EVIDENCE · N` toggle (closed by default) so a long
+ *  citation list doesn't dominate the card; each row still taps open to verify. */
+export function EvidenceList({ evidence, emptyLabel, manifest, collapsible = false }: {
   evidence: EvidenceItem[]
   emptyLabel?: string
+  manifest?: SnapshotManifest
+  collapsible?: boolean
 }) {
+  const [open, setOpen] = useState(!collapsible)
   if (evidence.length === 0) {
     return emptyLabel ? <p className="text-[10.5px] italic text-ink-3">{emptyLabel}</p> : null
   }
-  return (
+  const rows = (
     <div className="flex flex-col gap-[5px]">
-      {evidence.map((item, i) => <EvidenceRow key={i} item={item} />)}
+      {evidence.map((item, i) => <EvidenceRow key={i} item={item} manifest={manifest} />)}
+    </div>
+  )
+  if (!collapsible) return rows
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="flex w-full items-center gap-1.5 font-mono text-[9px] tracking-[0.14em] text-ink-3 transition-colors hover:text-ink-2"
+        aria-expanded={open}
+      >
+        <span className="text-[8px]">{open ? '▾' : '▸'}</span>
+        <span>EVIDENCE · {evidence.length} · TAP TO VERIFY</span>
+      </button>
+      {open && <div className="mt-[7px]">{rows}</div>}
     </div>
   )
 }

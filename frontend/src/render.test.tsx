@@ -9,46 +9,51 @@
 import { afterEach, expect, test } from 'bun:test'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 
 afterEach(cleanup)
-import { Thread } from './Thread'
-import { VerdictPanel } from './VerdictPanel'
+import { LayerFeed } from './Layers'
+import { VerdictFinale } from './VerdictFinale'
 import { Provenance } from './Provenance'
+import { EvidenceList } from './components'
 import { debateReducer, initialState } from './reducer'
-import type { DebateEvent } from './types'
+import type { DebateEvent, SnapshotManifest } from './types'
 
 const noOutcome = { outcome: null, onReveal: () => {}, outcomeError: null }
 
 const FIXTURES = join(import.meta.dir, 'fixtures')
 const loadFixture = (name: string): { events: DebateEvent[] } =>
   JSON.parse(readFileSync(join(FIXTURES, name), 'utf8'))
+const manifest: SnapshotManifest = JSON.parse(readFileSync(join(FIXTURES, 'manifest.json'), 'utf8'))
 
-test('a recorded verdict run reduces and renders: lanes, gate results, verdict', () => {
+test('a recorded verdict run reduces and renders: layers, gate results, verdict', () => {
   const { events } = loadFixture('verdict-run.json')
   const state = events.reduce(debateReducer, initialState)
 
   render(
     <main>
-      <Thread agent="fundamentals" lane={state.lanes.fundamentals} />
-      <Thread agent="sentiment" lane={state.lanes.sentiment} />
-      <Thread agent="technicals" lane={state.lanes.technicals} />
-      <VerdictPanel state={state} {...noOutcome} />
+      <LayerFeed state={state} />
+      <VerdictFinale state={state} ticker="NVDA" asOf="2026-07-02" {...noOutcome} />
     </main>,
   )
 
-  expect(screen.getByText('Fundamentals')).toBeTruthy()
+  expect(screen.getAllByText('Fundamentals').length).toBeGreaterThan(0)
   // this frozen fixture: sentiment gated out, verdict BEAR, N=2
   expect(screen.getByText('ABSTAINED · NO VOTE')).toBeTruthy()
+  // the finale restates the verdict as a "VERIFIED" card
+  expect(screen.getByText('Computed Verdict')).toBeTruthy()
   expect(screen.getByText('BEAR')).toBeTruthy()
-  expect(screen.getByText('N=2')).toBeTruthy()
-  // structural invariants that hold for ANY verdict run, whatever the model said:
-  // conviction is never shown without N and dissent
-  expect(screen.getByText('CONVICTION')).toBeTruthy()
-  expect(screen.getByText('DISSENT')).toBeTruthy()
+  expect(screen.getByText('Conviction score')).toBeTruthy()
+  // stats footer: 2 of 3 lenses survived the grounding gate (also shown in the
+  // gate note), 1 of 1 attacks landed
+  expect(screen.getAllByText('2 / 3').length).toBeGreaterThan(0)
+  expect(screen.getByText('1 / 1')).toBeTruthy()
   // outcome absent from the DOM until explicitly revealed
   expect(screen.queryByText(/what actually happened/)).toBeNull()
   expect(screen.getByText('▣ REVEAL THE OUTCOME')).toBeTruthy()
+  // layer 04's ruling table renders a row per adjudication
+  expect(screen.getByText('Judgment')).toBeTruthy()
+  expect(screen.getAllByText('Complete').length).toBeGreaterThan(0)
 })
 
 test('the provenance manifest derives grounded ratio + voting lenses from state', () => {
@@ -65,18 +70,119 @@ test('the provenance manifest derives grounded ratio + voting lenses from state'
   expect(screen.getByText('NVDA')).toBeTruthy()
 })
 
-test('an error-terminated recorded run still renders lanes without crashing', () => {
+test('an error-terminated recorded run still renders the layer feed without crashing', () => {
   const { events } = loadFixture('error-run.json')
   const state = events.reduce(debateReducer, initialState)
   expect(state.phase).toBe('error')
   const { unmount } = render(
     <main>
-      <Thread agent="fundamentals" lane={state.lanes.fundamentals} />
-      <Thread agent="sentiment" lane={state.lanes.sentiment} />
-      <Thread agent="technicals" lane={state.lanes.technicals} />
+      <LayerFeed state={state} />
     </main>,
   )
-  // threads that got a thesis before the error still render it
+  // layer 01 (theses) rendered before the error still shows
   expect(screen.getByText('Fundamentals')).toBeTruthy()
+  expect(screen.getByText('Theses')).toBeTruthy()
+  // sentiment gated out before red-team ever attacked it — layer 02 shows only
+  // its "stands down" card, no red-team tool activity, no rulings table
+  expect(screen.getByText('STANDS DOWN')).toBeTruthy()
+  expect(screen.queryByText('Judgment')).toBeNull()
   unmount()
+})
+
+test('the provenance strip renders manifest chips from a fixture manifest', () => {
+  const { events } = loadFixture('verdict-run.json')
+  const state = events.reduce(debateReducer, initialState)
+
+  render(<Provenance state={state} ticker="NVDA" asOf="2026-07-02" manifest={manifest} />)
+
+  // identity flips to "frozen {as_of}" once a manifest has loaded
+  expect(screen.getByText(/frozen 2026-07-02/)).toBeTruthy()
+  expect(screen.getByText(/Prices — 250d EOD/)).toBeTruthy()
+  expect(screen.getByText(/Fundamentals — 2026-04-30 \(10-Q\)/)).toBeTruthy()
+  expect(screen.getByText(/News — 2 sources/)).toBeTruthy()
+  // no leak violations in the fixture ⇒ the green "0 sources post-date as-of" chip
+  expect(screen.getByText(/0 sources post-date as-of/)).toBeTruthy()
+  expect(screen.getByText(/VIEW MANIFEST/)).toBeTruthy()
+})
+
+test('the manifest toggle expands fundamentals/technicals keys and news links', () => {
+  const { events } = loadFixture('verdict-run.json')
+  const state = events.reduce(debateReducer, initialState)
+
+  render(<Provenance state={state} ticker="NVDA" asOf="2026-07-02" manifest={manifest} />)
+
+  fireEvent.click(screen.getByText(/VIEW MANIFEST/))
+
+  expect(screen.getByText('income_stmt.Normalized EBITDA')).toBeTruthy()
+  expect(screen.getByText('technicals.return_1m')).toBeTruthy()
+  expect(screen.getByText('NVIDIA shares slide amid broader chip sector pullback')).toBeTruthy()
+})
+
+test('EvidenceRow shows the snapshot value + a source link when the manifest resolves the citation key', () => {
+  render(
+    <EvidenceList
+      evidence={[{
+        kind: 'numeric',
+        claim: 'The return over the past month is -0.124598',
+        citation_key: 'technicals.return_1m',
+        cited_value: -0.124598,
+        grounded: true,
+      }]}
+      manifest={manifest}
+    />,
+  )
+
+  // expand the row to reveal the cross-check
+  fireEvent.click(screen.getByRole('button', { expanded: false }))
+
+  expect(screen.getByText('snapshot')).toBeTruthy()
+  const link = screen.getByText('↗ open source') as HTMLAnchorElement
+  expect(link.getAttribute('href')).toBe('https://finance.yahoo.com/quote/NVDA/history')
+})
+
+// The red-team activity strip moved into layer 02's card (#14) — reduce a
+// duration_s-bearing tool loop through the real LayerFeed and check the
+// stamp (#13) renders in its new home.
+test('layer 02 renders a duration stamp when tool_result carries duration_s', () => {
+  const state = [
+    { type: 'agent_start', agent: 'red_team' },
+    { type: 'tool_call', agent: 'red_team', tool: 'get_financials', args: {} },
+    { type: 'tool_result', agent: 'red_team', tool: 'get_financials', data: {}, duration_s: 0.6 },
+  ].reduce(debateReducer, initialState)
+
+  render(<LayerFeed state={state} />)
+
+  expect(screen.getByText(/✓ 0\.6s/)).toBeTruthy()
+})
+
+test('layer 02 falls back to a bare check on older recordings without duration_s', () => {
+  const state = [
+    { type: 'agent_start', agent: 'red_team' },
+    { type: 'tool_call', agent: 'red_team', tool: 'get_news', args: {} },
+    { type: 'tool_result', agent: 'red_team', tool: 'get_news', data: [] }, // no duration_s
+  ].reduce(debateReducer, initialState)
+
+  render(<LayerFeed state={state} />)
+
+  expect(screen.getByText(/⚙ get_news ✓/)).toBeTruthy()
+  expect(screen.queryByText(/✓ .*s$/)).toBeNull()
+})
+
+test('EvidenceRow does not crash on a comma-separated bad citation_key and simply shows no cross-check', () => {
+  render(
+    <EvidenceList
+      evidence={[{
+        kind: 'numeric',
+        claim: 'The price is below both 20-day and 50-day SMAs',
+        citation_key: 'technicals.pct_vs_sma_20, technicals.pct_vs_sma_50',
+        cited_value: -0.042534,
+        grounded: false,
+        reason: 'citation_key not in snapshot',
+      }]}
+      manifest={manifest}
+    />,
+  )
+
+  fireEvent.click(screen.getByRole('button', { expanded: false }))
+  expect(screen.queryByText('snapshot')).toBeNull()
 })

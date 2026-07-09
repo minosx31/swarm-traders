@@ -1,0 +1,430 @@
+{
+  "ticker": "PLTR",
+  "as_of": "2026-06-01",
+  "prices": {
+    "bars": 251,
+    "first_date": "2025-06-02",
+    "last_date": "2026-06-01",
+    "source_url": "https://finance.yahoo.com/quote/PLTR/history"
+  },
+  "fundamentals": {
+    "period_end": "2026-03-31",
+    "available_at": "2026-05-15",
+    "source_url": "https://finance.yahoo.com/quote/PLTR/financials",
+    "keys": {
+      "income_stmt.Tax Effect Of Unusual Items": 0.0,
+      "income_stmt.Tax Rate For Calcs": 0.013728,
+      "income_stmt.Normalized EBITDA": 760763000.0,
+      "income_stmt.Net Income From Continuing Operation Net Minority Interest": 870527000.0,
+      "income_stmt.Reconciled Depreciation": 6765000.0,
+      "income_stmt.Reconciled Cost Of Revenue": 215798000.0,
+      "income_stmt.EBITDA": 760763000.0,
+      "income_stmt.EBIT": 753998000.0,
+      "income_stmt.Net Interest Income": 66394000.0,
+      "income_stmt.Interest Income": 66394000.0,
+      "income_stmt.Normalized Income": 870527000.0,
+      "income_stmt.Net Income From Continuing And Discontinued Operation": 870527000.0,
+      "income_stmt.Total Expenses": 878585000.0,
+      "income_stmt.Total Operating Income As Reported": 753998000.0,
+      "income_stmt.Diluted Average Shares": 2570924000.0,
+      "income_stmt.Basic Average Shares": 2393869000.0,
+      "income_stmt.Diluted EPS": 0.34,
+      "income_stmt.Basic EPS": 0.36,
+      "income_stmt.Diluted NI Availto Com Stockholders": 870527000.0,
+      "income_stmt.Net Income Common Stockholders": 870527000.0,
+      "income_stmt.Net Income": 870527000.0,
+      "income_stmt.Minority Interests": -5875000.0,
+      "income_stmt.Net Income Including Noncontrolling Interests": 876402000.0,
+      "income_stmt.Net Income Continuous Operations": 876402000.0,
+      "income_stmt.Tax Provision": 12199000.0,
+      "income_stmt.Pretax Income": 888601000.0,
+      "income_stmt.Other Income Expense": 68209000.0,
+      "income_stmt.Other Non Operating Income Expenses": 68209000.0,
+      "income_stmt.Net Non Operating Interest Income Expense": 66394000.0,
+      "income_stmt.Interest Income Non Operating": 66394000.0,
+      "income_stmt.Operating Income": 753998000.0,
+      "income_stmt.Operating Expense": 662787000.0,
+      "income_stmt.Research And Development": 160981000.0,
+      "income_stmt.Selling General And Administration": 501806000.0,
+      "income_stmt.Selling And Marketing Expense": 319220000.0,
+      "income_stmt.General And Administrative Expense": 182586000.0,
+      "income_stmt.Other Gand A": 182586000.0,
+      "income_stmt.Gross Profit": 1416785000.0,
+      "income_stmt.Cost Of Revenue": 215798000.0,
+      "income_stmt.Total Revenue": 1632583000.0,
+      "income_stmt.Operating Revenue": 1632583000.0,
+      "balance_sheet.Ordinary Shares Number": 2397133000.0,
+      "balance_sheet.Share Issued": 2397133000.0,
+      "balance_sheet.Total Debt": 211977000.0,
+      "balance_sheet.Tangible Book Value": 8449663000.0,
+      "balance_sheet.Invested Capital": 8449663000.0,
+      "balance_sheet.Working Capital": 8168755000.0,
+      "balance_sheet.Net Tangible Assets": 8449663000.0,
+      "balance_sheet.Capital Lease Obligations": 211977000.0,
+      "balance_sheet.Common Stock Equity": 8449663000.0,
+      "balance_sheet.Total Capitalization": 8449663000.0,
+      "balance_sheet.Total Equity Gross Minority Interest": 8556281000.0,
+      "balance_sheet.Minority Interest": 106618000.0,
+      "balance_sheet.Stockholders Equity": 8449663000.0,
+      "balance_sheet.Gains Losses Not Affecting Retained Earnings": 601000.0,
+      "balance_sheet.Other Equity Adjustments": 601000.0,
+      "balance_sheet.Retained Earnings": -2691863000.0,
+      "balance_sheet.Additional Paid In Capital": 11138528000.0,
+      "balance_sheet.Capital Stock": 2397000.0,
+      "balance_sheet.Common Stock": 2397000.0,
+      "balance_sheet.Total Liabilities Net Minority Interest": 1642902000.0,
+      "balance_sheet.Total Non Current Liabilities Net Minority Interest": 259953000.0,
+      "balance_sheet.Other Non Current Liabilities": 5673000.0,
+      "balance_sheet.Non Current Deferred Liabilities": 42303000.0,
+      "balance_sheet.Non Current Deferred Revenue": 42303000.0,
+      "balance_sheet.Long Term Debt And Capital Lease Obligation": 211977000.0,
+      "balance_sheet.Long Term Capital Lease Obligation": 211977000.0,
+      "balance_sheet.Current Liabilities": 1382949000.0,
+      "balance_sheet.Current Deferred Liabilities": 886987000.0,
+      "balance_sheet.Current Deferred Revenue": 886987000.0,
+      "balance_sheet.Payables And Accrued Expenses": 495962000.0,
+      "balance_sheet.Current Accrued Expenses": 336906000.0,
+      "balance_sheet.Payables": 159056000.0,
+      "balance_sheet.Total Tax Payable": 89737000.0,
+      "balance_sheet.Accounts Payable": 69319000.0,
+      "balance_sheet.Total Assets": 10199183000.0,
+      "balance_sheet.Total Non Current Assets": 647479000.0,
+      "balance_sheet.Other Non Current Assets": 362773000.0,
+      "balance_sheet.Net PPE": 284706000.0,
+      "balance_sheet.Gross PPE": 284706000.0,
+      "balance_sheet.Other Properties": 284706000.0,
+      "balance_sheet.Current Assets": 9551704000.0,
+      "balance_sheet.Other Current Assets": 119703000.0,
+      "balance_sheet.Receivables": 1405588000.0,
+      "balance_sheet.Accounts Receivable": 1405588000.0,
+      "balance_sheet.Cash Cash Equivalents And Short Term Investments": 8026413000.0,
+      "balance_sheet.Other Short Term Investments": 5734782000.0,
+      "balance_sheet.Cash And Cash Equivalents": 2291631000.0
+    }
+  },
+  "technicals": {
+    "keys": {
+      "technicals.close_latest": 160.649994,
+      "technicals.return_5d": 0.173656,
+      "technicals.return_1m": 0.154841,
+      "technicals.return_3m": 0.106634,
+      "technicals.return_6m": -0.030886,
+      "technicals.sma_20": 138.636249,
+      "technicals.pct_vs_sma_20": 0.158788,
+      "technicals.sma_50": 141.892699,
+      "technicals.pct_vs_sma_50": 0.132194,
+      "technicals.sma_200": 161.6655,
+      "technicals.pct_vs_sma_200": -0.006282,
+      "technicals.high_52w": 207.179993,
+      "technicals.low_52w": 119.910004,
+      "technicals.pct_vs_high_52w": -0.224587,
+      "technicals.volume_avg_20": 46281220,
+      "technicals.volume_latest_vs_avg_20": 0.245732
+    }
+  },
+  "news": [
+    {
+      "source_id": "fh-140493209",
+      "title": "Prediction: This Will Be Palantir's Stock Price by the End of 2027",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=a2895ee4d90d416434539ed9a8cc6729eac290b963c8f789bd649670726f87af"
+    },
+    {
+      "source_id": "fh-140490232",
+      "title": "Explore the S&P500 index on Monday and find out which stocks are the most active in today's session.",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=99e24a99c2a2f4ea1a4b2361a849a1a2728318a3c0d330396e0074f024aff4aa"
+    },
+    {
+      "source_id": "fh-140491339",
+      "title": "Nvidia Highlights New AI Products at Computex",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=60231cde01a36df415c733295f42e29288b014ce1bdb997513e81055cccd34ba"
+    },
+    {
+      "source_id": "fh-140495574",
+      "title": "Dell Stock Is No Longer Just Riding the AI Wave. It Is Leading the Charge.",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=14d4a6b765090eb9149fe6fc47b4c3be00055146c1ba86725fe5110f6b3d6e10"
+    },
+    {
+      "source_id": "fh-140489783",
+      "title": "Top 3 High Growth Tech Stocks in the US Market",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=8c471e6de58f89c2d05a180334147dd2767c9f9bb69146e935624b8f42718dce"
+    },
+    {
+      "source_id": "fh-140493007",
+      "title": "Gorilla Technology's NeutraDC Deal Changes Everything, And It's Not Yet Priced In",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=2e032c06dd5a3eb64dc624631e465ec116cfc91d42f6464921ccd70c5a87a17a"
+    },
+    {
+      "source_id": "fh-140489784",
+      "title": "Jim Cramer on Palantir: \u201cMaybe It\u2019s Coming Back\u201d",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=0d9f20ae500644f10e786fdf27f4cd93656267bcfb32a71d723712d23dd1e49b"
+    },
+    {
+      "source_id": "fh-140489785",
+      "title": "Palantir Technologies (PLTR): One of the Best Stocks to Buy Right Now According to AI",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=6da9429ba7085b52e40535336b3037ac6f4c4f509f7bf8b2597dd5939bdac621"
+    },
+    {
+      "source_id": "fh-140491717",
+      "title": "AI Meets Crypto Income: GraniteShares Launches Super Micro Computer, MARA ETFs",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=df17f1059f62d1a5190e351dfc40a0ab6ec7f5846ca9cecf291d2e176f29f4da"
+    },
+    {
+      "source_id": "fh-140490957",
+      "title": "A PRIME Ranking Of Space Stocks To Consider Before The SpaceX IPO",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=4c59ebebb6cb2e5cded248d3b10137712a3327f340fd1deb3b60426a9c7235e5"
+    },
+    {
+      "source_id": "fh-140487869",
+      "title": "Highlights: SpaceX & Beyond \u2013 Public & Private Capital Markets Assessment: 2nd Princeton CorpGov Forum",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=6eb310a01e9e81dd3372c7411a10d6835f1801ffa5f92dea2b04a5178249b009"
+    },
+    {
+      "source_id": "fh-140487870",
+      "title": "Cognyte to Report Q1 Earnings: How Should Investors Play the Stock?",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=0848bdd3a9ad62f86c79a9b17cf3bcda2331624c88016547a9129cf2db2dff4e"
+    },
+    {
+      "source_id": "fh-140492306",
+      "title": "10 Information Technology Stocks Whale Activity In Today's Session",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=1b4c6cd675cbae8741003b178c51a1a8a1cbac83621d300484b4340bde629fba"
+    },
+    {
+      "source_id": "fh-140486611",
+      "title": "Is Palantir Still a Millionaire-Maker Stock?",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=f8ce757fdc87ad4191b3e110583e260a2a18599dc1571f8a2388eb87308b8d13"
+    },
+    {
+      "source_id": "fh-140486652",
+      "title": "Palantir Seen Ready for Next Move Higher",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=4b4c60f36329ba071dfd0a34f12f7e5da7e3ff7a86514d639931bf1687603469"
+    },
+    {
+      "source_id": "fh-140485853",
+      "title": "Palantir Eyes Buy Point As Software Stocks Extend Rally On Snowflake, Dell Earnings",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=67e4778c345a331b8241f22411d490cc1727ebd0fd1078c77dd5db26c3d8f8b8"
+    },
+    {
+      "source_id": "fh-140485762",
+      "title": "Software stocks surge as Nvidia\u2019s Huang dismisses AI disruption fears",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=67e191fb11f1e2b5f2e4da1ed01ac6d8e542eb94334779f70d21105731fdf155"
+    },
+    {
+      "source_id": "fh-140485855",
+      "title": "Exploring 3 High Growth Tech Stocks in the US Market",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=72b280d8d3c9782028fa940a1e70d633bb29d62d0153dbd7553011efb981eb7a"
+    },
+    {
+      "source_id": "fh-140487557",
+      "title": "'Big Short' Star Steve Eisman Warns SpaceX Will Be A 'Retail Cult Stock' With A 'Crazy' Valuation Compared To NVDA",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=28fd591dae202a070666fcd9d561e5b0706525c6e76d9eb9471c39571cb5f17b"
+    },
+    {
+      "source_id": "fh-140485150",
+      "title": "Why Is NOW Stock Surging In Premarket?",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=c1db3ad925b7d85a6afdc3975918829d63f486c5a08729ac90c568839d958485"
+    },
+    {
+      "source_id": "fh-140487306",
+      "title": "$700 Billion and Most Investors Are Watching The Wrong Companies",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=324a5d19177dcc718ed479a5997387106c433bbeca8fc146076d1eb35f98ddc8"
+    },
+    {
+      "source_id": "fh-140485160",
+      "title": "Prediction: This Will Be Palantir's Stock Price in a Year",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=da7f600cbfcbe82389ec6345264244570090369f71b3e6d90ae9b101be1b9d3b"
+    },
+    {
+      "source_id": "fh-140489061",
+      "title": "We could see some of the biggest stock market gains in our lifetime after 2026: Fundstrat's Tom Lee",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=230fd6f6750751b837be5f251d0145b4b823fa10a46f1c957bfb086444351a18"
+    },
+    {
+      "source_id": "fh-140487559",
+      "title": "Why Is Palantir Technologies Stock Trending Higher On Monday?",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=cea2dccd52e70378f8a81dbe36b56cc80d14d0960df02dca1bc9fa8f47f5de60"
+    },
+    {
+      "source_id": "fh-140484775",
+      "title": "Software Strikes Back - Dell Detonates, Abel Finally Spends, Nvidia Aims at the PC",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=9fb597d17b933a9b9dfe0dd5d9a7a34f70e7f1ef168b48ef35d4ef2074576e5a"
+    },
+    {
+      "source_id": "fh-140484210",
+      "title": "Enterprise Software Leaders Build AI Agents With NVIDIA",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=221816ce034e4532b4260e21e5332eae90cfad6dde40b91fcb8bccb0884a2d56"
+    },
+    {
+      "source_id": "fh-140484542",
+      "title": "I'm Calling A Bottom For Software - 3 Stocks I'm Buying",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=15a39a897450fda593e83d5818bb87e9338f304dd34043c59578dac81b8d51fc"
+    },
+    {
+      "source_id": "fh-140483732",
+      "title": "BofA doubles down on cautious S&P 500 view for rest of 2026",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=ed2accb8a226206df54de6288ba4c78bb82ececc634ee8d119768d6014a7d8cc"
+    },
+    {
+      "source_id": "fh-140483542",
+      "title": "Rally Mode - Snowflake, MongoDB, Palantir, And ServiceNow Have Much More Upside",
+      "published_at": "2026-05-31",
+      "url": "https://finnhub.io/api/news?id=64c3015dbb34102c1fa95cae25a3c7420d1a32a16155a3e89b0439f96acf9a45"
+    },
+    {
+      "source_id": "fh-140475261",
+      "title": "Palantir's Selloff Changed Everything",
+      "published_at": "2026-05-31",
+      "url": "https://finnhub.io/api/news?id=5b3e74d56de075fabbdcdbe1f10662a5749baee5ea049c289507f42a1ff64747"
+    },
+    {
+      "source_id": "fh-140473523",
+      "title": "Palantir soars as Dell earnings validate their Al partnership",
+      "published_at": "2026-05-30",
+      "url": "https://finnhub.io/api/news?id=913bc3b65ce9cc3aa14059ce5752dc287b7edbcd653c0d9d525dc22a55fb30ff"
+    },
+    {
+      "source_id": "fh-140471666",
+      "title": "Why is Palantir Technologies Inc. (PLTR) One of the Stocks to Buy for The Long Term?",
+      "published_at": "2026-05-30",
+      "url": "https://finnhub.io/api/news?id=735ef8bc6025ab43ba86f24e6c5f24943e88687b38685c2b4b1098f394b3ffa3"
+    },
+    {
+      "source_id": "fh-140470369",
+      "title": "Palantir Technologies Inc. (PLTR): Renaissance Technologies Continues Trimming Stake",
+      "published_at": "2026-05-30",
+      "url": "https://finnhub.io/api/news?id=126ce6bc50ba3c16d26598b1b9aa23cc1aa612958c3fbe0b3e6cb5efb4f51086"
+    },
+    {
+      "source_id": "fh-140470370",
+      "title": "Billionaire Peter Thiel moves out of U.S. citing harsh concerns",
+      "published_at": "2026-05-30",
+      "url": "https://finnhub.io/api/news?id=1f59851d74970fd1f1362046609e41adbfe0165c3b3db128f8fd2503b03d2fcd"
+    },
+    {
+      "source_id": "fh-140468533",
+      "title": "Forget SaaS: Why AI Agents Could Make ServiceNow and Palantir Technologies the Next Trillion-Dollar Platforms",
+      "published_at": "2026-05-30",
+      "url": "https://finnhub.io/api/news?id=5d0be094cc7afec9e8090218c3300acfdebad89ac6f1dcd71e6563f1ed311782"
+    },
+    {
+      "source_id": "fh-140467695",
+      "title": "Palantir Vatican AI Clash Puts Defense Focus And Investor Risks In Focus",
+      "published_at": "2026-05-30",
+      "url": "https://finnhub.io/api/news?id=96e2ddb8da4e8dd1fcc39414fd0ee4edadfd8d902f33b21e77695cdbb9b8c7c4"
+    },
+    {
+      "source_id": "fh-140465746",
+      "title": "Highlights: Measuring Risk \u2013 AI & Cybersecurity in the Boardroom: 2nd Princeton CorpGov Forum",
+      "published_at": "2026-05-29",
+      "url": "https://finnhub.io/api/news?id=adb281f84dc616cbc9b4249e12355d6c32ffe0e10d2cd9bf0b48038c82291f21"
+    },
+    {
+      "source_id": "fh-140465747",
+      "title": "Why Is Palantir Technologies (PLTR) Stock Soaring Today",
+      "published_at": "2026-05-29",
+      "url": "https://finnhub.io/api/news?id=5048b38cd6bac6d7e0cad94f79de073fb88792bd6ec5411034afa54d22caae85"
+    },
+    {
+      "source_id": "fh-140467282",
+      "title": "PLTR Stock Alert: Why Palantir Is Getting a Boost from Dell Earnings",
+      "published_at": "2026-05-29",
+      "url": "https://finnhub.io/api/news?id=9ed708b96f9765ce5fab9db42642dc5ee5753bf0098d1deff7dd50b10c7f867f"
+    },
+    {
+      "source_id": "fh-140467256",
+      "title": "Stocks Rally on Easing Geopolitical Tensions and AI Enthusiasm",
+      "published_at": "2026-05-29",
+      "url": "https://finnhub.io/api/news?id=b574025ab257dc641a212811d13f4b85918b6936f578bdcc4202927faf59385b"
+    },
+    {
+      "source_id": "fh-140465748",
+      "title": "Highlights: The 5% Debate \u2013 Endowments & Long-Term Investing: 2nd Princeton CorpGov Forum",
+      "published_at": "2026-05-29",
+      "url": "https://finnhub.io/api/news?id=12e06b1db9470b2b7e4f4ecb585f8dfee111f9ad54ed9bf22c2172ac48aef4ad"
+    },
+    {
+      "source_id": "fh-140465749",
+      "title": "Highlights: The NIL Effect \u2013 Finance of Sports: Collegiate Focus: 2nd Princeton CorpGov Forum",
+      "published_at": "2026-05-29",
+      "url": "https://finnhub.io/api/news?id=befc992ee26e533d9a502158252142886e80c080f8e5394beec1fd26984bbb9d"
+    },
+    {
+      "source_id": "fh-140460825",
+      "title": "What's going on in today's session: S&P500 most active stocks",
+      "published_at": "2026-05-29",
+      "url": "https://finnhub.io/api/news?id=c3dc9c75fb6c144e76df2d8f94be7b0001c42c0eeb5ae94d3e5187224f5ba38f"
+    },
+    {
+      "source_id": "fh-140460703",
+      "title": "Palantir Stock Is Having Its Best Day in a Year. Software Looks Like a Buy Again.",
+      "published_at": "2026-05-29",
+      "url": "https://finnhub.io/api/news?id=7025918d07bbaf9360da16272d977a4f81d0ab446cc1867dbc54563665554481"
+    },
+    {
+      "source_id": "fh-140460319",
+      "title": "High Growth Tech Stocks in US for May 2026",
+      "published_at": "2026-05-29",
+      "url": "https://finnhub.io/api/news?id=0b3ce2a8bda06da880167b9676cd88b432e06acaf338267be7617a914d83ed0a"
+    },
+    {
+      "source_id": "fh-140460575",
+      "title": "Dell, Rocket Lab, Palantir, and More Stocks That Explain the Market Today",
+      "published_at": "2026-05-29",
+      "url": "https://finnhub.io/api/news?id=e8cc352f4c09c46ea2beb5c9ff48480e333f50142a65fc1884b4354136a245ee"
+    },
+    {
+      "source_id": "fh-140471024",
+      "title": "Software stocks wrap up best month since 2001 as talk of 'SaaSpocalypse' subsides",
+      "published_at": "2026-05-29",
+      "url": "https://finnhub.io/api/news?id=faa95f8da40bb06be3ab9402816d5801f97d7c31f238fc8730bb5cf907cfe951"
+    },
+    {
+      "source_id": "fh-140459076",
+      "title": "Uncover the latest developments among S&P500 stocks in today's session.",
+      "published_at": "2026-05-29",
+      "url": "https://finnhub.io/api/news?id=64dacbe3fa92b4aebb09972c2a32e704286fa97c60a84ba326788666c4255735"
+    },
+    {
+      "source_id": "fh-140464112",
+      "title": "Stocks Supported by Middle East Peace Hopes and AI Spending",
+      "published_at": "2026-05-29",
+      "url": "https://finnhub.io/api/news?id=3727c695adf3e7d9bea30691eca11afe9f077a8b5e0848243385616c4e2f596b"
+    },
+    {
+      "source_id": "fh-140458120",
+      "title": "Palantir Soars 10% as Dell Earnings Beat Validates Their AI Factory Partnership, Snowflake Lifts Software Rally",
+      "published_at": "2026-05-29",
+      "url": "https://finnhub.io/api/news?id=f36c30c9c024d4d511be76bbe1b61a20cd58972eeceea9646f23ab6936e03eb6"
+    }
+  ],
+  "leak_check": {
+    "violations": []
+  }
+}

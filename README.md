@@ -273,7 +273,7 @@ One FastAPI app with LangGraph running in-process — nothing else to host.
 
 | File | What it does |
 |---|---|
-| `alpha_swarms/app.py` | FastAPI app. `GET /stream?ticker&as_of[&replay=1][&backend=&model=][&run=]` — refuses non-whitelisted pairs with `400`, streams the debate (or a recorded run) as SSE; `backend`/`model` pin the LLM for a live run, `run` selects which recording to replay. `POST /snapshots` builds a missing pair on demand (ADR 0006; an existing pair is reused, never re-fetched). Also `GET /whitelist`, `GET /outcome`, `GET /models` (selectable models), `GET /runs?ticker&as_of` (recorded runs, for replay-by-model) — all UI-facing. Validates `LLM_BACKEND` at startup |
+| `alpha_swarms/app.py` | FastAPI app. `GET /stream?ticker&as_of[&replay=1][&backend=&model=][&run=]` — refuses non-whitelisted pairs with `400`, streams the debate (or a recorded run) as SSE; `backend`/`model` pin the LLM for a live run, `run` selects which recording to replay. `POST /snapshots` builds a missing pair on demand (ADR 0006; an existing pair is reused, never re-fetched). Also `GET /whitelist`, `GET /outcome`, `GET /models` (selectable models), `GET /runs?ticker&as_of` (recorded runs, for replay-by-model), `GET /snapshot?ticker&as_of` (the manifest of exactly what data the agents were fed, 404 if not whitelisted) — all UI-facing. Validates `LLM_BACKEND` at startup |
 | `alpha_swarms/replay.py` | Record + replay (#9): every run's event log persists to `data/runs/` with its model in the filename + payload; replay re-streams a chosen run (or the latest) with the graph bypassed — zero LLM calls |
 | `alpha_swarms/graph.py` | LangGraph topology wiring: parallel specialist fan-out → red_team → parallel rebuttals → judge → aggregate, plus the reducer-merged `Blackboard` state |
 | `alpha_swarms/agents.py` | The LLM-backed nodes: specialist/Red-Team/rebuttal/Judge prompts + the structured-output helper (one validation-retry, then graceful failure). Pre-sliced single calls; the Red-Team/rebuttal nodes switch to the bounded tool-calling loop when `DEBATE_TOOLS=1` (#8) |
@@ -304,9 +304,9 @@ React + Vite + TypeScript + Tailwind v4 static site (Bun tooling). Dark
 | `src/types.ts` | TypeScript mirror of the SSE event contract |
 | `src/reducer.ts` | `useReducer` over the event union, keyed by agent — unknown events never crash it |
 | `src/useDebateStream.ts` | `EventSource` lifecycle: dispatches events, closes on the terminal event |
-| `src/api.ts` | Backend base URL (`VITE_API_BASE`), whitelist + outcome fetches, snapshot build-if-missing |
+| `src/api.ts` | Backend base URL (`VITE_API_BASE`), whitelist + outcome fetches, snapshot build-if-missing, snapshot manifest fetch (`GET /snapshot`) |
 | `src/components.tsx` | Atoms: agent chips, signed stance meters, the evidence ledger (grounded foregrounded, failed citations collapsed) + validation badge |
-| `src/Provenance.tsx` | The data-provenance manifest strip: snapshot in play, grounded ratio across lanes, voting lenses (what the swarm is working from) |
+| `src/Provenance.tsx` | The data-provenance manifest strip: snapshot in play, grounded ratio across lanes, voting lenses, and (once `GET /snapshot` loads) chips + an expandable panel showing exactly what was fed to the agents |
 | `src/Lane.tsx` | One specialist's column: thesis → attacks on it → rebuttal → adjudication (the stance trail) |
 | `src/VerdictPanel.tsx` | Verdict stamp, conviction+N+dissent (never conviction alone), landed attacks, post-verdict Outcome reveal |
 | `src/*.test.ts(x)` | `bun test`: reducer contract tests + DOM render of a real recorded run |
@@ -400,13 +400,18 @@ possible later by pointing `VITE_API_BASE` at a hosted backend and leaving
 1. **Record the runs you want to ship.** Do live runs (`LLM_BACKEND=ollama …`);
    each persists to `backend/data/runs/` tagged with its model. Curate by which
    files live there — delete takes you don't want public.
-2. **Bundle them:** `cd frontend && bun run bundle`. Copies `data/runs/*.json`
-   (+ each referenced outcome) into `frontend/public/data/` and writes
-   `index.json` (the offline stand-in for `GET /whitelist` + `GET /runs`).
-3. **Commit `frontend/public/data/`** — Vercel builds from git, so the bundled
+2. **Export the snapshot manifests:** `cd backend && uv run python
+   scripts/export_manifests.py`. Writes `backend/data/manifests/{TICKER}_{as_of}.json`
+   — the offline stand-in for `GET /snapshot`, powering the Provenance manifest panel.
+3. **Bundle them:** `cd frontend && bun run bundle`. Copies `data/runs/*.json`
+   (+ each referenced outcome) into `frontend/public/data/`, copies any matching
+   `data/manifests/*.json` into `frontend/public/data/snapshots/` (skipped with a
+   warning if the manifests dir doesn't exist), and writes `index.json` (the
+   offline stand-in for `GET /whitelist` + `GET /runs`).
+4. **Commit `frontend/public/data/`** — Vercel builds from git, so the bundled
    JSON must be committed (it is *not* gitignored).
-4. **Deploy to Vercel:** set the project's **Root Directory → `frontend`**.
+5. **Deploy to Vercel:** set the project's **Root Directory → `frontend`**.
    `frontend/vercel.json` pins the rest (`VITE_STATIC=1 bun run build`,
-   output `dist/`, `bun install`). Re-run steps 2–3 and push to ship more runs.
+   output `dist/`, `bun install`). Re-run steps 2–4 and push to ship more runs.
 
 Preview the static build locally: `VITE_STATIC=1 bun run build && bun run preview`.

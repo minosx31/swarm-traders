@@ -80,8 +80,8 @@ body {
 /* ── the verdict stamp ──────────────────────────────────────────────── */
 @keyframes stamp {
   0% { opacity: 0; transform: scale(1.6) rotate(-6deg); }
-  60% { opacity: 1; transform: scale(0.97) rotate(-1.5deg); }
-  100% { transform: scale(1) rotate(-2deg); }
+  60% { opacity: 1; transform: scale(0.97) rotate(-1deg); }
+  100% { transform: scale(1) rotate(0deg); }
 }
 .stamp {
   animation: stamp 0.55s cubic-bezier(0.2, 0.8, 0.3, 1.2) both;

@@ -347,35 +347,56 @@ stays a stretch goal, gated behind extra credits.
 
 ---
 
-### #12 · Frontend UI refresh / design pass
-**Type:** HITL · **Blocked by:** #7 · Should land before or alongside #11 — the
-demo video captures whatever the UI looks like at record time
+### #13 · Tool-call duration stamps in the red-team activity strip
+**Type:** AFK · **Blocked by:** #8
 
 #### What to build
-A visual polish pass on the existing React frontend, not a rebuild: the App
-shell, per-agent lanes, tool-activity strip, and Verdict panel all render
-correctly today but the terminal-courtroom v1 (IBM Plex Mono + Instrument
-Serif, dark surfaces) is functional rather than sharp. User feedback after
-Phase 2 was that it "looks kinda sick" but wants a design improvement pass
-before the demo video ships. This is styling/layout/motion work over the
-current event union — no new event types, no reducer changes, no backend
-touch. The first step is to ask the user what specifically felt lacking
-(spacing, hierarchy, motion, typography, something else) rather than guessing
-a direction; re-invoke the `frontend-design` skill once that's known. Two hard
-constraints carry over unchanged from v1: the CVD-validated agent color
-palette (`--color-fundamentals/sentiment/technicals/redteam/judge` in
-`index.css`) stays as-is, and Conviction is never displayed without N and
-Dissent alongside it.
+The "Multi-agent UI Redesign" Claude Design mock (`Swarm Traders.dc.html`)
+renders each red-team tool call with its wall-clock duration and a check on
+completion (`fetch_filing(…) ✓ 0.6s`). Today `tool_call`/`tool_result` events
+carry no timing, so the strip can only show a spinner-then-check. Add an
+optional `duration_s` field to the `tool_result` event (measured around the
+tool invocation in the bounded tool loop), mirror it in `types.ts`, and render
+it in the activity strip. Additive contract change only: old recorded runs
+simply lack the field and the UI falls back to the current check-mark, so
+replay and the static site keep working unmodified.
 
 #### Acceptance criteria
-- [ ] User feedback on what felt lacking is gathered and confirmed *before*
-      any redesign work starts — not assumed
-- [ ] `bun test` and `tsc -b` stay green throughout
-- [ ] The SSE event contract and the `useReducer` event-union logic are
-      untouched — this is a rendering/styling change only
-- [ ] The CVD-validated agent palette tokens are unchanged; polarity colors
-      stay paired with a label/icon, never shown alone
-- [ ] Verdict card still never shows Conviction without N and Dissent; No Call
-      still renders as honest abstention
-- [ ] `bun run dev` against a running backend (live or replay) renders a full
-      debate with the refreshed look, no regressions in existing lanes/cards
+- [ ] `tool_result` events from a live tool-mode run (`DEBATE_TOOLS=1`) carry
+      `duration_s`; the strip renders `✓ {duration}s` per completed call
+      (test-verified via the tool-loop test suite, not against a live Ollama run)
+- [x] Replaying a pre-existing recorded run (no `duration_s`) renders exactly
+      as today — no crash, no layout shift
+- [x] The field is optional in the SSE contract (ARCHITECTURE §3 note) and in
+      `types.ts`; the reducer ignores its absence
+- [x] `bun test` and `uv run pytest` stay green
+
+---
+
+### #14 · Layer-numbered debate feed (01–04) from the redesign mock
+**Type:** AFK · **Blocked by:** #13 (the mock folds the duration-stamped tool
+activity into layer 02)
+
+#### What to build
+Adopt the "Multi-agent UI Redesign" mock's information architecture — decision
+made 2026-07-09: the mock's layer feed wins over the per-specialist threads.
+The debate renders as four numbered acts — `01 Independent Research` (theses
+grid with evidence), `02 Adversarial Review` (attacks + the red-team tool
+activity), `03 Right of Reply` (rebuttals with confidence deltas), `04 Ruling`
+(judgment table with per-attack Landed/Partial/Deflected rulings) — each with
+a Pending/Running…/Complete badge derived from reducer state. `Thread.tsx`'s
+per-specialist grouping is replaced. Rendering-only over the existing event
+union and reducer; no backend or contract changes (mock-only fields like
+attack `severity`/`title` are not in the contract — render `kind` instead).
+
+#### Acceptance criteria
+- [x] All existing event types render in the layer structure, including the
+      stands-down/abstain case and the rulings table with per-attack outcomes
+- [x] The SSE contract, reducer, and backend are untouched
+- [x] The CVD-validated agent palette tokens are unchanged; Conviction still
+      never renders without N and Dissent
+- [x] `bun test` and `tsc -b` stay green; live and replay runs render without
+      regressions (verified by `bun test` + `bun run build`; the "replay" path
+      is the bundled static demo re-streaming a cached run through the same
+      LayerFeed component — not separately smoke-tested here, e.g. no browser
+      driven check of the live SSE or bundled-static UI)

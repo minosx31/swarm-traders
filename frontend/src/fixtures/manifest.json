@@ -1,0 +1,41 @@
+{
+  "ticker": "NVDA",
+  "as_of": "2026-07-02",
+  "prices": {
+    "bars": 250,
+    "first_date": "2025-07-03",
+    "last_date": "2026-07-01",
+    "source_url": "https://finance.yahoo.com/quote/NVDA/history"
+  },
+  "fundamentals": {
+    "period_end": "2026-04-30",
+    "available_at": "2026-05-28",
+    "source_url": "https://finance.yahoo.com/quote/NVDA/financials",
+    "keys": {
+      "income_stmt.Normalized EBITDA": 45123000000.0
+    }
+  },
+  "technicals": {
+    "keys": {
+      "technicals.return_1m": -0.124598,
+      "technicals.pct_vs_high_52w": -0.172575
+    }
+  },
+  "news": [
+    {
+      "source_id": "fh-123",
+      "title": "NVIDIA shares slide amid broader chip sector pullback",
+      "published_at": "2026-06-28",
+      "url": "https://example.com/nvda-slide"
+    },
+    {
+      "source_id": "fh-124",
+      "title": "Analyst note: NVIDIA data-center demand still robust",
+      "published_at": "2026-06-30",
+      "url": null
+    }
+  ],
+  "leak_check": {
+    "violations": []
+  }
+}

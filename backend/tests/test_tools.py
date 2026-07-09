@@ -121,11 +121,12 @@ async def test_tool_mode_streams_tool_events_between_attack_and_rebuttal(scripte
     assert types[-1] == "verdict"
     assert "tool_call" in types and "tool_result" in types
 
-    # each tool_call is immediately followed by its tool_result
+    # each tool_call is immediately followed by its tool_result, timed (#13)
     for i, e in enumerate(events):
         if e["type"] == "tool_call":
             assert events[i + 1]["type"] == "tool_result"
             assert events[i + 1]["tool"] == e["tool"]
+            assert isinstance(events[i + 1]["duration_s"], (int, float))
 
     # a rebuttal's tool activity lands AFTER the attack on it and BEFORE its rebuttal
     idx = {("tool_call", "fundamentals"): None, ("attack", "fundamentals"): None,
