@@ -206,6 +206,32 @@ analyst to *challenge their own thesis*: you bring the idea, the swarm brings th
 bear case you'd rather not think about. It augments judgment; it does not replace
 it.
 
+### 6. What time horizon is the verdict valid for?
+
+Worth being honest about, because it's subtle: **the verdict is a directional
+conviction, not a dated price target, and the agents are never told an explicit
+forecast window.** They're asked "bull or bear, and how strongly?" — not "where
+will the stock be in N days?" So no hard expiry is stamped on the verdict by the
+models themselves.
+
+Two things anchor it to a practical horizon of roughly *weeks to a few months*:
+
+- **The evidence the agents reason from.** Technicals span 5-day to 6-month price
+  returns and moving averages, fundamentals are the latest reported quarter, and
+  news is a 30-day window. That mix reflects a swing / positioning view — not an
+  intraday trade, and not a multi-year buy-and-hold.
+- **The grading window is fixed at ~1 month.** The held-out Outcome — the "what
+  actually happened" the system reveals to score the swarm — measures the stock's
+  move over the 30 days *after* the chosen date. That is the horizon the verdict
+  is implicitly judged against.
+
+So the practical framing: read a verdict as a **~1-month directional call**, built
+on evidence that leans a little longer, and re-run it when the picture changes (a
+new date always builds a fresh Snapshot). It is not an intraday signal and not a
+multi-year valuation. That 30-day window is a configurable choice, so a deployment
+that cares about a different horizon would change it and grade against that
+instead.
+
 ---
 
 ## Data sources & point-in-time integrity
