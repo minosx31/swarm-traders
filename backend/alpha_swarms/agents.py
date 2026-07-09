@@ -1,14 +1,18 @@
 """LLM-backed debate nodes (issues #4-#6): specialists, Red-Team, rebuttals, Judge.
 
-All initial-thesis and debate turns are pre-sliced single calls, NO tools
-(ADR 0003 baseline; the tool-calling increment is issue #8). Structured output
-via .with_structured_output(schema, include_raw=True) with exactly one
-validation-retry (ADR 0005). Nodes reach the per-run RunContext and emit()
-through config["configurable"]; the chat model comes from llm.get_chat_model()
-so tests can swap it.
+By default every node is a pre-sliced single call, NO tools (ADR 0003 baseline).
+With DEBATE_TOOLS on, the whole debate runs on tools: each specialist researches
+its thesis by calling its lane read tool, and the Red-Team and rebuttals fetch
+cached evidence the same way (issue #8 + its specialist extension). Structured
+output via .with_structured_output(schema, include_raw=True) with exactly one
+validation-retry (ADR 0005); tool-using nodes exit by calling submit_* instead.
+Nodes reach the per-run RunContext and emit() through config["configurable"]; the
+chat model comes from llm.get_chat_model() so tests can swap it.
 
-Budget shape (~8 calls/run): 3 theses + 1 red-team + up to 3 rebuttals + 1 judge.
-Non-gated specialists are skipped in the debate — no vote, no calls.
+Budget shape: pre-sliced ~8 calls/run (3 theses + 1 red-team + up to 3 rebuttals
++ 1 judge). On tools, worst case is ≤19 (specialists ≤2 each, red-team + each
+rebuttal ≤3, judge 1) — see safeguards.MAX_CALLS_PER_RUN. Non-gated specialists
+are skipped in the debate — no vote, no calls.
 """
 
 import json
@@ -26,10 +30,13 @@ from .scoring import compute_verdict
 from .slices import RunContext
 from .tools import (
     MAX_TOOL_ITERS,
+    SPECIALIST_TOOL_ITERS,
     debate_tools_enabled,
     make_read_tools,
+    make_specialist_tools,
     submit_attack,
     submit_rebuttal,
+    submit_thesis,
 )
 
 SPECIALISTS = ("fundamentals", "sentiment", "technicals")
@@ -70,12 +77,14 @@ async def call_structured(schema, system: str, user: str, config, *, post_valida
     raise StructuredOutputError(f"{schema.__name__} failed validation after one retry: {error}")
 
 
-async def call_with_tools(submit_model, read_tools, *, system, user, agent, emit, config):
-    """Bounded tool-calling loop (ADR 0003/0005) for a debate node.
+async def call_with_tools(submit_model, read_tools, *, system, user, agent, emit, config,
+                          max_iters=MAX_TOOL_ITERS):
+    """Bounded tool-calling loop (ADR 0003/0005) for a tool-using node.
 
     The model calls read tools over the cached Snapshot, then ends its turn by
     calling submit_* whose arguments ARE the exit Pydantic model. At most
-    MAX_TOOL_ITERS model calls (hard iteration cap); the submit payload validates
+    max_iters model calls (hard iteration cap — debate nodes use MAX_TOOL_ITERS,
+    single-lane specialists SPECIALIST_TOOL_ITERS); the submit payload validates
     against the schema with exactly one retry. tool_call / tool_result display
     events are emitted per read-tool invocation. The circuit breaker (a global
     callback) still counts every model call and propagates uncaught.
@@ -85,8 +94,8 @@ async def call_with_tools(submit_model, read_tools, *, system, user, agent, emit
     tool_map = {t.name: t for t in read_tools}
     messages = [SystemMessage(content=llm.system_content(system)), HumanMessage(content=user)]
     error = None
-    for i in range(MAX_TOOL_ITERS):  # hard stop at the iteration cap
-        final = i == MAX_TOOL_ITERS - 1
+    for i in range(max_iters):  # hard stop at the iteration cap
+        final = i == max_iters - 1
         if final:  # last turn: force the exit — drop the read tools, demand submit_*
             messages.append(HumanMessage(
                 content=f"Stop researching. Call {submit_name} now with your final answer."))
@@ -124,7 +133,7 @@ async def call_with_tools(submit_model, read_tools, *, system, user, agent, emit
                     content=f"Your {submit_name} arguments failed validation ({exc}). "
                             f"Call {submit_name} again with corrected arguments."))
     raise StructuredOutputError(
-        f"{submit_name} not submitted within {MAX_TOOL_ITERS} tool iterations: {error}")
+        f"{submit_name} not submitted within {max_iters} tool iterations: {error}")
 
 
 def _configurable(config):
@@ -201,6 +210,15 @@ def specialist_context(agent: str, ctx: RunContext) -> str:
     return head + "Cached news:\n" + _news_block(ctx)
 
 
+def specialist_tool_directive(ctx: RunContext) -> str:
+    """The tool-mode user turn: no data inline — the specialist fetches its lane
+    itself, then submits. (The system brief still tells it which lane it owns.)"""
+    s = ctx.snapshot
+    return (f"Ticker: {s.ticker} · As-of date: {s.as_of} (you know NOTHING after this date)\n"
+            "Call your read tool to pull your lane's cached data, then call submit_thesis "
+            "with a signed stance and evidence citing the exact keys/source_ids it returned.")
+
+
 def _thesis_digest(thesis: dict) -> str:
     ev = "; ".join(f"[{e.get('citation_key') or e.get('source_id')}] {e['claim']}"
                    for e in thesis["grounded_evidence"]) or "no grounded evidence"
@@ -214,12 +232,17 @@ def make_specialist_node(agent: str):
     async def specialist(state, config) -> dict:
         emit, ctx = _configurable(config)
         await emit({"type": "agent_start", "agent": agent})
-        thesis = await _produce(call_structured(
-            Thesis,
-            system=f"{SPECIALIST_BRIEFS[agent]}\n{STANCE_RUBRIC}",
-            user=specialist_context(agent, ctx),
-            config=config,
-        ))
+        brief = f"{SPECIALIST_BRIEFS[agent]}\n{STANCE_RUBRIC}"
+        if debate_tools_enabled():  # the specialist researches its own thesis on tools
+            thesis = await _produce(call_with_tools(
+                submit_thesis, make_specialist_tools(agent, ctx),
+                system=(brief + "\nUse your read tool to pull your lane's cached data, then "
+                        "call submit_thesis to end your turn."),
+                user=specialist_tool_directive(ctx),
+                agent=agent, emit=emit, config=config, max_iters=SPECIALIST_TOOL_ITERS))
+        else:
+            thesis = await _produce(call_structured(
+                Thesis, system=brief, user=specialist_context(agent, ctx), config=config))
         if thesis is None:  # resilient abstention: this lens takes no vote
             await emit({"type": "grounding", "agent": agent, "gated_in": False,
                         "grounded": 0, "dropped": 0})

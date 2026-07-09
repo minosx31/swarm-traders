@@ -14,7 +14,8 @@ from typing import Any
 
 from langchain_core.callbacks import BaseCallbackHandler
 
-MAX_CALLS_PER_RUN = 15  # covers ~10-12 calls of a full tool-calling run
+MAX_CALLS_PER_RUN = 20  # backstop above a full tool run's worst case: 3 specialists
+# (≤2 each) + red-team (≤3) + 3 rebuttals (≤3 each) + judge = ≤19. Pre-sliced is 8.
 
 # $ per M tokens, matched by model-name prefix: (input, output, cache_write, cache_read)
 # Non-Anthropic backends (ollama, groq free tier) fall through to $0.

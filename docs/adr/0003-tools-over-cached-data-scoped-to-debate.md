@@ -39,5 +39,36 @@ bulk of the run cheap.
 - **Live tools:** leak future data and spend unbudgeted credits mid-demo.
 - **Tools everywhere (including initial theses):** ~2× cost, trips the breaker, and
   spreads reliability risk across every call for little added demo value.
+  *(Later adopted behind the same `DEBATE_TOOLS` flag — see the Addendum.)*
 - **No tools at all (pure pre-sliced):** cheapest and most reproducible, but weak
   agentic optics at an agentic hackathon.
+
+## Addendum (2026-07-09): specialists research on tools too
+
+The initial scoping kept **initial theses pre-sliced** and rejected "tools
+everywhere" on cost/breaker grounds. We are now extending tool-calling to the
+specialists behind the *same* `DEBATE_TOOLS` flag: when it is on, each specialist
+is given exactly its **own lane's read tool** and researches its initial thesis
+autonomously (fetch → read → submit) rather than being handed a pre-sliced block.
+
+**Why revisit.** The pre-sliced specialist is the least agentic node in the graph
+— an LLM being *prompted*, not an agent *directing its own process*. Making the
+specialist choose what to pull is the cleanest place to earn genuine agency: it
+turns "independent research" into actual research, and it is the strongest
+demo/pitch beat with the lowest risk, because it touches no integrity guarantee.
+The grounding gate, the advocacy/adjudication split, and the computed verdict are
+all unchanged — a tool return still flows through the deterministic gate.
+
+**Lane isolation is preserved.** A specialist gets a single lane tool
+(`make_specialist_tools`), so it can only fetch — and therefore only cite — its
+own lane, exactly the property the pre-sliced slice gave it.
+
+**The two original objections, resolved:**
+- *Cost / breaker.* Each specialist is capped at **2 tool iterations** (one
+  research turn, then a forced submit), so the tool-mode worst case is ≤19 calls
+  (3×2 specialists + 3 red-team + 3×3 rebuttals + 1 judge). We raised the circuit
+  breaker from 15 to **20** to backstop it — the ADR's own "raise the breaker"
+  consequence, applied again. The pre-sliced default is untouched at ~8 calls.
+- *Reliability.* Still real on capable models and flaky on local ones — but the
+  flag stays **off by default**, so the reproducible pre-sliced baseline remains
+  the default path and every recorded run reproduces unchanged.

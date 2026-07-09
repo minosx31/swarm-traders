@@ -46,7 +46,7 @@ flowchart TB
     api --> pipe
     pipe <--> bb
     pipe --> ground
-    pipe -->|"debate-phase tools<br/>(rebuttal / red-team only)"| snap
+    pipe -->|"cached-snapshot tools<br/>(specialists + rebuttal + red-team)"| snap
     pipe --> prov
     prov --> breaker
     breaker --> ollama
@@ -77,7 +77,8 @@ never authored; see ADR 0001).
 
 ```
 START
-  │  fan-out (parallel) — pre-sliced context, NO tools
+  │  fan-out (parallel) — pre-sliced context by default, OR each specialist
+  │  researches its own lane on tools when DEBATE_TOOLS is on (one lane tool each)
   ├─▶ fundamentals_node ─┐
   ├─▶ sentiment_node     ├─▶ theses
   └─▶ technicals_node   ─┘
@@ -166,8 +167,10 @@ grounded counter-evidence or a valid logical flaw — never unsupported doubt.
 
 **Tools** (ADR 0003) read only the cached snapshot, never live APIs — so the
 `as_of` filter is enforced *inside* the tool and future-leakage is impossible by
-construction. Scope: initial theses use pre-sliced context (no tools); **only
-rebuttals and the Red-Team** call tools, in a loop bounded to 2–3 iterations.
+construction. Scope with `DEBATE_TOOLS` on: **every** debate node calls tools —
+each specialist researches its initial thesis with its own single lane tool
+(bounded to 2 iters), and the Red-Team and rebuttals fetch cross-lane evidence
+(bounded to 3). Off (the default), all nodes run pre-sliced with no tools.
 
 | Tool | Returns (from cached snapshot, ≤ as_of) |
 |---|---|

@@ -1,21 +1,27 @@
-"""Debate-phase tool-calling over the cached Snapshot (issue #8, ADR 0003).
+"""Tool-calling over the cached Snapshot (issue #8, ADR 0003 + its specialist
+extension).
 
-Three read tools — get_financials, get_price_history, get_news — bound to the
-Red-Team and Rebuttal nodes only (initial theses stay pre-sliced). Each reads
-ONLY the run's cached Snapshot and re-applies the As-Of filter *inside* the tool,
-so a tool can never surface a datum dated after the As-Of Date: leakage is
-impossible by construction, not by prompt. The read tools return data keyed in
-the SAME citation-key space the grounding gate resolves against (slices.py), so
-evidence a challenger digs up still flows through the deterministic gate.
+Three read tools — get_financials, get_price_history, get_news — over the run's
+cached Snapshot. Each re-applies the As-Of filter *inside* the tool, so a tool can
+never surface a datum dated after the As-Of Date: leakage is impossible by
+construction, not by prompt. The read tools return data keyed in the SAME
+citation-key space the grounding gate resolves against (slices.py), so evidence an
+agent digs up still flows through the deterministic gate.
 
-Plus the terminal submit_attack / submit_rebuttal tools whose *argument schema is
-the exit Pydantic model* (ADR 0005: with_structured_output coercion is itself a
-forced tool call and collides with real tools, so tool-using nodes exit by
-calling submit_* instead). The tool NAME is the class name, so these are lower
-snake_case classes by design.
+When DEBATE_TOOLS is on the whole debate runs on tools: each **specialist** gets
+exactly its own lane's read tool (make_specialist_tools) and researches its
+initial thesis autonomously, and the Red-Team and Rebuttal nodes get all three.
+A specialist's single-lane tool set preserves lane isolation — it can only fetch,
+and therefore only cite, its own lane.
 
-The whole increment is gated behind DEBATE_TOOLS: unset reproduces the #6
-pre-sliced baseline unchanged (the ADR 0003 graceful fallback).
+Plus the terminal submit_thesis / submit_attack / submit_rebuttal tools whose
+*argument schema is the exit Pydantic model* (ADR 0005: with_structured_output
+coercion is itself a forced tool call and collides with real tools, so tool-using
+nodes exit by calling submit_* instead). The tool NAME is the class name, so these
+are lower snake_case classes by design.
+
+The whole thing is gated behind DEBATE_TOOLS: unset reproduces the #6 pre-sliced
+baseline unchanged (the ADR 0003 graceful fallback).
 """
 
 import os
@@ -23,11 +29,20 @@ from datetime import date
 
 from langchain_core.tools import tool
 
-from .models import Rebuttal, RedTeamReport
+from .models import Rebuttal, RedTeamReport, Thesis
 from .slices import RunContext, fundamentals_slice, technicals_slice
 from .snapshot import Snapshot
 
-MAX_TOOL_ITERS = 3  # per tool-using node; keeps a full run ~10-12 calls, under the 15 breaker
+MAX_TOOL_ITERS = 3  # per debate node (red-team / rebuttal): all three read tools
+SPECIALIST_TOOL_ITERS = 2  # a specialist has one lane tool: one research turn, then submit
+
+# each specialist's single lane tool — fetching only its lane keeps a specialist
+# unable to cite outside its lane, the same isolation the pre-sliced path enforces
+SPECIALIST_TOOLS = {
+    "fundamentals": "get_financials",
+    "technicals": "get_price_history",
+    "sentiment": "get_news",
+}
 
 
 def debate_tools_enabled() -> bool:
@@ -91,7 +106,20 @@ def make_read_tools(ctx: RunContext) -> list:
     return [get_financials, get_price_history, get_news]
 
 
+def make_specialist_tools(agent: str, ctx: RunContext) -> list:
+    """The one lane read tool a specialist may call. Filters make_read_tools so the
+    as_of-closed-over property is identical to the debate tools — a specialist can
+    fetch only its lane, so it can only ground (and vote on) its own lane."""
+    want = SPECIALIST_TOOLS[agent]
+    return [t for t in make_read_tools(ctx) if t.name == want]
+
+
 # --- terminal exit tools: argument schema IS the node's output model ------------
+
+
+class submit_thesis(Thesis):  # noqa: N801 — tool name is the class name
+    """Submit your finalized thesis — signed stance and cited evidence — and end
+    your turn. Call this once you have fetched your lane's data via your read tool."""
 
 
 class submit_attack(RedTeamReport):  # noqa: N801 — tool name is the class name

@@ -138,10 +138,17 @@ ATTACKS_ALL = [
      "critique": "Single bar cannot establish a trend", "counter_evidence": []}]
 
 
+def submit_thesis_turn(thesis_json: str) -> AIMessage:
+    """A submit_thesis exit turn whose args are a Thesis payload (reuses the
+    canned THESIS_* JSON so tool-mode theses stay identical to the structured ones)."""
+    return tool_call_turn(("submit_thesis", json.loads(thesis_json)))
+
+
 def full_tool_debate_script(sentiment_thesis: str = THESIS_SENTIMENT) -> dict[str, list]:
-    """Happy-path script for DEBATE_TOOLS mode: theses + judge stay structured;
-    red-team and each rebuttal do fetch-then-submit tool turns (2 calls each) —
-    3 theses + 2 red-team + 6 rebuttal + 1 judge = 12 calls, under the 15 breaker."""
+    """Happy-path script for DEBATE_TOOLS mode: every debate node fetches-then-submits
+    on tools; only the judge stays structured. Each specialist does one lane fetch +
+    submit_thesis (2 calls), red-team + each rebuttal fetch + submit (2 calls each):
+    6 theses + 2 red-team + 6 rebuttal + 1 judge = 15 calls, under the 20 breaker."""
     return {
         "fundamentals analyst, defending": [
             tool_call_turn(("get_financials", {})),
@@ -152,9 +159,12 @@ def full_tool_debate_script(sentiment_thesis: str = THESIS_SENTIMENT) -> dict[st
         "technicals analyst, defending": [
             tool_call_turn(("get_price_history", {})),
             tool_call_turn(("submit_rebuttal", {"proposed_stance": -0.35, "response": "Defended."}))],
-        "fundamentals analyst": [THESIS_FUNDAMENTALS],
-        "sentiment analyst": [sentiment_thesis],
-        "technicals analyst": [THESIS_TECHNICALS],
+        "fundamentals analyst": [
+            tool_call_turn(("get_financials", {})), submit_thesis_turn(THESIS_FUNDAMENTALS)],
+        "sentiment analyst": [
+            tool_call_turn(("get_news", {})), submit_thesis_turn(sentiment_thesis)],
+        "technicals analyst": [
+            tool_call_turn(("get_price_history", {})), submit_thesis_turn(THESIS_TECHNICALS)],
         "red-team": [
             tool_call_turn(("get_financials", {}), ("get_news", {})),
             tool_call_turn(("submit_attack", {"attacks": ATTACKS_ALL}))],

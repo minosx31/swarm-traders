@@ -121,10 +121,16 @@ Each agent's "job description" is delivered two ways every time it runs:
   Red-Team is told to attack; the Judge is told to referee neutrally and *not* to
   compute an overall verdict. The role isn't something the agent decides — it's
   assigned.
-- **A tailored slice of data.** The Fundamentals agent is only handed the
-  financial line items; Technicals only gets price-derived metrics; Sentiment
-  only gets the news. An agent literally cannot cite data outside its lane
-  because it was never shown it.
+- **A tailored slice of data — handed over, or fetched.** Each agent is confined
+  to its own lane: the Fundamentals agent works the financial line items,
+  Technicals the price-derived metrics, Sentiment the news. In the default mode
+  that slice is simply handed to it. With tool-calling enabled (`DEBATE_TOOLS`)
+  the specialist instead becomes a genuine agent — it is given *one lane tool* and
+  decides for itself what to pull from the frozen snapshot, reads the result, and
+  writes its thesis from what it found. Either way it literally cannot cite data
+  outside its lane: it was never shown it, and the tool it holds only reaches its
+  own lane. (The tool reads the *snapshot*, never a live feed — the as-of filter
+  lives inside the tool, so the freedom to explore never becomes a way to leak.)
 
 On top of the brief, every agent must answer in a **strict form** (a schema): a
 thesis *must* include a stance number between −1 and +1 and a list of cited
@@ -276,7 +282,7 @@ One FastAPI app with LangGraph running in-process — nothing else to host.
 | `alpha_swarms/app.py` | FastAPI app. `GET /stream?ticker&as_of[&replay=1][&backend=&model=][&run=]` — refuses non-whitelisted pairs with `400`, streams the debate (or a recorded run) as SSE; `backend`/`model` pin the LLM for a live run, `run` selects which recording to replay. `POST /snapshots` builds a missing pair on demand (ADR 0006; an existing pair is reused, never re-fetched). Also `GET /whitelist`, `GET /outcome`, `GET /models` (selectable models), `GET /runs?ticker&as_of` (recorded runs, for replay-by-model), `GET /snapshot?ticker&as_of` (the manifest of exactly what data the agents were fed, 404 if not whitelisted) — all UI-facing. Validates `LLM_BACKEND` at startup |
 | `alpha_swarms/replay.py` | Record + replay (#9): every run's event log persists to `data/runs/` with its model in the filename + payload; replay re-streams a chosen run (or the latest) with the graph bypassed — zero LLM calls |
 | `alpha_swarms/graph.py` | LangGraph topology wiring: parallel specialist fan-out → red_team → parallel rebuttals → judge → aggregate, plus the reducer-merged `Blackboard` state |
-| `alpha_swarms/agents.py` | The LLM-backed nodes: specialist/Red-Team/rebuttal/Judge prompts + the structured-output helper (one validation-retry, then graceful failure). Pre-sliced single calls; the Red-Team/rebuttal nodes switch to the bounded tool-calling loop when `DEBATE_TOOLS=1` (#8) |
+| `alpha_swarms/agents.py` | The LLM-backed nodes: specialist/Red-Team/rebuttal/Judge prompts + the structured-output helper (one validation-retry, then graceful failure). Pre-sliced single calls by default; with `DEBATE_TOOLS=1` every debate node runs the bounded tool-calling loop — specialists research their own thesis on a single lane tool, Red-Team/rebuttals fetch cross-lane (#8) |
 | `alpha_swarms/tools.py` | Debate-phase tool-calling (#8, ADR 0003): `get_financials`/`get_price_history`/`get_news` read tools over the cached Snapshot with the As-Of filter enforced *inside* the tool (leakage impossible by construction), plus the terminal `submit_attack`/`submit_rebuttal` exit tools whose arg schema *is* the Pydantic model (ADR 0005). Gated behind `DEBATE_TOOLS` |
 | `alpha_swarms/models.py` | Pydantic schemas the models must produce: Thesis, Evidence (numeric/textual tiers), Attack, Rebuttal, JudgeRuling |
 | `alpha_swarms/slices.py` | Pre-sliced per-specialist context (flattened statements, derived price metrics, cached news) + the citation key space grounding resolves against |
@@ -370,7 +376,7 @@ uv run pytest
 |---|---|---|
 | `LLM_BACKEND` | *Default* chat model: `ollama` \| `groq` \| `haiku` \| `sonnet`. Required at startup (`LLM_BACKEND=ollama` for free dev). The UI can override backend+model per live run (`GET /models`); a run never switches model mid-flight | unset |
 | `OLLAMA_MODEL` | Default local model for the `ollama` backend (the UI model dropdown overrides it per-run) | `qwen2.5:7b` |
-| `DEBATE_TOOLS` | Enable the debate-phase tool-calling increment (#8): Red-Team + rebuttals fetch cached evidence via tools. Off = the pre-sliced #6 baseline | unset (off) |
+| `DEBATE_TOOLS` | Turn the whole debate agentic (#8): specialists research their initial thesis on a single lane tool, and Red-Team + rebuttals fetch cached evidence via tools. All tools read the frozen snapshot with the as-of filter enforced inside. Off = the pre-sliced #6 baseline | unset (off) |
 | `RESILIENT` | When set, a debate node whose LLM output fails *abstains* (contributes nothing) so the run still reaches a verdict, instead of aborting with a terminal `error`. Set it when recording local demo takes on the flaky local models; leave off for the honest fail-loud default. The budget breaker always stays loud | unset (off) |
 | `ANTHROPIC_API_KEY` / `GROQ_API_KEY` | Provider keys, needed only for their backends | — |
 | `FINNHUB_API_KEY` | When set, snapshot builds source historical date-ranged company news from Finnhub (window = `NEWS_DAYS`) instead of yfinance current-news. Optional — falls back to yfinance when unset. Free key at [finnhub.io](https://finnhub.io); put it in `backend/.env` (auto-loaded) | unset |

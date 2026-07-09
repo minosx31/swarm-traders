@@ -150,9 +150,50 @@ async def test_full_tool_run_stays_under_the_breaker(scripted, tools_on):
     scripted(fakes.full_tool_debate_script())
     safeguards = RunSafeguards()
     await run_events(safeguards)
-    # 3 theses + 2 red-team + 6 rebuttal + 1 judge = 12, comfortably under 15
-    assert safeguards.calls == 12
+    # 6 specialist (fetch+submit ×3) + 2 red-team + 6 rebuttal + 1 judge = 15, under 20
+    assert safeguards.calls == 15
     assert safeguards.calls < safeguards.max_calls
+
+
+# --- specialists are tool-using agents too (the DEBATE_TOOLS extension) ----------
+
+
+def test_submit_thesis_exit_tool_is_a_thesis():
+    from alpha_swarms.models import Thesis
+    from alpha_swarms.tools import submit_thesis
+
+    # the exit tool's arg schema IS the Thesis model, so a submitted payload is a Thesis
+    assert issubclass(submit_thesis, Thesis)
+    t = submit_thesis.model_validate({
+        "stance": 0.5, "summary": "s",
+        "evidence": [{"kind": "numeric", "claim": "c",
+                      "citation_key": "income_stmt.Total Revenue", "cited_value": 1.0}]})
+    assert t.stance == 0.5 and t.evidence[0].citation_key == "income_stmt.Total Revenue"
+
+
+def test_specialist_gets_only_its_own_lane_tool():
+    from alpha_swarms.tools import make_specialist_tools
+
+    # lane isolation: a specialist can fetch (and therefore cite) only its own lane
+    ctx = RunContext(load_snapshot(TICKER, AS_OF))
+    assert [t.name for t in make_specialist_tools("fundamentals", ctx)] == ["get_financials"]
+    assert [t.name for t in make_specialist_tools("technicals", ctx)] == ["get_price_history"]
+    assert [t.name for t in make_specialist_tools("sentiment", ctx)] == ["get_news"]
+
+
+async def test_tool_mode_specialist_researches_then_grounds(scripted, tools_on):
+    scripted(fakes.full_tool_debate_script())
+    events = await run_events()
+    fund = [e for e in events if e.get("agent") == "fundamentals"]
+    kinds = [e["type"] for e in fund]
+
+    # the specialist fetches its lane tool BEFORE producing the thesis it feeds
+    assert kinds.index("tool_call") < kinds.index("thesis")
+    assert next(e["tool"] for e in fund if e["type"] == "tool_call") == "get_financials"
+    # fundamentals only ever touches its own lane tool (never sentiment's / technicals')
+    assert all(e["tool"] == "get_financials" for e in fund if e["type"] == "tool_call")
+    # and the tool-fetched thesis still clears the deterministic grounding gate
+    assert next(e for e in fund if e["type"] == "grounding")["gated_in"] is True
 
 
 # --- the submit_* exit + one validation-retry -----------------------------------
