@@ -166,7 +166,7 @@ export default function App() {
       <header className="flex flex-wrap items-end justify-between gap-5 border-b border-hairline px-[30px] pb-5 pt-[22px]">
         <div>
           <h1 className="font-display text-[31px] font-medium leading-none text-ink" style={{ letterSpacing: '-0.01em' }}>
-            Swarm<span className="font-normal italic"> Traders</span><span className="text-judge">.</span>
+            Swarm<span className="font-normal italic"> Traders</span>
           </h1>
           <p className="mt-2 text-[11px] uppercase tracking-[0.22em] text-ink-3">
             THE RESEARCH ANALYST THAT NEVER SKIPS THE BEAR CASE
