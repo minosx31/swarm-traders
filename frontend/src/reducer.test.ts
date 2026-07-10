@@ -42,15 +42,30 @@ test('attacks land in the TARGET lane, not a red-team lane', () => {
   expect(state.lanes.sentiment.attacks).toHaveLength(0)
 })
 
-test('rebuttal tool activity accumulates in the challenged specialist lane (#8)', () => {
+test('specialist research tools (before the thesis) land in researchActivity', () => {
   const state = run([
     { type: 'agent_start', agent: 'fundamentals' },
     { type: 'tool_call', agent: 'fundamentals', tool: 'get_financials', args: {} },
     { type: 'tool_result', agent: 'fundamentals', tool: 'get_financials', data: { x: 1 } },
+    { type: 'thesis', agent: 'fundamentals', stance: 0.6, summary: 's', evidence: [] },
+  ])
+  expect(state.lanes.fundamentals.researchActivity).toHaveLength(2)
+  expect(state.lanes.fundamentals.rebuttalActivity).toHaveLength(0)
+  expect(state.lanes.fundamentals.researchActivity[0]?.tool).toBe('get_financials')
+})
+
+test('rebuttal tools (after the thesis) land in rebuttalActivity, not research (#8)', () => {
+  const state = run([
+    { type: 'agent_start', agent: 'fundamentals' },
+    { type: 'thesis', agent: 'fundamentals', stance: 0.6, summary: 's', evidence: [] },
+    { type: 'attack', agent: 'red_team', target: 'fundamentals', kind: 'logical', critique: 'c', counter_evidence: [] },
+    { type: 'tool_call', agent: 'fundamentals', tool: 'get_financials', args: {} },
+    { type: 'tool_result', agent: 'fundamentals', tool: 'get_financials', data: { x: 1 } },
     { type: 'rebuttal', agent: 'fundamentals', proposed_stance: 0.5, response: 'r' },
   ])
-  expect(state.lanes.fundamentals.toolActivity).toHaveLength(2)
-  expect(state.lanes.fundamentals.toolActivity[0]?.tool).toBe('get_financials')
+  expect(state.lanes.fundamentals.rebuttalActivity).toHaveLength(2)
+  expect(state.lanes.fundamentals.researchActivity).toHaveLength(0)
+  expect(state.lanes.fundamentals.rebuttalActivity[0]?.tool).toBe('get_financials')
 })
 
 test('red-team tool activity is captured, not dropped, and survives its gate (#8)', () => {

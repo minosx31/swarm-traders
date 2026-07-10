@@ -111,6 +111,18 @@ but you don't want the same model that just argued a position to also grade
 itself — that's how confirmation bias creeps back in. So arguing, judging, and
 final scoring are three separate stages, and the last one isn't an AI at all.
 
+**Two ways the specialists do that research.** By default each specialist is
+*handed* a pre-sliced packet of its lane's data and writes its thesis in one pass.
+Turn on tool-calling (`DEBATE_TOOLS`) and step 1 becomes genuinely agentic: each
+specialist is instead given a single lane tool and *decides for itself* what to
+pull from the frozen snapshot, reads the result, and reasons from what it found —
+the difference between an LLM handed a packet and an agent directing its own
+research. The Red-Team and rebuttals (steps 2–3) gather their evidence the same
+way. Crucially, the *topology above is identical* in both modes and every claim
+still passes the same grounding gate below — tools change only *how the evidence
+is gathered*, never how it's judged or scored (and every tool reads the frozen
+snapshot, never a live feed).
+
 ### 3. How each agent knows its role
 
 Each agent's "job description" is delivered two ways every time it runs:
@@ -171,8 +183,10 @@ matters:
 
 - **Bigger, more capable models** (e.g. Claude Sonnet) write sharper theses,
   find more incisive attacks, follow the citation rules more reliably, and can
-  drive the optional "fetch your own evidence" tool mode. You get a richer, more
-  convincing debate.
+  drive the tool-calling mode (`DEBATE_TOOLS`), where every agent — the
+  specialists included — fetches its own evidence from the snapshot. You get a
+  richer, more convincing debate. (Tool-calling is flaky on small local models,
+  so that mode is best run on Haiku or Sonnet.)
 - **Small local models** are free and private but weaker at following
   instructions precisely and at producing clean structured output. The system
   compensates with format enforcement and a one-shot "you got it wrong, try
@@ -283,7 +297,7 @@ One FastAPI app with LangGraph running in-process — nothing else to host.
 | `alpha_swarms/replay.py` | Record + replay (#9): every run's event log persists to `data/runs/` with its model in the filename + payload; replay re-streams a chosen run (or the latest) with the graph bypassed — zero LLM calls |
 | `alpha_swarms/graph.py` | LangGraph topology wiring: parallel specialist fan-out → red_team → parallel rebuttals → judge → aggregate, plus the reducer-merged `Blackboard` state |
 | `alpha_swarms/agents.py` | The LLM-backed nodes: specialist/Red-Team/rebuttal/Judge prompts + the structured-output helper (one validation-retry, then graceful failure). Pre-sliced single calls by default; with `DEBATE_TOOLS=1` every debate node runs the bounded tool-calling loop — specialists research their own thesis on a single lane tool, Red-Team/rebuttals fetch cross-lane (#8) |
-| `alpha_swarms/tools.py` | Debate-phase tool-calling (#8, ADR 0003): `get_financials`/`get_price_history`/`get_news` read tools over the cached Snapshot with the As-Of filter enforced *inside* the tool (leakage impossible by construction), plus the terminal `submit_attack`/`submit_rebuttal` exit tools whose arg schema *is* the Pydantic model (ADR 0005). Gated behind `DEBATE_TOOLS` |
+| `alpha_swarms/tools.py` | Tool-calling over the cached Snapshot (#8 + specialist extension, ADR 0003): `get_financials`/`get_price_history`/`get_news` read tools with the As-Of filter enforced *inside* the tool (leakage impossible by construction); `make_specialist_tools` hands each specialist only its own lane tool. Plus the terminal `submit_thesis`/`submit_attack`/`submit_rebuttal` exit tools whose arg schema *is* the Pydantic model (ADR 0005). Gated behind `DEBATE_TOOLS` |
 | `alpha_swarms/models.py` | Pydantic schemas the models must produce: Thesis, Evidence (numeric/textual tiers), Attack, Rebuttal, JudgeRuling |
 | `alpha_swarms/slices.py` | Pre-sliced per-specialist context (flattened statements, derived price metrics, cached news) + the citation key space grounding resolves against |
 | `alpha_swarms/grounding.py` | The deterministic grounding gate (ADR 0001): numeric citation_key + value-match, textual source_id resolution, Verified Quote badge, ≥1 grounded item to vote |

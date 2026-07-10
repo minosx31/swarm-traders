@@ -78,6 +78,26 @@ function LayerCardHeader({ title, status, sub }: { title: string; status: LayerS
   )
 }
 
+/** The ⚙ tool-call trail for one agent: `⚙ get_financials … / ✓ 0.3s`. Shared by
+ *  the specialist research (01), red-team (02) and rebuttal (03) layers — every
+ *  place an agent reaches into the cached snapshot via a tool (DEBATE_TOOLS). */
+function ToolActivity({ items, label }: { items: LaneState['researchActivity']; label: string }) {
+  if (items.length === 0) return null
+  return (
+    <div className="flex flex-col gap-1.5 rounded-[10px] border border-hairline bg-page px-[15px] py-3 font-mono text-[11.5px] text-ink-3">
+      <div className="mb-0.5 text-[9.5px] uppercase tracking-[0.12em] text-ink-3">{label}</div>
+      {items.map((t, i) => (
+        <span key={i} className="tnum">
+          ⚙ {t.tool}
+          {t.type === 'tool_result'
+            ? t.duration_s != null ? ` ✓ ${t.duration_s}s` : ' ✓'
+            : '…'}
+        </span>
+      ))}
+    </div>
+  )
+}
+
 export function LayerFeed({ state, manifest }: { state: DebateState; manifest?: SnapshotManifest | null }) {
   const lanes = state.lanes
   const started = SPECIALISTS.filter((s) => lanes[s].status !== 'idle' || lanes[s].thesis)
@@ -126,16 +146,8 @@ export function LayerFeed({ state, manifest }: { state: DebateState; manifest?: 
             <LayerCardHeader title="Attacks" status={s2} sub={`${totalAttacks} attacks filed`} />
             <div className="p-[18px]">
               {state.redTeam.toolActivity.length > 0 && (
-                <div className="mb-4 flex flex-col gap-1.5 rounded-[10px] border border-hairline bg-page px-[15px] py-3 font-mono text-[11.5px] text-ink-3">
-                  <div className="mb-0.5 text-[9.5px] uppercase tracking-[0.12em] text-ink-3">Red-team tool activity</div>
-                  {state.redTeam.toolActivity.map((t, i) => (
-                    <span key={i} className="tnum">
-                      ⚙ {t.tool}
-                      {t.type === 'tool_result'
-                        ? t.duration_s != null ? ` ✓ ${t.duration_s}s` : ' ✓'
-                        : '…'}
-                    </span>
-                  ))}
+                <div className="mb-4">
+                  <ToolActivity items={state.redTeam.toolActivity} label="Red-team tool activity" />
                 </div>
               )}
               <div className="flex flex-col gap-[11px]">
@@ -197,6 +209,7 @@ export function LayerFeed({ state, manifest }: { state: DebateState; manifest?: 
                       <span className="text-[11px] font-bold uppercase tracking-[0.09em] text-ink-2">{AGENT_NAME[s]}</span>
                     </div>
                     <p className="font-display text-[14px] leading-relaxed text-ink-2">{lane.rebuttal!.response}</p>
+                    <ToolActivity items={lane.rebuttalActivity} label="Researched via tools" />
                     <div className="tnum flex items-center gap-1.5 font-mono text-[11px] font-semibold">
                       <span style={{ color: poleColor(from) }}>{from >= 0 ? '+' : ''}{from.toFixed(2)}</span>
                       <span className="text-ink-3">→</span>
@@ -256,6 +269,7 @@ function ThesisCard({ agent, lane, manifest }: { agent: Specialist; lane: LaneSt
         <p className="text-[13px] text-ink-3">
           researching<span className="thinking-dot">▊</span>
         </p>
+        <ToolActivity items={lane.researchActivity} label="Fetching evidence" />
       </div>
     )
   }
@@ -294,6 +308,7 @@ function ThesisCard({ agent, lane, manifest }: { agent: Specialist; lane: LaneSt
         </span>
       )}
       <p className="font-display text-[14.5px] leading-relaxed text-ink">{lane.thesis.summary}</p>
+      <ToolActivity items={lane.researchActivity} label="Researched via tools" />
       {lane.thesis.evidence.length > 0 && (
         <div className="border-t border-hairline pt-[9px]">
           <EvidenceList evidence={lane.thesis.evidence} manifest={manifest ?? undefined} collapsible />

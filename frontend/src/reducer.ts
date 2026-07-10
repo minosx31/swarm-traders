@@ -20,7 +20,10 @@ export interface LaneState {
   thesis?: ThesisEvent
   grounding?: GroundingEvent
   attacks: AttackEvent[]
-  toolActivity: (ToolCallEvent | ToolResultEvent)[]
+  // tool activity is split by phase so each renders in its own layer: research
+  // tools (before the thesis, DEBATE_TOOLS specialists) vs rebuttal tools (after).
+  researchActivity: (ToolCallEvent | ToolResultEvent)[]
+  rebuttalActivity: (ToolCallEvent | ToolResultEvent)[]
   rebuttal?: RebuttalEvent
   adjudication?: AdjudicationEvent
 }
@@ -39,7 +42,9 @@ export interface DebateState {
   eventCount: number
 }
 
-const emptyLane = (): LaneState => ({ status: 'idle', attacks: [], toolActivity: [] })
+const emptyLane = (): LaneState => ({
+  status: 'idle', attacks: [], researchActivity: [], rebuttalActivity: [],
+})
 
 export const initialState: DebateState = {
   phase: 'idle',
@@ -97,8 +102,11 @@ export function debateReducer(prev: DebateState, event: DebateEvent): DebateStat
         }
       const lane = isSpecialist(event.agent) ? state.lanes[event.agent] : undefined
       if (!lane) return state
+      // before the thesis lands it's the specialist researching; after, it's the
+      // rebuttal fetching to defend — route to the matching layer's bucket
+      const bucket = lane.thesis ? 'rebuttalActivity' : 'researchActivity'
       return updateLane(state, event.agent, {
-        toolActivity: [...lane.toolActivity, event],
+        [bucket]: [...lane[bucket], event],
         status: 'thinking',
       })
     }
