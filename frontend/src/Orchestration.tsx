@@ -29,7 +29,7 @@ export function Orchestration({ state }: { state: DebateState }) {
   // one column of specialist nodes, centered around y=116 so the picture stays
   // balanced whatever the specialist count is
   const gap = 70
-  const colX = 130
+  const colX = 160
   const startY = 116 - ((SPECIALISTS.length - 1) * gap) / 2
   const specialists = SPECIALISTS.map((agent, i) => ({
     agent,
@@ -90,7 +90,7 @@ export function Orchestration({ state }: { state: DebateState }) {
             const letterFill = n.status === 'idle' ? color : '#14161b'
             return (
               <g key={n.agent}>
-                <circle className="halo" cx={n.x} cy={n.y} r="33" fill="none" stroke={color} strokeWidth="1.5" opacity={v.halo} />
+                <circle className={n.status === 'active' ? 'halo' : undefined} cx={n.x} cy={n.y} r="33" fill="none" stroke={color} strokeWidth="1.5" opacity={v.halo} />
                 <circle cx={n.x} cy={n.y} r="24" fill={color} fillOpacity={v.fill} stroke={color} strokeOpacity="0.9" strokeWidth="1.6" />
                 <text x={n.x} y={n.y + 6} fontSize="17" fontWeight="600" fill={letterFill}>{AGENT_NAME[n.agent][0]}</text>
                 <text x={n.x - 50} y={n.y + 4} textAnchor="end" fontSize="12" fill="var(--color-ink-2)">{AGENT_NAME[n.agent]}</text>
@@ -114,7 +114,7 @@ function FlowNode({ cx, label, glyph, color, status, r }: {
   const letterFill = status === 'idle' ? color : '#14161b'
   return (
     <g>
-      <circle className="halo" cx={cx} cy={116} r={r + 9} fill="none" stroke={color} strokeWidth="1.5" opacity={v.halo} />
+      <circle className={status === 'active' ? 'halo' : undefined} cx={cx} cy={116} r={r + 9} fill="none" stroke={color} strokeWidth="1.5" opacity={v.halo} />
       <circle cx={cx} cy={116} r={r} fill={color} fillOpacity={v.fill} stroke={color} strokeOpacity="0.9" strokeWidth="1.6" />
       <text x={cx} y={122} fontSize={r >= 26 ? 18 : 17} fontWeight="600" fill={letterFill}>{glyph}</text>
       <text x={cx} y="164" fontSize="12" fill="var(--color-ink-2)">{label}</text>

@@ -30,8 +30,6 @@ export function Provenance({ state, ticker, asOf, manifest }: {
   const started = state.phase !== 'idle'
   const pct = cited > 0 ? Math.round((grounded / cited) * 100) : 0
 
-  const violations = manifest?.leak_check.violations.length ?? 0
-
   return (
     <div className="flex flex-col border-b border-hairline bg-surface/60">
     <div className="flex flex-wrap items-center gap-x-5 gap-y-2 px-[30px] py-[11px]">
@@ -49,39 +47,6 @@ export function Provenance({ state, ticker, asOf, manifest }: {
           <span className="text-[13px] italic text-ink-3">no pair selected</span>
         )}
       </div>
-
-      {manifest && (
-        <>
-          <span className="h-4 w-px bg-hairline" aria-hidden />
-          {/* compact mono chips — what the swarm was actually fed */}
-          <div className="flex flex-wrap items-center gap-1.5 font-mono text-[10.5px] text-ink-2">
-            <span className="rounded-[4px] border border-hairline px-1.5 py-[2px]">
-              Prices — {manifest.prices.bars}d EOD
-            </span>
-            <span className="rounded-[4px] border border-hairline px-1.5 py-[2px]">
-              Fundamentals — {manifest.fundamentals ? `${manifest.fundamentals.period_end} (10-Q)` : 'none reported'}
-            </span>
-            <span className="rounded-[4px] border border-hairline px-1.5 py-[2px]">
-              News — {manifest.news.length} sources · cutoff enforced
-            </span>
-            <span
-              className="rounded-[4px] border px-1.5 py-[2px]"
-              style={violations === 0
-                ? { borderColor: 'color-mix(in oklab, var(--color-judge) 45%, transparent)', color: 'var(--color-judge)' }
-                : { borderColor: 'color-mix(in oklab, var(--color-bear) 45%, transparent)', color: 'var(--color-bear)' }}
-            >
-              {violations === 0 ? '✓ ' : ''}{violations} sources post-date as-of
-            </span>
-          </div>
-          <button
-            type="button"
-            onClick={() => setShowManifest((v) => !v)}
-            className="cursor-pointer font-mono text-[10.5px] font-semibold tracking-[0.12em] text-ink-3 transition-colors hover:text-judge"
-          >
-            VIEW MANIFEST {showManifest ? '▾' : '→'}
-          </button>
-        </>
-      )}
 
       <span className="h-4 w-px bg-hairline" aria-hidden />
 
@@ -122,29 +87,16 @@ export function Provenance({ state, ticker, asOf, manifest }: {
         )}
       </div>
 
-      {ticker && (
-        <>
-          <span className="h-4 w-px bg-hairline" aria-hidden />
-          {/* data origin — attribution, not the point-in-time datum itself */}
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] tracking-[0.18em] text-ink-3">SOURCE</span>
-            <a
-              href={`https://finance.yahoo.com/quote/${ticker}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[13px] text-fundamentals hover:underline"
-            >
-              Yahoo Finance ↗
-            </a>
-          </div>
-        </>
+      {manifest && (
+        <button
+          type="button"
+          onClick={() => setShowManifest((v) => !v)}
+          aria-expanded={showManifest}
+          className="ml-auto inline-flex cursor-pointer items-center gap-1.5 rounded-[6px] border border-hairline bg-raised px-3 py-[5px] font-mono text-[10.5px] font-semibold tracking-[0.12em] text-ink-2 transition-colors hover:border-judge hover:text-judge"
+        >
+          VIEW MANIFEST <span aria-hidden>{showManifest ? '▾' : '▸'}</span>
+        </button>
       )}
-
-      <span className="ml-auto flex items-center gap-2 text-[10px] tracking-[0.14em] text-ink-3">
-        POINT-IN-TIME ≤ AS-OF
-        <span className="text-ink-3/40" aria-hidden>·</span>
-        <span style={{ color: 'var(--color-neutralpole)' }}>◈ OUTCOME SEALED</span>
-      </span>
     </div>
 
     {showManifest && manifest && <ManifestPanel manifest={manifest} />}
