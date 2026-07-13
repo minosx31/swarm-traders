@@ -64,3 +64,26 @@ anyway.
 - **`instructor` for structured output:** patches raw SDK clients, which fights the
   LangChain chat-model path and would mean two competing abstractions over the same
   call.
+
+## Addendum: OpenRouter as the default hosted backend
+
+The `LLM_BACKEND` registry gained an `openrouter` backend — `ChatOpenAI` pointed at
+OpenRouter's OpenAI-compatible gateway — and it is now the **default** for hosted
+deploys (Render). This does not change the decision above; OpenRouter is just another
+LangChain chat model behind the same abstraction, so `.bind_tools()`, structured
+output, and the callback safeguards all work unchanged.
+
+Why: one gateway + one API key gives access to *many* models across providers
+(Gemini, GPT, Claude, Llama, DeepSeek, Kimi, GLM, …) without a GPU or a separate SDK
+per provider, so the hosted app can offer a real model picker cheaply. `ChatOllama`
+(free local dev) and the direct `ChatAnthropic` backends remain.
+
+Refinements to the consequences above:
+- **`GET /models`** now also lists a curated, tool-verified OpenRouter catalog
+  (shown only when `OPENROUTER_API_KEY` is set), tiered **free / cheap / latest**;
+  the `paid` flag drives the UI's spend confirm, so the `$0` `:free` tier is ungated.
+- **Structured output** forces `method="function_calling"` on OpenRouter — it fans
+  out to many providers and that is the one structured-output method they all
+  support (`json_schema` is spotty).
+- **Model tag** flattens OpenRouter's `provider/model:variant` ids (`/` and `:`) for
+  the run-log filename.

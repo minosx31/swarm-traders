@@ -177,9 +177,11 @@ backed by grounded counter-evidence or points to a genuine logical flaw.
 ### 4. Why the model you choose changes the quality
 
 The same pipeline runs on anything from a free local model (Ollama running
-`qwen2.5`) to Groq's Llama-70B to Claude Haiku or Sonnet. The choice of model is
-a knob for **quality and depth**, not for integrity — and that distinction
-matters:
+`qwen2.5`) to the latest flagships. Hosted deploys reach those models through
+**OpenRouter** — one OpenAI-compatible gateway, one key, giving the model picker
+access to many providers (Gemini, GPT, Claude, Llama, DeepSeek, Kimi, GLM, …)
+across a free / cheap / latest range. The choice of model is a knob for
+**quality and depth**, not for integrity — and that distinction matters:
 
 - **Bigger, more capable models** (e.g. Claude Sonnet) write sharper theses,
   find more incisive attacks, follow the citation rules more reliably, and can

@@ -32,8 +32,9 @@ flowchart TB
     end
 
     subgraph llm["LLM providers"]
+        openrouter["OpenRouter · Gemini/GPT/Claude/Llama/…<br/>(hosted default, free→flagship)"]
         ollama["Ollama · Qwen 2.5<br/>(dev, free)"]
-        claude["Anthropic · Claude Sonnet<br/>(demo, paid)"]
+        claude["Anthropic · Claude Sonnet<br/>(direct, paid)"]
     end
 
     subgraph data["Cached data — JSON on disk"]
@@ -49,6 +50,7 @@ flowchart TB
     pipe -->|"cached-snapshot tools<br/>(specialists + rebuttal + red-team)"| snap
     pipe --> prov
     prov --> breaker
+    breaker --> openrouter
     breaker --> ollama
     breaker --> claude
     pipe -->|".stream() — event per node"| api
@@ -204,9 +206,10 @@ grounding key space, news) so the UI can show the agents' inputs.
 | **SSE server** | `sse-starlette` `EventSourceResponse` | Correct SSE framing + disconnect handling over raw `StreamingResponse`. |
 | **Orchestration** | **LangGraph** (library) | Stateful graph maps onto the fixed debate: fan-out, fan-in wait, reducer-merged blackboard. Kept for orchestration, **not** streaming — display events go through an explicit queue instead, since `.stream()` can't see intra-node events (ADR 0004). Ignore the paid LangGraph Platform. |
 | **Structured I/O** | **Pydantic** models via LangChain | Thesis/Stance/Evidence/Attack/Verdict schemas — enforce clean JSON and make the grounding validator a typed function. Enforced two ways (ADR 0005): `.with_structured_output()` on no-tool thesis nodes; a terminal `submit_*` tool (schema = the Pydantic model) on tool-using debate nodes, since structured-output coercion is itself a tool call and would collide with the real tools. One validation-retry on the local backend. |
-| **LLM (demo)** | Anthropic SDK → **Claude Sonnet** (`claude-sonnet-5`) | Specialists + Judge all on Sonnet (no Opus). Confirm the exact model/pricing before the paid runs. |
+| **LLM (hosted default)** | **OpenRouter** (OpenAI-compatible gateway) via `ChatOpenAI` | The default for hosted deploys: one key → many models (Gemini, GPT, Claude, Llama, DeepSeek, Kimi, GLM, …), no GPU. `GET /models` surfaces a curated, tool-verified catalog tiered **free / cheap / latest**; the free `:free` tier runs at $0. |
+| **LLM (direct, paid)** | Anthropic SDK → **Claude** (`claude-sonnet-5` / `claude-haiku-4-5`) | Direct Anthropic backends, for prompt caching (`cache_control`) the gateway doesn't expose. Confirm model/pricing before paid runs. |
 | **LLM (dev)** | **Ollama** — Qwen 2.5 7B/14B | Free, local; Qwen is best at structured JSON + tool-calling. Groq free tier as no-local-compute fallback. |
-| **Provider abstraction** | LangChain chat models (`ChatOllama` / `ChatAnthropic`) | One config flag (`LLM_BACKEND = ollama|claude`) picks the chat-model class; `.bind_tools()` normalizes the tool-calling loop across both providers (ADR 0005). Replaces the hand-rolled wrapper — the "~20 min" estimate only held for the no-tools path; tool threading diverges sharply between providers. No new dependency (LangGraph already pulls `langchain-core`). |
+| **Provider abstraction** | LangChain chat models (`ChatOpenAI`→OpenRouter / `ChatOllama` / `ChatAnthropic`) | One config flag (`LLM_BACKEND = openrouter\|ollama\|haiku\|sonnet\|groq`) picks the chat-model class; `.bind_tools()` normalizes the tool-calling loop across providers (ADR 0005). Replaces the hand-rolled wrapper — the "~20 min" estimate only held for the no-tools path; tool threading diverges sharply between providers. |
 | **Prompt caching** | Anthropic `cache_control` | On system prompts + snapshot slices from day one (~90% off cached input). |
 | **Data ingestion** | yfinance / FMP / Alpha Vantage (+ **pandas**) | Used **offline** to build snapshots, never during a run. |
 | **Data storage** | JSON files on disk | 2–3 curated snapshots; no database needed. |
