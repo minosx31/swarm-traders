@@ -51,7 +51,23 @@ def _sonnet(model=None):
     return ChatAnthropic(model=model or "claude-sonnet-5")
 
 
-BACKENDS.update(ollama=_ollama, groq=_groq, haiku=_haiku, sonnet=_sonnet)
+def openrouter_model() -> str:
+    return os.environ.get("OPENROUTER_MODEL", "google/gemini-2.0-flash-001")
+
+
+def _openrouter(model=None):
+    # OpenRouter is an OpenAI-compatible gateway (ADR 0005: asymmetric like ollama —
+    # one backend, many models). base_url + key are all ChatOpenAI needs.
+    from langchain_openai import ChatOpenAI
+
+    return ChatOpenAI(
+        model=model or openrouter_model(),
+        base_url="https://openrouter.ai/api/v1",
+        api_key=os.environ.get("OPENROUTER_API_KEY"),
+    )
+
+
+BACKENDS.update(ollama=_ollama, groq=_groq, haiku=_haiku, sonnet=_sonnet, openrouter=_openrouter)
 
 ANTHROPIC_BACKENDS = {"haiku", "sonnet"}
 
@@ -81,6 +97,10 @@ def model_tag() -> str:
     backend = current_backend() or "none"
     if backend == "ollama":
         return (_override_model("ollama") or ollama_model()).replace(":", "-")
+    if backend == "openrouter":
+        # OpenRouter ids carry '/' and ':' (e.g. google/gemini-2.0-flash-001) —
+        # both would break the filename, so flatten them to '-'.
+        return (_override_model("openrouter") or openrouter_model()).replace("/", "-").replace(":", "-")
     return backend
 
 
@@ -113,6 +133,10 @@ def structured_output_kwargs() -> dict:
     json_schema (the library default). Other providers keep their defaults."""
     if current_backend() == "ollama" and (_override_model("ollama") or ollama_model()).startswith("qwen3"):
         return {"method": "function_calling"}
+    # OpenRouter fans out to many providers; function_calling is the one
+    # structured-output method they all support (json_schema is spotty).
+    if current_backend() == "openrouter":
+        return {"method": "function_calling"}
     return {}
 
 
@@ -128,12 +152,28 @@ def system_content(text: str) -> str | list[dict]:
     return text
 
 
-# UI-facing catalog of selectable models. Ollama is asymmetric (many local
-# models under one backend); Claude maps each model to its own backend name.
+# UI-facing catalog of selectable models. Ollama and OpenRouter are asymmetric
+# (many models under one backend name); Claude maps each model to its own backend.
+# `group` is the optgroup label the UI buckets by, so the server owns provider identity.
 CLAUDE_OPTIONS = [
-    {"backend": "haiku", "model": "claude-haiku-4-5", "label": "Claude Haiku 4.5", "paid": True},
-    {"backend": "sonnet", "model": "claude-sonnet-5", "label": "Claude Sonnet 5", "paid": True},
+    {"backend": "haiku", "model": "claude-haiku-4-5", "label": "Claude Haiku 4.5", "paid": True,
+     "group": "Claude · paid · credits"},
+    {"backend": "sonnet", "model": "claude-sonnet-5", "label": "Claude Sonnet 5", "paid": True,
+     "group": "Claude · paid · credits"},
 ]
+
+# Curated cheap, reliably-tool-calling models on OpenRouter (paid — real credits,
+# but a fraction of a cent per run). Hardcoded rather than fetched: OpenRouter lists
+# 300+ models, many with poor/no tool support, which our submit_* loop requires.
+OPENROUTER_OPTIONS = [
+    {"backend": "openrouter", "model": "google/gemini-2.0-flash-001", "label": "Gemini 2.0 Flash"},
+    {"backend": "openrouter", "model": "openai/gpt-4o-mini", "label": "GPT-4o mini"},
+    {"backend": "openrouter", "model": "anthropic/claude-3.5-haiku", "label": "Claude 3.5 Haiku"},
+    {"backend": "openrouter", "model": "meta-llama/llama-3.3-70b-instruct", "label": "Llama 3.3 70B"},
+    {"backend": "openrouter", "model": "deepseek/deepseek-chat", "label": "DeepSeek Chat"},
+]
+OPENROUTER_OPTIONS = [{**o, "paid": True, "group": "OpenRouter · cheap · credits"}
+                      for o in OPENROUTER_OPTIONS]
 
 
 def _ollama_installed() -> list[str]:
@@ -153,10 +193,14 @@ def _ollama_installed() -> list[str]:
 
 def available_models() -> list[dict]:
     """Selectable (backend, model) options for the UI. Ollama models come from
-    the local daemon; the paid Claude options appear ONLY if ANTHROPIC_API_KEY is
-    set server-side (the UI still warns + confirms before spending)."""
-    options = [{"backend": "ollama", "model": name, "label": name, "paid": False}
+    the local daemon; the OpenRouter and Claude options appear ONLY if their
+    respective key (OPENROUTER_API_KEY / ANTHROPIC_API_KEY) is set server-side
+    (the UI still warns + confirms before spending on either)."""
+    options = [{"backend": "ollama", "model": name, "label": name, "paid": False,
+                "group": "Ollama · local · free"}
                for name in _ollama_installed()]
+    if os.environ.get("OPENROUTER_API_KEY"):
+        options += OPENROUTER_OPTIONS
     if os.environ.get("ANTHROPIC_API_KEY"):
         options += CLAUDE_OPTIONS
     return options

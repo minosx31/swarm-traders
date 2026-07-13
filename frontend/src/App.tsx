@@ -278,20 +278,13 @@ export default function App() {
                   aria-label="model"
                 >
                   {models.length === 0 && <option value="">no models found</option>}
-                  {models.some((m) => !m.paid) && (
-                    <optgroup label="Ollama · local · free">
-                      {models.filter((m) => !m.paid).map((m) => (
+                  {[...new Set(models.map((m) => m.group))].map((group) => (
+                    <optgroup key={group} label={group}>
+                      {models.filter((m) => m.group === group).map((m) => (
                         <option key={`${m.backend}::${m.model}`} value={`${m.backend}::${m.model}`}>{m.label}</option>
                       ))}
                     </optgroup>
-                  )}
-                  {models.some((m) => m.paid) && (
-                    <optgroup label="Claude · paid · credits">
-                      {models.filter((m) => m.paid).map((m) => (
-                        <option key={`${m.backend}::${m.model}`} value={`${m.backend}::${m.model}`}>{m.label}</option>
-                      ))}
-                    </optgroup>
-                  )}
+                  ))}
                 </select>
                 <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[11px] text-ink-3">▾</span>
               </div>

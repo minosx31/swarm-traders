@@ -9,6 +9,7 @@ endpoint with the graph bypassed (#9).
 
 import asyncio
 import json
+import os
 from contextlib import asynccontextmanager
 from datetime import date
 from pathlib import Path
@@ -36,9 +37,13 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Alpha Swarms", lifespan=lifespan)
 
+# Comma-separated origins allowed to call the API. Defaults to the Vite dev
+# server; set ALLOWED_ORIGINS on the host (Render) to the deployed frontend origin.
+_origins = [o.strip() for o in os.environ.get("ALLOWED_ORIGINS", "http://localhost:5173").split(",") if o.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Vite dev server
+    allow_origins=_origins,
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )

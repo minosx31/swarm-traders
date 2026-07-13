@@ -304,7 +304,7 @@ One FastAPI app with LangGraph running in-process — nothing else to host.
 | `alpha_swarms/scoring.py` | Pure-Python Verdict: mean of adjudicated stances → direction bands / conviction / dissent / quorum No-Call. Never authored by the Judge |
 | `alpha_swarms/events.py` | The display-event channel (ADR 0004): per-run `asyncio.Queue` the nodes emit typed events into; the endpoint drains it with the inter-event delay |
 | `alpha_swarms/runner.py` | Run lifecycle: owns the queue, attaches the safeguards handler globally, catches mid-graph failures and surfaces them as a terminal `error` event |
-| `alpha_swarms/llm.py` | Provider abstraction (ADR 0005): `LLM_BACKEND` env flag picks the *default* LangChain chat model (`ollama` / `groq` / `haiku` / `sonnet`); a live request can override backend+model per-run via a contextvar. `available_models()` lists choices for the UI; wires Anthropic `cache_control` for system prompts |
+| `alpha_swarms/llm.py` | Provider abstraction (ADR 0005): `LLM_BACKEND` env flag picks the *default* LangChain chat model (`openrouter` / `ollama` / `groq` / `haiku` / `sonnet`); a live request can override backend+model per-run via a contextvar. `available_models()` lists choices for the UI; wires Anthropic `cache_control` for system prompts |
 | `alpha_swarms/safeguards.py` | Budget safeguards: circuit breaker (kills a run past 15 LLM calls), per-run cost estimate incl. cache accounting, persistent global spend counter (`data/spend.json`) |
 | `alpha_swarms/snapshot.py` | Point-in-time Snapshot layer (ADR 0002): Pydantic models, the leak validator (no datum dated after as-of), whitelist (= snapshot files on disk), loader that never touches Outcomes |
 | `alpha_swarms/ingest.py` | Snapshot ingestion (ADR 0006): prices + last *reported* fundamentals from yfinance, date-ranged historical news from Finnhub (`FINNHUB_API_KEY`; yfinance current-news fallback), leak-validated and persisted with the held-out Outcome. Runs via the CLI or `POST /snapshots` — always completes before any agent runs |
@@ -388,8 +388,11 @@ uv run pytest
 
 | Variable | Purpose | Default |
 |---|---|---|
-| `LLM_BACKEND` | *Default* chat model: `ollama` \| `groq` \| `haiku` \| `sonnet`. Required at startup (`LLM_BACKEND=ollama` for free dev). The UI can override backend+model per live run (`GET /models`); a run never switches model mid-flight | unset |
+| `LLM_BACKEND` | *Default* chat model: `openrouter` \| `ollama` \| `groq` \| `haiku` \| `sonnet`. Required at startup (`openrouter` for cheap hosted models, `ollama` for free local dev). The UI can override backend+model per live run (`GET /models`); a run never switches model mid-flight | unset |
+| `OPENROUTER_API_KEY` | Enables the `openrouter` backend + its curated cheap-model picker (Gemini Flash, GPT-4o mini, Claude 3.5 Haiku, Llama 3.3 70B, DeepSeek). OpenRouter is an OpenAI-compatible gateway; key from [openrouter.ai](https://openrouter.ai) | unset |
+| `OPENROUTER_MODEL` | Default model for the `openrouter` backend (the UI dropdown overrides it per-run) | `google/gemini-2.0-flash-001` |
 | `OLLAMA_MODEL` | Default local model for the `ollama` backend (the UI model dropdown overrides it per-run) | `qwen2.5:7b` |
+| `ALLOWED_ORIGINS` | Comma-separated CORS origins allowed to call the API. Set to the deployed frontend origin (e.g. `https://your-app.vercel.app`) when the backend runs on Render | `http://localhost:5173` |
 | `DEBATE_TOOLS` | Turn the whole debate agentic (#8): specialists research their initial thesis on a single lane tool, and Red-Team + rebuttals fetch cached evidence via tools. All tools read the frozen snapshot with the as-of filter enforced inside. Off = the pre-sliced #6 baseline | unset (off) |
 | `RESILIENT` | When set, a debate node whose LLM output fails *abstains* (contributes nothing) so the run still reaches a verdict, instead of aborting with a terminal `error`. Set it when recording local demo takes on the flaky local models; leave off for the honest fail-loud default. The budget breaker always stays loud | unset (off) |
 | `ANTHROPIC_API_KEY` / `GROQ_API_KEY` | Provider keys, needed only for their backends | — |
@@ -400,8 +403,8 @@ uv run pytest
 | `SNAPSHOT_DIR` | Snapshot/whitelist location | `backend/data/snapshots` |
 | `RUNS_DIR` | Recorded run logs (replay reads the latest per pair, or a specific one picked by model) | `backend/data/runs` |
 | `SPEND_FILE` | Persistent global spend counter | `backend/data/spend.json` |
-| `VITE_API_BASE` | Frontend → backend base URL (Path B). Ignored in static mode | `http://localhost:8000` |
-| `VITE_STATIC` | Build-time flag: `1` builds the **replay-only static site** (Path A) — reads bundled JSON from `public/data/`, replays client-side, no backend/API/key | unset |
+| `VITE_API_BASE` | Frontend → backend base URL (Path B, the default). Set to the hosted backend URL (e.g. the Render service) at build time; ignored in static mode | `http://localhost:8000` |
+| `VITE_STATIC` | Build-time flag: `1` builds the **replay-only static site** (Path A) — reads bundled JSON from `public/data/`, replays client-side, no backend/API/key. Unset ⇒ the live SSE build | unset |
 | `VITE_EVENT_DELAY_MS` | Static-mode client-side replay pacing | `250` |
 
 **Cost guardrails are always on:** every run is capped at 15 LLM calls, prints
@@ -410,12 +413,29 @@ also stores a `usage` block (per-run token breakdown + call count + est cost) in
 its run log for cross-run comparison — token counts are real even on Ollama,
 where cost is $0.
 
+## Deploy live (Path B — default)
+
+Real on-demand runs against a hosted backend. The backend runs a process
+(FastAPI/uvicorn); OpenRouter handles inference, so no GPU is needed and it fits
+cheap commodity hosting like Render. `frontend/vercel.json` builds the live SSE
+site by default (no `VITE_STATIC`).
+
+1. **Backend on Render** (or any host that runs a Python web process). Start
+   command: `uv run uvicorn alpha_swarms.app:app --host 0.0.0.0 --port $PORT`.
+   Set env: `LLM_BACKEND=openrouter`, `OPENROUTER_API_KEY=…`, and
+   `ALLOWED_ORIGINS=https://your-app.vercel.app` (the frontend origin, for CORS).
+   The committed `backend/data/` ships the whitelisted snapshots; note Render's
+   disk is ephemeral, so *newly* built pairs don't survive a redeploy unless you
+   attach a persistent disk.
+2. **Frontend on Vercel.** Root Directory → `frontend`. Set env
+   `VITE_API_BASE=https://your-service.onrender.com` (the backend URL). Leave
+   `VITE_STATIC` unset. `vercel.json` pins `bun run build`, output `dist/`.
+
 ## Deploy the replay-only static site (Path A)
 
 A `$0`, backend-free site that replays recorded runs from bundled JSON — no LLM,
-no API key, nothing paid in the bundle. Live, on-demand runs (Path B) stay
-possible later by pointing `VITE_API_BASE` at a hosted backend and leaving
-`VITE_STATIC` unset; no code is removed.
+no API key, nothing paid in the bundle. An alternative to the live Path B above;
+no code differs, only the build-time `VITE_STATIC` flag.
 
 1. **Record the runs you want to ship.** Do live runs (`LLM_BACKEND=ollama …`);
    each persists to `backend/data/runs/` tagged with its model. Curate by which
@@ -430,8 +450,10 @@ possible later by pointing `VITE_API_BASE` at a hosted backend and leaving
    offline stand-in for `GET /whitelist` + `GET /runs`).
 4. **Commit `frontend/public/data/`** — Vercel builds from git, so the bundled
    JSON must be committed (it is *not* gitignored).
-5. **Deploy to Vercel:** set the project's **Root Directory → `frontend`**.
-   `frontend/vercel.json` pins the rest (`VITE_STATIC=1 bun run build`,
-   output `dist/`, `bun install`). Re-run steps 2–4 and push to ship more runs.
+5. **Deploy to Vercel:** set the project's **Root Directory → `frontend`** and
+   set the build-time env `VITE_STATIC=1` (Project → Settings → Environment
+   Variables) so the build reads the bundled JSON instead of a backend.
+   `vercel.json` pins the rest (`bun run build`, output `dist/`, `bun install`).
+   Re-run steps 2–4 and push to ship more runs.
 
 Preview the static build locally: `VITE_STATIC=1 bun run build && bun run preview`.

@@ -147,10 +147,11 @@ export interface SnapshotManifest {
 
 /** A selectable (backend, model) pair from GET /models. */
 export interface ModelOption {
-  backend: string // llm.py backend name: ollama | haiku | sonnet | groq
+  backend: string // llm.py backend name: ollama | openrouter | haiku | sonnet | groq
   model: string
   label: string
-  paid: boolean // true ⇒ real API credits (Claude); UI warns + confirms
+  paid: boolean // true ⇒ real API credits (OpenRouter/Claude); UI warns + confirms
+  group: string // optgroup label the UI buckets by (server owns provider identity)
 }
 
 /** A recorded run from GET /runs, for the replay 'which model' picker. */
