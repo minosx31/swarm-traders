@@ -389,8 +389,8 @@ uv run pytest
 | Variable | Purpose | Default |
 |---|---|---|
 | `LLM_BACKEND` | *Default* chat model: `openrouter` \| `ollama` \| `groq` \| `haiku` \| `sonnet`. Required at startup (`openrouter` for cheap hosted models, `ollama` for free local dev). The UI can override backend+model per live run (`GET /models`); a run never switches model mid-flight | unset |
-| `OPENROUTER_API_KEY` | Enables the `openrouter` backend + its curated cheap-model picker (Gemini Flash, GPT-4o mini, Claude 3.5 Haiku, Llama 3.3 70B, DeepSeek). OpenRouter is an OpenAI-compatible gateway; key from [openrouter.ai](https://openrouter.ai) | unset |
-| `OPENROUTER_MODEL` | Default model for the `openrouter` backend (the UI dropdown overrides it per-run) | `google/gemini-2.0-flash-001` |
+| `OPENROUTER_API_KEY` | Enables the `openrouter` backend + its curated picker, tiered into **free** (`:free` models — $0, rate-limited), **cheap** (GPT-4o mini, DeepSeek, Gemini Flash Lite), and **latest** (Gemini 3.5 Flash, GPT-5.6, Claude Sonnet 5 / Opus 4.8). OpenRouter is an OpenAI-compatible gateway; key from [openrouter.ai](https://openrouter.ai) | unset |
+| `OPENROUTER_MODEL` | Default model for the `openrouter` backend (the UI dropdown overrides it per-run) | `openai/gpt-4o-mini` |
 | `OLLAMA_MODEL` | Default local model for the `ollama` backend (the UI model dropdown overrides it per-run) | `qwen2.5:7b` |
 | `ALLOWED_ORIGINS` | Comma-separated CORS origins allowed to call the API. Set to the deployed frontend origin (e.g. `https://your-app.vercel.app`) when the backend runs on Render | `http://localhost:5173` |
 | `DEBATE_TOOLS` | Turn the whole debate agentic (#8): specialists research their initial thesis on a single lane tool, and Red-Team + rebuttals fetch cached evidence via tools. All tools read the frozen snapshot with the as-of filter enforced inside. Off = the pre-sliced #6 baseline | unset (off) |

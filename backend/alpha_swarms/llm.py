@@ -52,7 +52,7 @@ def _sonnet(model=None):
 
 
 def openrouter_model() -> str:
-    return os.environ.get("OPENROUTER_MODEL", "google/gemini-2.0-flash-001")
+    return os.environ.get("OPENROUTER_MODEL", "openai/gpt-4o-mini")
 
 
 def _openrouter(model=None):
@@ -162,18 +162,36 @@ CLAUDE_OPTIONS = [
      "group": "Claude · paid · credits"},
 ]
 
-# Curated cheap, reliably-tool-calling models on OpenRouter (paid — real credits,
-# but a fraction of a cent per run). Hardcoded rather than fetched: OpenRouter lists
-# 300+ models, many with poor/no tool support, which our submit_* loop requires.
-OPENROUTER_OPTIONS = [
-    {"backend": "openrouter", "model": "google/gemini-2.0-flash-001", "label": "Gemini 2.0 Flash"},
-    {"backend": "openrouter", "model": "openai/gpt-4o-mini", "label": "GPT-4o mini"},
-    {"backend": "openrouter", "model": "anthropic/claude-3.5-haiku", "label": "Claude 3.5 Haiku"},
-    {"backend": "openrouter", "model": "meta-llama/llama-3.3-70b-instruct", "label": "Llama 3.3 70B"},
-    {"backend": "openrouter", "model": "deepseek/deepseek-chat", "label": "DeepSeek Chat"},
-]
-OPENROUTER_OPTIONS = [{**o, "paid": True, "group": "OpenRouter · cheap · credits"}
-                      for o in OPENROUTER_OPTIONS]
+# Curated OpenRouter models in three tiers (asymmetric backend: one name, many
+# models). Hardcoded + tool-verified against the live catalog rather than fetched:
+# OpenRouter lists 300+ models, most with poor/no tool support, which our submit_*
+# loop requires. `paid` drives the UI's ⚠ CREDITS confirm; the $0 tier skips it.
+def _openrouter_tier(models, *, paid, group):
+    return [{"backend": "openrouter", "paid": paid, "group": group, **m} for m in models]
+
+OPENROUTER_OPTIONS = (
+    _openrouter_tier([  # $0 — rate-limited and weaker tool use; fine for casual runs
+        {"model": "meta-llama/llama-3.3-70b-instruct:free", "label": "Llama 3.3 70B (free)"},
+        {"model": "openai/gpt-oss-120b:free", "label": "GPT-OSS 120B (free)"},
+        {"model": "qwen/qwen3-next-80b-a3b-instruct:free", "label": "Qwen3 Next 80B (free)"},
+    ], paid=False, group="OpenRouter · free")
+    + _openrouter_tier([  # cents per run — reliable cheap workhorses
+        {"model": "openai/gpt-4o-mini", "label": "GPT-4o mini"},
+        {"model": "deepseek/deepseek-chat", "label": "DeepSeek Chat"},
+        {"model": "google/gemini-3.1-flash-lite", "label": "Gemini 3.1 Flash Lite"},
+    ], paid=True, group="OpenRouter · cheap · credits")
+    + _openrouter_tier([  # latest flagships — priciest; gated. Ascending by $/1M out.
+        {"model": "z-ai/glm-5.2", "label": "GLM 5.2"},
+        {"model": "z-ai/glm-5.1", "label": "GLM 5.1"},
+        {"model": "moonshotai/kimi-k2.6", "label": "Kimi K2.6"},
+        {"model": "moonshotai/kimi-k2.7-code", "label": "Kimi K2.7 Code"},
+        {"model": "anthropic/claude-haiku-4.5", "label": "Claude Haiku 4.5"},
+        {"model": "openai/gpt-5.6-luna", "label": "GPT-5.6 Luna"},
+        {"model": "google/gemini-3.5-flash", "label": "Gemini 3.5 Flash"},
+        {"model": "anthropic/claude-sonnet-5", "label": "Claude Sonnet 5"},
+        {"model": "anthropic/claude-opus-4.8", "label": "Claude Opus 4.8"},
+    ], paid=True, group="OpenRouter · latest · credits")
+)
 
 
 def _ollama_installed() -> list[str]:
