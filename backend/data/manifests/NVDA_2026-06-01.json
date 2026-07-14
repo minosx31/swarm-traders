@@ -1,0 +1,366 @@
+{
+  "ticker": "NVDA",
+  "as_of": "2026-06-01",
+  "prices": {
+    "bars": 251,
+    "first_date": "2025-06-02",
+    "last_date": "2026-06-01",
+    "source_url": "https://finance.yahoo.com/quote/NVDA/history"
+  },
+  "fundamentals": {
+    "period_end": "2026-04-26",
+    "available_at": "2026-05-20",
+    "source_url": "https://finance.yahoo.com/quote/NVDA/financials",
+    "keys": {
+      "income_stmt.revenue": 81615000000.0,
+      "income_stmt.cost_of_revenue": 20458000000.0,
+      "income_stmt.gross_profit": 61157000000.0,
+      "income_stmt.rd_expense": 6321000000.0,
+      "income_stmt.sga_expense": 1300000000.0,
+      "income_stmt.operating_expenses": 7621000000.0,
+      "income_stmt.operating_income": 53536000000.0,
+      "income_stmt.interest_expense": 102000000.0,
+      "income_stmt.income_tax": 11582000000.0,
+      "income_stmt.net_income": 58321000000.0,
+      "income_stmt.eps_basic": 2.4,
+      "income_stmt.eps_diluted": 2.39,
+      "balance_sheet.total_assets": 259474000000.0,
+      "balance_sheet.current_assets": 150995000000.0,
+      "balance_sheet.cash_and_equivalents": 13237000000.0,
+      "balance_sheet.total_liabilities": 64000000000.0,
+      "balance_sheet.current_liabilities": 43884000000.0,
+      "balance_sheet.long_term_debt": 7470000000.0,
+      "balance_sheet.stockholders_equity": 195474000000.0,
+      "balance_sheet.retained_earnings": 185038000000.0,
+      "balance_sheet.inventory": 25797000000.0,
+      "balance_sheet.accounts_receivable": 40710000000.0,
+      "balance_sheet.accounts_payable": 13097000000.0,
+      "balance_sheet.goodwill": 20894000000.0
+    }
+  },
+  "technicals": {
+    "keys": {
+      "technicals.close_latest": 224.098816,
+      "technicals.return_5d": 0.041936,
+      "technicals.return_1m": 0.124217,
+      "technicals.return_3m": 0.229571,
+      "technicals.return_6m": 0.244783,
+      "technicals.sma_20": 216.501171,
+      "technicals.pct_vs_sma_20": 0.035093,
+      "technicals.sma_50": 200.031665,
+      "technicals.pct_vs_sma_50": 0.120317,
+      "technicals.sma_200": 187.636331,
+      "technicals.pct_vs_sma_200": 0.194325,
+      "technicals.high_52w": 235.465576,
+      "technicals.low_52w": 137.187744,
+      "technicals.pct_vs_high_52w": -0.048274,
+      "technicals.volume_avg_20": 170452220,
+      "technicals.volume_latest_vs_avg_20": 0.248741
+    }
+  },
+  "news": [
+    {
+      "source_id": "fh-140494558",
+      "title": "Nvidia sends PC makers a message they can't ignore",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=33fda6a7db15464928eb21b852b1aad79aa6836391602afaf7136559d245724d"
+    },
+    {
+      "source_id": "fh-140494559",
+      "title": "Is Credo Technology Group a Buy After Its Latest Earnings Report?",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=530e81586158efd664093dcb50d3b31a7acd9c3e8f495f4d0648e93fb017972c"
+    },
+    {
+      "source_id": "fh-140499800",
+      "title": "Cathie Wood Sells $56.2 Million Worth Of AMD Shares Again, But Loads Up On $67.3 Million Worth Of Nvidia Stock Amid PC Chip Buzz",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=a99938e5cc5957a916a8a5f017493572bdec1027f099b0cb04a998198bc77cbf"
+    },
+    {
+      "source_id": "fh-140494560",
+      "title": "Tigress Financial Lifts NVIDIA (NVDA) Price Target, Keeps Strong Buy Rating",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=ce9df12882d028f3af8f4c502598d5c976ec5ae3bb8717af03d4bfd3234fcae8"
+    },
+    {
+      "source_id": "fh-140494561",
+      "title": "Top market stories to watch Tuesday, June 2",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=ed5e73fbc6d9c5d6e73d6e45bc870489741d81170acefd99b482bc8428dbb38b"
+    },
+    {
+      "source_id": "fh-140494562",
+      "title": "Why Microsoft Stock Surged Today",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=1086bbc4aea9e6bdfa8e527ec4f52c0ef11cab72aa64533e6d470bd29d0723c2"
+    },
+    {
+      "source_id": "fh-140494563",
+      "title": "Nvidia's Jensen Huang Just Announced Something Big",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=a981a8a89729b978539eb2b1b4814c1fa11413198a9e469177c5ee3b97972952"
+    },
+    {
+      "source_id": "fh-140494564",
+      "title": "Why Rocket Lab Stock Plummeted Today",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=65e499291f457a9e2fdec2021a3df2e2def15e51d7490115fc0d659b6be8d824"
+    },
+    {
+      "source_id": "fh-140494565",
+      "title": "Flex Showcases Scalable Power Solutions for Next-Generation AI Infrastructure at COMPUTEX 2026",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=d9c28fcd0aebf478419c8daa5b90fbf0cd261a8cad3955bace978f1822824d46"
+    },
+    {
+      "source_id": "fh-140494566",
+      "title": "The Company Behind Claude Just Filed for an IPO. Is It Worth Buying?",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=d5f920f8ded6556bee9ce3691a892d5296541c4c8bf57817cdc2b6124c020dfc"
+    },
+    {
+      "source_id": "fh-140493198",
+      "title": "Better Dividend Growth Stock to Buy: CVS Health or UnitedHealth Group?",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=620e956be3503c796926e1e22c9dfce06c91ceb355507c8b3bbd5b529d646ff1"
+    },
+    {
+      "source_id": "fh-140493199",
+      "title": "Why Micron Stock Hit a New All-Time High Today",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=8580e27154f633c535ebd13f250c82d593b599c39fafaef5ba52d9a8fd6c2aea"
+    },
+    {
+      "source_id": "fh-140493200",
+      "title": "Stock Market Today, June 1: Tech and Software Stocks Lift Markets",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=3795918776e66883784f5ace962cd808d3adcd64caecbd6df25ea7f155697006"
+    },
+    {
+      "source_id": "fh-140493201",
+      "title": "Dow Jones Futures: Broadcom, Micron, Nvidia, Sandisk, Tesla Are Big Movers; AI Stock Credo Plunges On Earnings",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=0c24c1221187f6c33058e8507e8abd8839a3badc97dd7972e420c8816795e239"
+    },
+    {
+      "source_id": "fh-140495304",
+      "title": "Tracking Bridgewater Associates 13F Portfolio - Q1 2026 Update",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=9fb79b38c52236119fcd20f1b7748c3494212dd0887da6baec1a7c9652aa7714"
+    },
+    {
+      "source_id": "fh-140493345",
+      "title": "Nvidia chases $200B CPU market with AI agent PCs from Microsoft, Dell, and HP",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=42f253f7f1fb1fcb15aea90790ba44c55f4f5df27cdcd73814e37cc8a4526103"
+    },
+    {
+      "source_id": "fh-140493202",
+      "title": "Remitly Could Be the Hidden Compounder in Cross-Border Payments",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=88c23159b38fb7c5a9c487502a33bab1070dab4752e1ac668695a73d3adfafca"
+    },
+    {
+      "source_id": "fh-140493203",
+      "title": "Stock Market Today, June 1: CoreWeave Surges on Nvidia Vera Rubin NVL72 Deployment",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=bd54c46050b97d7286a260a24b1d923c6028b5ea4b4894f69d5cb461b6e71996"
+    },
+    {
+      "source_id": "fh-140493204",
+      "title": "3 Trillion-Dollar AI Stocks to Buy Now, According to Wall Street",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=30c74f2baf87637b60226014aeaa304da1f22f759991a68fa72ea2c97867ebef"
+    },
+    {
+      "source_id": "fh-140493205",
+      "title": "Watch This One Number to Know If TLT Will Rally Over the Next 12 Months",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=de11017111cfa68af4c7303be45c7b0b78eca8d1b8f279d2e12a188f78873a32"
+    },
+    {
+      "source_id": "fh-140493206",
+      "title": "Arm\u2019s Role Widens In AI PCs And Data Centers With Nvidia",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=9fbb8cbb602ac04dc0a98f24f06e4808623836b4f3f34535879ef9635b4dd2eb"
+    },
+    {
+      "source_id": "fh-140494568",
+      "title": "Nvidia Has a Robot Partner. It Isn\u2019t Tesla.",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=8b559e8f0f30068e85808f748423e30525f9611e06013848367ad6eaf74cad9b"
+    },
+    {
+      "source_id": "fh-140493207",
+      "title": "Commercial Space Just Crossed $500 Billion in Backlog and These 3 ETFs Own the Pure Play Names",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=c8214dda192ab2fae2370636abe6757dec9cd92f871fd35b7cd5615953f39f22"
+    },
+    {
+      "source_id": "fh-140493208",
+      "title": "US Equity Indexes Recover After Trump Claims Israel, Hezbollah Agreed to De-escalate Fighting in Lebanon",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=07b13d1a66503c00e2709d1d521317f054c2e4c6bf8b29e7619eb53081788f78"
+    },
+    {
+      "source_id": "fh-140493209",
+      "title": "Prediction: This Will Be Palantir's Stock Price by the End of 2027",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=a2895ee4d90d416434539ed9a8cc6729eac290b963c8f789bd649670726f87af"
+    },
+    {
+      "source_id": "fh-140489901",
+      "title": "Arm Stock Jumps As Chip Designer Joins Nvidia PC Effort",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=065bd5ffb95504ee5121f28d8aaef6ec12968598e6a33bd8abe3d8d799a6040b"
+    },
+    {
+      "source_id": "fh-140493211",
+      "title": "Analyst Says Dell\u2019s Momentum Is Real, But Valuation Is Risky with Stock Up 250% YTD",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=fb42e902845cff8fe43f3f2bd6a2f961f40069d296572b294a422664bbc95929"
+    },
+    {
+      "source_id": "fh-140493212",
+      "title": "Wall Street Extends Record Run as Nvidia Rally Boosts Tech Sector",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=1497f92ee0bfe9abccfbdb8b72cce5ce54e305d79b8beda57f04ac675cbb49fc"
+    },
+    {
+      "source_id": "fh-140493213",
+      "title": "This Gold Stock Under $30 Is The Pivot Away From Historically Overvalued Tech",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=e690c09495f15233f7aa872402215d6e89c786a5a7505379432f78f58423302e"
+    },
+    {
+      "source_id": "fh-140493214",
+      "title": "Forget Expedia: This Unstoppable Monopoly Is a Far Smarter Bet",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=5585d53bb68a17f70ac1156ac1ed87dbc2935ada0fc5f456492a2249b10e91b6"
+    },
+    {
+      "source_id": "fh-140493215",
+      "title": "Why Arm Stock Hit A Record High on Nvidia\u2019s Chip Announcement",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=7305345c17241cde471f0fa9785dfc3ad45f5263f1beefe8e24ad17cf92c4df0"
+    },
+    {
+      "source_id": "fh-140493216",
+      "title": "Why Occidental Petroleum Stock Is Up Today",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=c6d81b5466297f44a6bf7f0ba346409eea38f12c582b90c3dab1f2bddd854b7c"
+    },
+    {
+      "source_id": "fh-140494569",
+      "title": "SpaceX: Mars Can Wait, So Can I",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=2baf47adb98bbfcec3864e26f8e8848b8a4a63a7ee8607e1c36c34b6cbe5af18"
+    },
+    {
+      "source_id": "fh-140491253",
+      "title": "Better Investment Option: SpaceX or Cerebras?",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=eeda16b0e01d3eb8d4fc15101cf924f96f5730ce2a09120134fb904fc15a4b91"
+    },
+    {
+      "source_id": "fh-140491252",
+      "title": "Lululemon and Founder Chip Wilson Agree to End Public Feud, for Now. Is It Safe to Buy the Stock Again?",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=9e83abdf43574aafe105577ba0e63ab3b4c3dba22183a983789aadb75bb0f31f"
+    },
+    {
+      "source_id": "fh-140491254",
+      "title": "Sector Update: Tech Stocks Mixed Late Afternoon",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=6e898baf92c5cdf4c93d09207398ec59a38a7f7eb8a23dd2ce87e5b7739b99b3"
+    },
+    {
+      "source_id": "fh-140491255",
+      "title": "Lululemon Athletica's Next Earnings Report on June 4 Could Send the Stock Spiraling. Here's Why.",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=a2199f011b8cf9aae7757713a16183fc6526ffd68b46b178474e282a7a23eb7d"
+    },
+    {
+      "source_id": "fh-140491256",
+      "title": "Meet the Latest $1 Trillion Stock",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=499a368ab77a0d1e747712b3891d733681bd4515f021e1cdfb1bec47ad368802"
+    },
+    {
+      "source_id": "fh-140491257",
+      "title": "May Was Merry For These Techs In The Dow Jones Industrials",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=f9fd75eeac5457d7d867eb5016aa9736c19246f8110b2a8d3685300ad6281e7c"
+    },
+    {
+      "source_id": "fh-140491258",
+      "title": "Why Salesforce Was Rallying Again Today",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=ee861dc9a30fb74168cf2d68745066f9aa24728b00d68450d5f9ee90b7ad0b41"
+    },
+    {
+      "source_id": "fh-140491259",
+      "title": "Jensen Huang Says Nvidia Has Unlocked a New Growth Opportunity the Company Hasn't Gone After Before",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=9d329713cef0e29d2e01a2639ee2c682991a043176829f5f3f2a4fd3ddd6986f"
+    },
+    {
+      "source_id": "fh-140491260",
+      "title": "Applied Optoelectronics Is Up 439% in 2026: Is It Outperforming Other Optics Stocks Like Lumentum and Coherent?",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=37d96011d7a1a64b27ca545683588d60421e88a9334cae6982d4f6b3eafc7d0e"
+    },
+    {
+      "source_id": "fh-140491261",
+      "title": "Why Constellation Energy Stock Slumped on Monday",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=fdde8450940cfa2cd58459aec7f2dd8665190f7a84bf65c3e013e9e1dcbd7261"
+    },
+    {
+      "source_id": "fh-140491262",
+      "title": "Nvidia expands AI platform with new CPU and PC offerings, shares jump",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=3ff9d427fdcb903f35674facd9016e2e71264b581bb85a7b509ba81bdb582510"
+    },
+    {
+      "source_id": "fh-140490845",
+      "title": "What's going on in today's session: dow jones movers",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=1c59c6a836d589cc35e61eb1aab3ee98c16dcab4d327b86b6d10d5f2c5d9a1d6"
+    },
+    {
+      "source_id": "fh-140491263",
+      "title": "SpaceX IPO: 5 Surprising Facts Just Revealed",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=68867bc025b0f6b06bb8ab02cfc352fb6d5748bb3e6e88ee473cf727d5c64d87"
+    },
+    {
+      "source_id": "fh-140489694",
+      "title": "Stock Market Today: Dow Falls, IBM Tests Entry; Warren Buffett's Berkshire Boosts This Stock (Live Coverage)",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=09a5a40f34c7d8e1846c0286d831aa42a314921635eafb9c32c62f2000d388c2"
+    },
+    {
+      "source_id": "fh-140491265",
+      "title": "Dell Technologies: Is It the Next Big Artificial Intelligence Stock?",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=d8c2fcac55b9a57bb20246335bc8c345828fde33989883092deb53d1ccb3ca6e"
+    },
+    {
+      "source_id": "fh-140491266",
+      "title": "Load Up on Nuclear Before the Data Center Energy Race Accelerates: These 3 ETFs Cover Reactors, Uranium, and Smart Grid",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=83e05dc02e2fc830b5299ed215d5053918a6a43ddd60d8a59a9a86112a7165cd"
+    },
+    {
+      "source_id": "fh-140491267",
+      "title": "Micron Rises 7%, Western Digital Climbs and SanDisk Climb 4% as Memory Stocks Extend Parabolic Run",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=a72dbd5a8a0810794bd9ba7f1b8223851eca3ecc5a1eea0fd8d61b748597de99"
+    }
+  ],
+  "leak_check": {
+    "violations": []
+  }
+}

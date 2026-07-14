@@ -1,0 +1,384 @@
+{
+  "ticker": "META",
+  "as_of": "2026-06-26",
+  "model": "openai-gpt-5.6-luna",
+  "recorded_at": "20260714T134634Z",
+  "events": [
+    {
+      "type": "agent_start",
+      "agent": "fundamentals"
+    },
+    {
+      "type": "agent_start",
+      "agent": "sentiment"
+    },
+    {
+      "type": "agent_start",
+      "agent": "technicals"
+    },
+    {
+      "type": "thesis",
+      "agent": "sentiment",
+      "stance": -0.28,
+      "summary": "News sentiment for META is mildly bearish: the broader mega-cap/AI selloff and reported investor concern about an AI monetization gap weigh on the narrative, although WhatsApp expansion and a possible points-based prediction-market product provide offsets.",
+      "evidence": [
+        {
+          "kind": "textual",
+          "claim": "Meta and other mega-cap technology stocks are facing a severe June selloff, with the Magnificent Seven ETF experiencing more than $1 billion in outflows.",
+          "source_id": "fh-140735713",
+          "quoted_span": "Magnificent Seven\u2019s Black June Triggers $1 Billion Exodus From MAGS ETF",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=cc8aa534c6092c50063fe144b364f6703d2bf2c8d3d7698fc1ba956d65d2107f",
+          "verified_quote": true
+        },
+        {
+          "kind": "textual",
+          "claim": "Investors are reportedly treating Microsoft and Meta as bear-market stocks amid concern about an AI monetization gap despite substantial infrastructure spending.",
+          "source_id": "fh-140735714",
+          "quoted_span": "Microsoft And Meta Are Being Treated Like 'Bear Market' Stocks",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=26a8f8c4b26fcb7543f1440cbd2a687ff073254cda65a36f635fed068aa1b3ab",
+          "verified_quote": true
+        },
+        {
+          "kind": "textual",
+          "claim": "Meta's appointment of Kunal Shah to lead WhatsApp signals an effort to expand the service into payments and commerce, particularly in emerging markets.",
+          "source_id": "fh-140734031",
+          "quoted_span": "The appointment signals a push to expand WhatsApp beyond messaging into digital payments and commerce",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=3f2b67e69304d7f641e4af813675df0627593537d46a9cb2e94d6cabca985861",
+          "verified_quote": true
+        },
+        {
+          "kind": "textual",
+          "claim": "Meta is reportedly exploring partnerships with Polymarket and Kalshi for a new points-based prediction-market app called Arena.",
+          "source_id": "fh-140740421",
+          "quoted_span": "Meta CEO Mark Zuckerberg has urged his lieutenants to explore partnerships",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=003e7a7502aeca6ca81ad3171cc64167792235ed452680dd62f2aef3a0214355",
+          "verified_quote": true
+        }
+      ]
+    },
+    {
+      "type": "grounding",
+      "agent": "sentiment",
+      "gated_in": true,
+      "grounded": 4,
+      "dropped": 0
+    },
+    {
+      "type": "thesis",
+      "agent": "fundamentals",
+      "stance": 0.83,
+      "summary": "Strongly bullish on META fundamentals: the quarter shows high profitability, robust cash generation capacity implied by earnings, and a conservative balance sheet with substantial equity relative to liabilities. Valuation cannot be assessed precisely without a share price or market capitalization, but operating and financial health are compelling.",
+      "evidence": [
+        {
+          "kind": "numeric",
+          "claim": "Quarterly revenue was $56.311 billion.",
+          "citation_key": "income_stmt.revenue",
+          "cited_value": 56311000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Quarterly operating income was $22.872 billion, implying an operating margin of approximately 40.6% from the reported revenue and operating income.",
+          "citation_key": "income_stmt.operating_income",
+          "cited_value": 22872000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Quarterly net income was $26.773 billion, implying a net margin of approximately 47.5% from the reported revenue and net income.",
+          "citation_key": "income_stmt.net_income",
+          "cited_value": 26773000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Stockholders' equity was $243.681 billion versus total liabilities of $151.569 billion, indicating equity substantially exceeded liabilities.",
+          "citation_key": "balance_sheet.stockholders_equity",
+          "cited_value": 243681000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Cash and equivalents were $23.426 billion against $58.748 billion of long-term debt.",
+          "citation_key": "balance_sheet.cash_and_equivalents",
+          "cited_value": 23426000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Current assets were $109.765 billion versus current liabilities of $46.753 billion, indicating strong reported short-term asset coverage.",
+          "citation_key": "balance_sheet.current_assets",
+          "cited_value": 109765000000.0,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "grounding",
+      "agent": "fundamentals",
+      "gated_in": true,
+      "grounded": 6,
+      "dropped": 0
+    },
+    {
+      "type": "thesis",
+      "agent": "technicals",
+      "stance": -0.84,
+      "summary": "META's technical posture is strongly bearish: price is below all key moving averages, with sharp 1-month and 6-month losses and a 30% drawdown from the 52-week high. The slight below-average latest volume does not provide meaningful confirmation of a reversal.",
+      "evidence": [
+        {
+          "kind": "numeric",
+          "claim": "META is down 13.30% over the past month, indicating strong near-term downside momentum.",
+          "citation_key": "technicals.return_1m",
+          "cited_value": -0.133016,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "META is down 17.10% over the past six months, showing sustained medium-term weakness.",
+          "citation_key": "technicals.return_6m",
+          "cited_value": -0.171006,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "The latest close is 10.15% below the 50-day moving average, confirming bearish intermediate trend positioning.",
+          "citation_key": "technicals.pct_vs_sma_50",
+          "cited_value": -0.101524,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "The latest close is 15.20% below the 200-day moving average, indicating a bearish long-term trend.",
+          "citation_key": "technicals.pct_vs_sma_200",
+          "cited_value": -0.15198,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "META is 30.12% below its 52-week high, reflecting a substantial drawdown.",
+          "citation_key": "technicals.pct_vs_high_52w",
+          "cited_value": -0.301198,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Latest volume is 1.70% below the 20-day average, so the decline lacks strong volume confirmation but also shows no clear accumulation signal.",
+          "citation_key": "technicals.volume_latest_vs_avg_20",
+          "cited_value": -0.01704,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "grounding",
+      "agent": "technicals",
+      "gated_in": true,
+      "grounded": 6,
+      "dropped": 0
+    },
+    {
+      "type": "agent_start",
+      "agent": "red_team"
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "fundamentals",
+      "kind": "evidence",
+      "critique": "The bullish fundamentals thesis overstates cash-generation evidence because the supplied quarter reports earnings and balance-sheet cash, but no operating cash-flow figure; moreover, cash is materially below long-term debt.",
+      "counter_evidence": [
+        {
+          "kind": "numeric",
+          "claim": "Cash and equivalents were $23.426 billion, while long-term debt was $58.748 billion.",
+          "citation_key": "balance_sheet.cash_and_equivalents",
+          "cited_value": 23426000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Long-term debt was $58.748 billion.",
+          "citation_key": "balance_sheet.long_term_debt",
+          "cited_value": 58748000000.0,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "fundamentals",
+      "kind": "logical",
+      "critique": "A single-quarter margin snapshot and balance-sheet coverage do not by themselves establish durable profitability or conservative financial risk, so the thesis extrapolates from point-in-time data to overall fundamental strength.",
+      "counter_evidence": []
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "sentiment",
+      "kind": "evidence",
+      "critique": "The mildly bearish sentiment thesis may understate the negative AI-investment narrative: investors are reportedly treating Meta as a bear-market stock amid an AI monetization air pocket despite $700 billion of hyperscaler infrastructure spending.",
+      "counter_evidence": [
+        {
+          "kind": "textual",
+          "claim": "Investors are reportedly favoring Micron over Microsoft and Meta as hyperscalers navigate an AI monetization air pocket despite spending $700 billion on AI infrastructure.",
+          "source_id": "fh-140735714",
+          "quoted_span": "investors are favoring Micron over Microsoft and Meta as hyperscalers navigate an AI monetization \"air pocket\" despite spending $700 billion on AI infrastructure",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=26a8f8c4b26fcb7543f1440cbd2a687ff073254cda65a36f635fed068aa1b3ab",
+          "verified_quote": false
+        }
+      ]
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "sentiment",
+      "kind": "evidence",
+      "critique": "The sentiment thesis omits evidence that the broader Magnificent Seven selloff is severe and accompanied by more than $1 billion of ETF outflows, indicating meaningful risk aversion rather than merely mild concern.",
+      "counter_evidence": [
+        {
+          "kind": "textual",
+          "claim": "The Magnificent Seven ETF is heading for its worst month since inception as all seven mega-cap stocks fall and over $1 billion exits the fund.",
+          "source_id": "fh-140735713",
+          "quoted_span": "heading for its worst month since inception as all seven mega-caps fall and over $1 billion exits the fund",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=cc8aa534c6092c50063fe144b364f6703d2bf2c8d3d7698fc1ba956d65d2107f",
+          "verified_quote": true
+        }
+      ]
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "technicals",
+      "kind": "evidence",
+      "critique": "The strongly bearish technical thesis is weakened by a positive three-month return and the latest close remaining above the 52-week low, indicating the selloff has not been uniformly one-directional.",
+      "counter_evidence": [
+        {
+          "kind": "numeric",
+          "claim": "META gained 0.5881% over the past three months.",
+          "citation_key": "technicals.return_3m",
+          "cited_value": 0.005881,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "The latest close was $550.25, above the 52-week low of $525.233154.",
+          "citation_key": "technicals.close_latest",
+          "cited_value": 550.25,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "META's 52-week low was $525.233154.",
+          "citation_key": "technicals.low_52w",
+          "cited_value": 525.233154,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "technicals",
+      "kind": "logical",
+      "critique": "The thesis simultaneously concedes that volume is 1.70% below its 20-day average and then treats that absence of confirmation as support for a strongly bearish stance; low volume is inconclusive, not affirmative downside evidence.",
+      "counter_evidence": []
+    },
+    {
+      "type": "grounding",
+      "agent": "red_team",
+      "gated_in": true,
+      "grounded": 6,
+      "dropped": 0
+    },
+    {
+      "type": "agent_start",
+      "agent": "fundamentals"
+    },
+    {
+      "type": "agent_start",
+      "agent": "sentiment"
+    },
+    {
+      "type": "agent_start",
+      "agent": "technicals"
+    },
+    {
+      "type": "rebuttal",
+      "agent": "sentiment",
+      "proposed_stance": -0.4,
+      "response": "I concede the attacks: the evidence supports a stronger negative adjustment because Meta is being treated like a bear-market stock amid an AI-monetization \u201cair pocket\u201d despite $700 billion in infrastructure spending [fh-140735714], while the Magnificent Seven selloff includes over $1 billion exiting MAGS [fh-140735713]. I retain offsets because WhatsApp\u2019s leadership change signals expansion into payments and commerce [fh-140734031] and Arena is reportedly being developed with points rather than real-money wagers [fh-140740421], so I revise the stance to moderately bearish at -0.40 rather than fully bearish."
+    },
+    {
+      "type": "rebuttal",
+      "agent": "technicals",
+      "proposed_stance": -0.74,
+      "response": "I concede that [technicals.return_3m] META is up 0.5881% over three months, and that [technicals.volume_latest_vs_avg_20] latest volume is 1.704% below the 20-day average, so volume is inconclusive rather than affirmative downside evidence. However, the broader trend remains strongly bearish: META is down 13.3016% over one month and 17.1006% over six months ([technicals.return_1m]; [technicals.return_6m]), while the close is 10.1524% below the 50-day average and 15.198% below the 200-day average ([technicals.pct_vs_sma_50]; [technicals.pct_vs_sma_200]); I therefore revise the stance to -0.74 rather than -0.84."
+    },
+    {
+      "type": "rebuttal",
+      "agent": "fundamentals",
+      "proposed_stance": 0.68,
+      "response": "I concede that no operating-cash-flow figure is supplied, so the data support earnings and balance-sheet liquidity rather than a quantified cash-generation claim; I also concede that one quarter cannot establish durability. However, the reported quarter still shows $22.872 billion of operating income on $56.311 billion of revenue and $26.773 billion of net income on that revenue ([income_stmt.operating_income]; [income_stmt.revenue]; [income_stmt.net_income]), while equity of $243.681 billion exceeded liabilities of $151.569 billion and current assets of $109.765 billion exceeded current liabilities of $46.753 billion ([balance_sheet.stockholders_equity]; [balance_sheet.total_liabilities]; [balance_sheet.current_assets]; [balance_sheet.current_liabilities]). Cash being $23.426 billion versus $58.748 billion of long-term debt ([balance_sheet.cash_and_equivalents]; [balance_sheet.long_term_debt]) weakens the conservatism claim, so I reduce bullish strength but remain materially bullish on the reported fundamentals."
+    },
+    {
+      "type": "agent_start",
+      "agent": "judge"
+    },
+    {
+      "type": "adjudication",
+      "agent": "fundamentals",
+      "adjudicated_stance": 0.68,
+      "attacks_landed": [
+        "The bullish fundamentals thesis overstates cash-generation evidence because the supplied quarter reports earnings and balance-sheet cash, but no operating cash-flow figure; moreover, cash is materially below long-term debt.",
+        "A single-quarter margin snapshot and balance-sheet coverage do not by themselves establish durable profitability or conservative financial risk, so the thesis extrapolates from point-in-time data to overall fundamental strength."
+      ],
+      "rationale": "Both attacks are grounded: operating cash flow is not provided, cash is below long-term debt, and the snapshot cannot prove durability. The reported margins, equity surplus, and current-asset coverage nevertheless support materially bullish fundamentals, so the rebutted +0.68 is appropriate."
+    },
+    {
+      "type": "adjudication",
+      "agent": "sentiment",
+      "adjudicated_stance": -0.4,
+      "attacks_landed": [
+        "The mildly bearish sentiment thesis may understate the negative AI-investment narrative: investors are reportedly treating Meta as a bear-market stock amid an AI monetization air pocket despite $700 billion of hyperscaler infrastructure spending.",
+        "The sentiment thesis omits evidence that the broader Magnificent Seven selloff is severe and accompanied by more than $1 billion of ETF outflows, indicating meaningful risk aversion rather than merely mild concern."
+      ],
+      "rationale": "Both attacks are supported by the cited reports and warrant a stronger bearish adjustment than the initial mild-negative stance. The WhatsApp expansion and Arena possibilities are offsets, but they do not erase the broader negative risk appetite and AI-monetization concerns."
+    },
+    {
+      "type": "adjudication",
+      "agent": "technicals",
+      "adjudicated_stance": -0.74,
+      "attacks_landed": [
+        "The strongly bearish technical thesis is weakened by a positive three-month return and the latest close remaining above the 52-week low, indicating the selloff has not been uniformly one-directional.",
+        "The thesis simultaneously concedes that volume is 1.70% below its 20-day average and then treats that absence of confirmation as support for a strongly bearish stance; low volume is inconclusive, not affirmative downside evidence."
+      ],
+      "rationale": "The positive three-month return and lack of meaningful volume confirmation reduce confidence in an extreme bearish reading. However, the substantial one- and six-month losses and closes well below both the 50- and 200-day averages establish a broad bearish trend, supporting the revised -0.74 stance."
+    },
+    {
+      "type": "verdict",
+      "aggregate_stance": -0.153,
+      "direction": "neutral",
+      "conviction": 0.153,
+      "high_conviction": false,
+      "dissent": "high",
+      "voting_lenses": 3
+    }
+  ],
+  "usage": {
+    "llm_calls": 8,
+    "cost_usd": 0.039721,
+    "tokens": {
+      "input": 22213,
+      "output": 2918,
+      "cache_read": 0,
+      "cache_creation": 0
+    }
+  }
+}

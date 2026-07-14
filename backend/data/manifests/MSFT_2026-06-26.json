@@ -1,0 +1,365 @@
+{
+  "ticker": "MSFT",
+  "as_of": "2026-06-26",
+  "prices": {
+    "bars": 252,
+    "first_date": "2025-06-26",
+    "last_date": "2026-06-26",
+    "source_url": "https://finance.yahoo.com/quote/MSFT/history"
+  },
+  "fundamentals": {
+    "period_end": "2026-03-31",
+    "available_at": "2026-04-29",
+    "source_url": "https://finance.yahoo.com/quote/MSFT/financials",
+    "keys": {
+      "income_stmt.revenue": 82886000000.0,
+      "income_stmt.cost_of_revenue": 26828000000.0,
+      "income_stmt.gross_profit": 56058000000.0,
+      "income_stmt.rd_expense": 8915000000.0,
+      "income_stmt.operating_expenses": 17660000000.0,
+      "income_stmt.operating_income": 38398000000.0,
+      "income_stmt.interest_expense": 778000000.0,
+      "income_stmt.income_tax": 7562000000.0,
+      "income_stmt.net_income": 31778000000.0,
+      "income_stmt.eps_basic": 4.28,
+      "income_stmt.eps_diluted": 4.27,
+      "balance_sheet.total_assets": 694228000000.0,
+      "balance_sheet.current_assets": 175329000000.0,
+      "balance_sheet.cash_and_equivalents": 32105000000.0,
+      "balance_sheet.total_liabilities": 279861000000.0,
+      "balance_sheet.current_liabilities": 136661000000.0,
+      "balance_sheet.long_term_debt": 31423000000.0,
+      "balance_sheet.stockholders_equity": 414367000000.0,
+      "balance_sheet.retained_earnings": 302526000000.0,
+      "balance_sheet.inventory": 1219000000.0,
+      "balance_sheet.accounts_receivable": 60041000000.0,
+      "balance_sheet.accounts_payable": 37513000000.0,
+      "balance_sheet.goodwill": 119661000000.0
+    }
+  },
+  "technicals": {
+    "keys": {
+      "technicals.close_latest": 372.970001,
+      "technicals.return_5d": -0.016948,
+      "technicals.return_1m": -0.096203,
+      "technicals.return_3m": 0.021335,
+      "technicals.return_6m": -0.2305,
+      "technicals.sma_20": 400.107996,
+      "technicals.pct_vs_sma_20": -0.067827,
+      "technicals.sma_50": 410.52197,
+      "technicals.pct_vs_sma_50": -0.091474,
+      "technicals.sma_200": 446.272274,
+      "technicals.pct_vs_sma_200": -0.164255,
+      "technicals.high_52w": 538.658508,
+      "technicals.low_52w": 352.829987,
+      "technicals.pct_vs_high_52w": -0.307595,
+      "technicals.volume_avg_20": 50064655,
+      "technicals.volume_latest_vs_avg_20": 2.719223
+    }
+  },
+  "news": [
+    {
+      "source_id": "fh-140742959",
+      "title": "This Week's Market Wrap: AI Memory Shock, Crude Cracks, And Data Boxes In The Fed",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=1c05d80b484fc80f4edac27600c8ac2915fb138233bca6ec9ce42d41a131bb3d"
+    },
+    {
+      "source_id": "fh-140741468",
+      "title": "Why Microsoft Stock Rose Today",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=5c0cba36e550092025fba199124e550ec045d06966930426745f9863c57da35a"
+    },
+    {
+      "source_id": "fh-140741474",
+      "title": "Adobe (ADBE) Buys Topaz Labs As It Expands Agentic AI Partnerships",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=4df0cd10a4f4b4675470689f000afb2f6bf8d4fcf6b4b5c7f77066d75074a71f"
+    },
+    {
+      "source_id": "fh-140740400",
+      "title": "Update: Equity Markets Fall as Trump Says Iran Violated Ceasefire",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=6dbc80f38bf983dd888805faaad1d836b263836d9615c8cb86acb2520fe96d67"
+    },
+    {
+      "source_id": "fh-140735244",
+      "title": "Stock Market Today: Nasdaq Slides Amid Global Technology Sell-Off; Micron, Nvidia, Sandisk Fall (Live Coverage)",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=97712357d3c40e2ee61379630cbf265c2ff15b49deeb47a26a1e6e5c60ff0b88"
+    },
+    {
+      "source_id": "fh-140740403",
+      "title": "Gadget prices have fallen for decades. Then AI happened.",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=d8e735d601544a0c6ba16745ee8a2cd4cd1f58567ec9af64646bf74cbb4f2efa"
+    },
+    {
+      "source_id": "fh-140739037",
+      "title": "Sector Update: Tech Stocks Fall Late Afternoon",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=d35eeb15635f4f2e5132ca0e936578cf701e4993647756b7603b42e39e6b0601"
+    },
+    {
+      "source_id": "fh-140740406",
+      "title": "EXCLUSIVE: Ron Johnson Bares His Feelings on Apple Stores, Steve Jobs and JCPenney",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=0c1fdf215b38fd3a8023e5d1c598b5dd50f33f2ceca66c4a501226a0e871858f"
+    },
+    {
+      "source_id": "fh-140739006",
+      "title": "Microsoft Has Fallen 25% This Year: What Could Push MSFT Back to $500?",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=057ec1e658dd365102853f3d5fc37f8264aa2596135791d16bd820e44dbb0ea8"
+    },
+    {
+      "source_id": "fh-140738839",
+      "title": "Uncover the latest developments among dow jones stocks in today's session.",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=99e86adc30d84da9a1445912cc9e698fc1bd9bd3126046ffaeb8b7d0766be32e"
+    },
+    {
+      "source_id": "fh-140739010",
+      "title": "VOO Became the First ETF to Hit $1 Trillion, but Nearly 40% of It Is Now Tech",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=c45293ac4ea4b26952e64c6499ebb0b0dc30b765aa583a6ca2ca85276f43112e"
+    },
+    {
+      "source_id": "fh-140740412",
+      "title": "QBTS or RGTI: Which Quantum Stock is Poised to Lead in H2 2026?",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=ecfc0d3a6efb9d3cc688556cfda5c64d0c3c7753f5ffea29a0407a0ccda2d5e2"
+    },
+    {
+      "source_id": "fh-140739031",
+      "title": "A VC Says the \u2018All Your Eggs in the AI Basket\u2019 Trade Is Finally Cracking \u2014 Here\u2019s Where the Money Goes Next",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=d4b15afc3a867df94f3f75ffd0ff80e9cadcb619e7f424856619e53d135acc3d"
+    },
+    {
+      "source_id": "fh-140739041",
+      "title": "Wall Street Little Changed as Trump Accuses Iran of Violating Ceasefire Agreement",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=940121d187a24bc3ac1f1b81fc3b377081ab53e6a4bb8c225b58cc612bac2f9e"
+    },
+    {
+      "source_id": "fh-140739042",
+      "title": "Stock Market Today: Small Caps Edge Lower As Dow Goes Flat; Heavy Construction Play Surges (Live Coverage)",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=2ea9fb3e1d718123a16826741176449f8b89807b215af783107dce2762909f6b"
+    },
+    {
+      "source_id": "fh-140739032",
+      "title": "The Magnificent 7 Are Facing Magnificent Worries",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=c38fa03453f3304a0383b45af4c97cf646e2ef058551c23b9241e5277c00df46"
+    },
+    {
+      "source_id": "fh-140739033",
+      "title": "What They Aren\u2019t Telling You About GPIQ\u2019s \u201cSafe\u201d Tech-Income Strategy",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=6ed20e1e1256449c3ee92b43366cd0823ce6e03693d05e4f0439dd3c8db3a11f"
+    },
+    {
+      "source_id": "fh-140739045",
+      "title": "Microsoft (MSFT) Stock After Recent Slide Is The Current Valuation An Opportunity?",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=15d412988b6857117b3cd9a71385d95fae231c76f4887c3fca87efccf8606029"
+    },
+    {
+      "source_id": "fh-140746663",
+      "title": "China's Zhipu is closing in on top U.S. AI models with Anthropic and OpenAI held back",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=2ed60cf88e99964fba613c6fb8fd6d9d9dbe766c5901046561b57ebeef1cffdf"
+    },
+    {
+      "source_id": "fh-140738317",
+      "title": "Which S&P500 stocks are the most active on Friday?",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=2a9847399ae6919703254f8d84e290420cfbd7adbdad703a8aebf704e693ce8d"
+    },
+    {
+      "source_id": "fh-140741512",
+      "title": "Microsoft Just Made Commvault a Native Azure Service. Here Is How to Play CVLT Stock.",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=2963d5193d81b8ee0016c256d6fa27fddf3ff9084915c67baafb1716fa7be254"
+    },
+    {
+      "source_id": "fh-140739035",
+      "title": "Trump threatens 100% tariff on goods from nations with digital tax",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=2bcda20d8e9833871d205c02e31aeb41b4baf6b3bb8f41c4b328d2e455fec95b"
+    },
+    {
+      "source_id": "fh-140747070",
+      "title": "'Anthropic Moves Toward Deal With US to Lift Curbs on AI Models'- Bloomberg Law",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=582a973a439ce3a8d7d8a076108a074639cbd0e5a3c8214680b9a90d5c549a87"
+    },
+    {
+      "source_id": "fh-140737932",
+      "title": "Microsoft and Amazon Lead Tech Spending Survey",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=7171d9ece3c8257feabd6b8a7818b4d02400b30121b5c7e2407f38aebd628206"
+    },
+    {
+      "source_id": "fh-140737917",
+      "title": "Asian Tech Stocks Slide as AI Memory Rally Faces Demand Test",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=ab3867dcfc1166850f25c7abc0930659f9c7a91c7a4ce7d721eabb80372562cf"
+    },
+    {
+      "source_id": "fh-140737934",
+      "title": "The Strain Inside Palantir Stock",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=273494e5b5272f76027bfe3342d160db51b4d7e2287900c528764b029fd36a1d"
+    },
+    {
+      "source_id": "fh-140737886",
+      "title": "OpenAI vs. Anthropic: The Race to IPO Before the AI Hype Peaks Is On",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=f6db9452516868997ac9d5fc4027cd17aa19375e6a3d9b181719d018b9014324"
+    },
+    {
+      "source_id": "fh-140746664",
+      "title": "AI trade is not dead, says Deepwater's Gene Munster",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=b17930bdb42e6cf2aa6c05ce3b440ff48bab43ca9ad535603876ead40c76398a"
+    },
+    {
+      "source_id": "fh-140737936",
+      "title": "Sector Update: Tech Stocks Fall Friday Afternoon",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=e5957845fd3c32f75da9e8f58d63c876a5529e8826c36560297fd892421295fa"
+    },
+    {
+      "source_id": "fh-140739047",
+      "title": "Chamath Says Alphabet, Meta and Microsoft Aren\u2019t Bleeding Cash \u2014 They\u2019re Building Moats",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=831a4ab6884f22ec97dfd4f4016b0ec0e18a4234e67600371bcdfd70140b8c78"
+    },
+    {
+      "source_id": "fh-140737890",
+      "title": "Apple Stock Just Dropped 6.6%, and One Tiny, Boring Chip Is to Blame",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=7538bcf8b6438ae2f258b80b16f449200092632591de1ab5e681609904378d7a"
+    },
+    {
+      "source_id": "fh-140737894",
+      "title": "Palantir Becomes Most Oversold Mega-Cap Tech Stock",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=6eaf2e204fa69ee6de15c87de54300eb8e4b6f52886292b4fe02aa6a8a49b07c"
+    },
+    {
+      "source_id": "fh-140737896",
+      "title": "Wedbush Issues Bold Call on Beaten-Down Nvidia and Microsoft Stocks",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=871519cde70b5ac0a561aad0935e98ce20f294131830d494fadd00848bf87d8e"
+    },
+    {
+      "source_id": "fh-140737897",
+      "title": "Stock Market Today: Dow Index Turns Higher After Soft Start; Microsoft Leads Software Rally (Live Coverage)",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=90bd28733e5ef80c8a935e8d94e10549b8f7b6097d0b2eee76fa93e99311b186"
+    },
+    {
+      "source_id": "fh-140737941",
+      "title": "Dow Green This Week, Nasdaq Down 4%, and Microsoft Doing All the Work Today",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=28df0666abaa5288c1b4e377ed48a16d2d425ada4edfab196a7c899093982d83"
+    },
+    {
+      "source_id": "fh-140739884",
+      "title": "The Year 2000 Called, And It Wants Its Semiconductor Chart Back",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=00b97ef46dd1df78bee8689b164f13c8ff74d700b00a53962f58d1c6533fd5c1"
+    },
+    {
+      "source_id": "fh-140737942",
+      "title": "Palantir Joins Software Stock Rally Amid Semiconductor, Tech Sell-Off",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=e23df772fabd6341e638c6cab5d0e5e5f7ac3fd889fc3ca80eca2a4940ecd42d"
+    },
+    {
+      "source_id": "fh-140737077",
+      "title": "Explore the top gainers and losers within the dow jones index in today's session.",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=400b8fbeba786ecf7c610bc90e80c141c626af200f5bf3f8282b273c57d6e43f"
+    },
+    {
+      "source_id": "fh-140737943",
+      "title": "Update: US Equity Indexes Mixed as Steepest Decliner Technology Eats into Consumer Discretionary Gains",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=5883903179437b9203e76a5c79d87b4e459654f3518576921d9e5fe6299b006a"
+    },
+    {
+      "source_id": "fh-140746668",
+      "title": "Apple may turn to Chinese memory suppliers",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=e6d8134dab492b099353aca2fc6de95e93ade153d4cea7e6181325ad5a27dbb1"
+    },
+    {
+      "source_id": "fh-140740157",
+      "title": "Nancy Pelosi, Bill Ackman Bet On The Same 4 Stocks \u2013 Some Might Surprise You",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=e465373eed5680a5656cbdeba209f284bbe996e9e52d1adb75d85cda5b411538"
+    },
+    {
+      "source_id": "fh-140746711",
+      "title": "Oracle stock has worst week since 2001 dot-com bust as AI financing concerns escalate",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=1771398bf34f6af5a127e3dbee8e975fa9b05a25c3a6fca2696b69555a54280d"
+    },
+    {
+      "source_id": "fh-140737930",
+      "title": "FTSE 100 falls as OpenAI delay report knocks tech",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=b638ff28afcdcd7b32aa4784c703fa7ef833574cceac5561f8a53f4427bd1aff"
+    },
+    {
+      "source_id": "fh-140746687",
+      "title": "The Week That Was: June 26, 2026",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=977a0957e038ae91418ad95154e75af52597fc52d79b92cc4641a5992e588254"
+    },
+    {
+      "source_id": "fh-140739311",
+      "title": "Microsoft Has Worst Month Since 2000, Micron Delivers Memorable Beat: This Week On Wall Street",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=b37e11989dea4527ac815e168072d3638f97f1d61e16ba67884c86ec09a1c483"
+    },
+    {
+      "source_id": "fh-140737945",
+      "title": "Update: Consumer Discretionary Helps Push US Equity Indexes Higher in Midday Trading",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=62edd462d126437fc297718807f58310653f1454c1dea0c354fd707300567e0f"
+    },
+    {
+      "source_id": "fh-140736326",
+      "title": "Top Midday Stories: OpenAI Weighs Pushing Back IPO to 2027; ON Semiconductor Acquires Synaptics for $7 Billion",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=69085ae6aba3869b57eeb4c317397bda0e1e21067d3be6d4e80e49a955443c36"
+    },
+    {
+      "source_id": "fh-140736293",
+      "title": "Palantir Tops Oversold Mega Cap Tech List",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=5bf50b4c9ac96c5f57f5f79e6e0f33106ea677c772daa22c97b7f532051b9a80"
+    },
+    {
+      "source_id": "fh-140736328",
+      "title": "Government Pressure Hits OpenAI Model Launch",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=1abb3d84904c5fa9896a507a57b2d5e95d8a24f7b0aa92a323eb8e663f8b44d7"
+    },
+    {
+      "source_id": "fh-140739247",
+      "title": "'Apple\u2019s Vision Pro and Smart Glasses Chief Is Leaving for OpenAI' - Bloomberg News",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=42fb1df27f8b5e1ef59295e1af0943c17bb963bfdfdea09ea75dfd2bda462480"
+    }
+  ],
+  "leak_check": {
+    "violations": []
+  }
+}

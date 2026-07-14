@@ -1,0 +1,377 @@
+{
+  "ticker": "AAPL",
+  "as_of": "2026-06-05",
+  "model": "openai-gpt-5.6-luna",
+  "recorded_at": "20260714T134307Z",
+  "events": [
+    {
+      "type": "agent_start",
+      "agent": "fundamentals"
+    },
+    {
+      "type": "agent_start",
+      "agent": "sentiment"
+    },
+    {
+      "type": "agent_start",
+      "agent": "technicals"
+    },
+    {
+      "type": "thesis",
+      "agent": "sentiment",
+      "stance": 0.55,
+      "summary": "News sentiment is moderately bullish: Apple\u2019s upcoming WWDC is widely framed as a pivotal AI catalyst, particularly through a revamped Siri and ecosystem integration, though expectations are elevated and the event could become a sell-the-news catalyst. Broader risk sentiment is a meaningful offset, with tech stocks sharply lower and Apple down in the latest session.",
+      "evidence": [
+        {
+          "kind": "textual",
+          "claim": "Wedbush's Dan Ives views WWDC as a potential major catalyst for Apple's entry into consumer AI and a possible monetization shift.",
+          "source_id": "fh-140545262",
+          "quoted_span": "WWDC could mark its real entry into consumer AI",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=927c21b003aa25b0cd2674e2f6da5d482c75048662f5b813082eb11254848546",
+          "verified_quote": true
+        },
+        {
+          "kind": "textual",
+          "claim": "Apple is expected to present an ambitious AI strategy centered on a significantly upgraded Siri and deeper software integration.",
+          "source_id": "fh-140540362",
+          "quoted_span": "an ambitious AI strategy anchored by a significantly upgraded Siri",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=d9a1504446cbb216dbd8f1e4672060978cd7f18da52fd76854b4a5875d3e36cc",
+          "verified_quote": true
+        },
+        {
+          "kind": "textual",
+          "claim": "The AI WWDC announcement carries downside event risk because even a strong showing could become a sell-the-news event.",
+          "source_id": "fh-140537397",
+          "quoted_span": "even a strong AI showing could become a sell-the-news event",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=17a7e17a7010e562749ec71d9b219d8bb88e287b223dabfbd176a20d77452307",
+          "verified_quote": true
+        },
+        {
+          "kind": "textual",
+          "claim": "The broader market backdrop was strongly negative, with the Nasdaq 100 closing down 4.77%.",
+          "source_id": "fh-140546202",
+          "quoted_span": "Nasdaq 100 Index ($IUXX ) (QQQ ) closed down -4.77%",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=12c91d9ab421dca877e20a94bac8123c8734377bde6697e6945497ec99a15247",
+          "verified_quote": true
+        }
+      ]
+    },
+    {
+      "type": "grounding",
+      "agent": "sentiment",
+      "gated_in": true,
+      "grounded": 4,
+      "dropped": 0
+    },
+    {
+      "type": "thesis",
+      "agent": "technicals",
+      "stance": 0.62,
+      "summary": "Bullish technical trend: AAPL is above its 20-, 50-, and 200-day moving averages and has delivered strong 1- and 3-month gains, though the recent 5-day pullback and proximity to the 52-week high temper conviction.",
+      "evidence": [
+        {
+          "kind": "numeric",
+          "claim": "AAPL is 1.0189% above its 20-day simple moving average, indicating short-term price support remains intact.",
+          "citation_key": "technicals.pct_vs_sma_20",
+          "cited_value": 0.010189,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "AAPL is 9.3405% above its 50-day simple moving average, supporting a positive intermediate-term trend.",
+          "citation_key": "technicals.pct_vs_sma_50",
+          "cited_value": 0.093405,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "AAPL is 16.0808% above its 200-day simple moving average, indicating a strong long-term uptrend.",
+          "citation_key": "technicals.pct_vs_sma_200",
+          "cited_value": 0.160808,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "AAPL gained 19.4839% over three months, showing strong medium-term momentum.",
+          "citation_key": "technicals.return_3m",
+          "cited_value": 0.194839,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "AAPL's latest five-day return was -1.5125%, signaling a modest recent pullback.",
+          "citation_key": "technicals.return_5d",
+          "cited_value": -0.015125,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "AAPL is 2.4937% below its 52-week high, suggesting it is trading near resistance.",
+          "citation_key": "technicals.pct_vs_high_52w",
+          "cited_value": -0.024937,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Latest volume was 36.5998% of the 20-day average, indicating notably light participation in the latest move.",
+          "citation_key": "technicals.volume_latest_vs_avg_20",
+          "cited_value": 0.365998,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "grounding",
+      "agent": "technicals",
+      "gated_in": true,
+      "grounded": 7,
+      "dropped": 0
+    },
+    {
+      "type": "thesis",
+      "agent": "fundamentals",
+      "stance": 0.55,
+      "summary": "Fundamentals are moderately bullish: the quarter shows strong profitability and substantial cash generation capacity, though liabilities and debt are material relative to equity and liquidity is not exceptionally wide. Overall earnings strength outweighs the balance-sheet leverage concern.",
+      "evidence": [
+        {
+          "kind": "numeric",
+          "claim": "Quarterly gross margin was approximately 49.3%, based on gross profit of $54.781 billion on revenue of $111.184 billion.",
+          "citation_key": "income_stmt.gross_profit",
+          "cited_value": 54781000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Quarterly operating income was $35.885 billion, implying an operating margin of approximately 32.3% on reported revenue.",
+          "citation_key": "income_stmt.operating_income",
+          "cited_value": 35885000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Quarterly net income was $29.578 billion.",
+          "citation_key": "income_stmt.net_income",
+          "cited_value": 29578000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Cash and equivalents totaled $45.572 billion.",
+          "citation_key": "balance_sheet.cash_and_equivalents",
+          "cited_value": 45572000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Long-term debt was $74.404 billion versus stockholders' equity of $106.491 billion, indicating meaningful balance-sheet leverage.",
+          "citation_key": "balance_sheet.long_term_debt",
+          "cited_value": 74404000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Current assets of $144.114 billion exceeded current liabilities of $134.641 billion, but the resulting current-asset cushion was relatively limited.",
+          "citation_key": "balance_sheet.current_assets",
+          "cited_value": 144114000000.0,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "grounding",
+      "agent": "fundamentals",
+      "gated_in": true,
+      "grounded": 6,
+      "dropped": 0
+    },
+    {
+      "type": "agent_start",
+      "agent": "red_team"
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "fundamentals",
+      "kind": "evidence",
+      "critique": "The thesis says earnings strength outweighs leverage, but the balance sheet shows liabilities are substantially larger than equity and current assets provide only a narrow liquidity buffer.",
+      "counter_evidence": [
+        {
+          "kind": "numeric",
+          "claim": "Total liabilities were $264.591 billion versus stockholders' equity of $106.491 billion.",
+          "citation_key": "balance_sheet.total_liabilities",
+          "cited_value": 264591000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Current assets exceeded current liabilities by only $9.473 billion ($144.114 billion versus $134.641 billion).",
+          "citation_key": "balance_sheet.current_assets",
+          "cited_value": 144114000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Long-term debt was $74.404 billion.",
+          "citation_key": "balance_sheet.long_term_debt",
+          "cited_value": 74404000000.0,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "sentiment",
+      "kind": "evidence",
+      "critique": "The bullish sentiment case is vulnerable because the AI catalyst is already highly anticipated, while the market backdrop and event-specific downside risk create a meaningful asymmetric disappointment scenario.",
+      "counter_evidence": [
+        {
+          "kind": "textual",
+          "claim": "The WWDC AI announcement could become a sell-the-news event even if the presentation is strong.",
+          "source_id": "fh-140537397",
+          "quoted_span": "even a strong AI showing could become a sell-the-news event",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=17a7e17a7010e562749ec71d9b219d8bb88e287b223dabfbd176a20d77452307",
+          "verified_quote": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "The Nasdaq 100 closed down 4.77% in the latest session.",
+          "citation_key": "technicals.return_5d",
+          "cited_value": -0.015125,
+          "grounded": true
+        },
+        {
+          "kind": "textual",
+          "claim": "Apple is expected to present an ambitious AI strategy centered on a significantly upgraded Siri and deeper software integration, indicating elevated expectations.",
+          "source_id": "fh-140540362",
+          "quoted_span": "Wall Street expecting the company to lay out an ambitious AI strategy anchored by a significantly upgraded Siri",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=d9a1504446cbb216dbd8f1e4672060978cd7f18da52fd76854b4a5875d3e36cc",
+          "verified_quote": true
+        }
+      ]
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "technicals",
+      "kind": "evidence",
+      "critique": "The bullish trend is weakened by a recent pullback near 52-week resistance on exceptionally light volume, which suggests limited confirmation of the latest price action and leaves the stock vulnerable to rejection.",
+      "counter_evidence": [
+        {
+          "kind": "numeric",
+          "claim": "AAPL declined 1.5125% over the latest five trading days.",
+          "citation_key": "technicals.return_5d",
+          "cited_value": -0.015125,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "AAPL was only 2.4937% below its 52-week high.",
+          "citation_key": "technicals.pct_vs_high_52w",
+          "cited_value": -0.024937,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Latest volume was 36.5998% of the 20-day average.",
+          "citation_key": "technicals.volume_latest_vs_avg_20",
+          "cited_value": 0.365998,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "grounding",
+      "agent": "red_team",
+      "gated_in": true,
+      "grounded": 3,
+      "dropped": 0
+    },
+    {
+      "type": "agent_start",
+      "agent": "fundamentals"
+    },
+    {
+      "type": "agent_start",
+      "agent": "sentiment"
+    },
+    {
+      "type": "agent_start",
+      "agent": "technicals"
+    },
+    {
+      "type": "rebuttal",
+      "agent": "sentiment",
+      "proposed_stance": 0.32,
+      "response": "I concede that anticipation and event-specific downside are meaningful: Apple\u2019s AI showing \u201ccould become a sell-the-news event\u201d [fh-140537397], while the Nasdaq 100 fell 4.77% [fh-140546202]. However, the evidence still supports a positive, though weaker, tilt because WWDC is framed as a potential major consumer-AI and monetization catalyst [fh-140545262] and Wall Street expects an ambitious strategy centered on upgraded Siri and deeper software integration [fh-140540362]."
+    },
+    {
+      "type": "rebuttal",
+      "agent": "technicals",
+      "proposed_stance": 0.48,
+      "response": "I concede that the -1.5125% five-day return and 36.5998% latest-volume/20-day-average ratio weaken confirmation near the 52-week high, where AAPL is 2.4937% below resistance [technicals.return_5d], [technicals.volume_latest_vs_avg_20], [technicals.pct_vs_high_52w]. However, the broader trend remains bullish: price is 1.0189% above the 20-day SMA, 9.3405% above the 50-day SMA, and 16.0808% above the 200-day SMA, while the three-month return is 19.4839% [technicals.pct_vs_sma_20], [technicals.pct_vs_sma_50], [technicals.pct_vs_sma_200], [technicals.return_3m]. I therefore revise the stance from +0.62 to a still-bullish but more cautious +0.48."
+    },
+    {
+      "type": "rebuttal",
+      "agent": "fundamentals",
+      "proposed_stance": 0.4,
+      "response": "The attack genuinely lands on risk: total liabilities of $264.591 billion materially exceed stockholders\u2019 equity of $106.491 billion, and current assets of $144.114 billion exceed current liabilities of $134.641 billion by only $9.473 billion ([balance_sheet.total_liabilities]; [balance_sheet.stockholders_equity]; [balance_sheet.current_assets]; [balance_sheet.current_liabilities]). However, it does not overturn the earnings case: quarterly gross profit was $54.781 billion on $111.184 billion revenue, operating income was $35.885 billion, and net income was $29.578 billion ([income_stmt.gross_profit]; [income_stmt.revenue]; [income_stmt.operating_income]; [income_stmt.net_income]). I therefore moderate the bullish stance from +0.55 to +0.40 rather than reverse direction."
+    },
+    {
+      "type": "agent_start",
+      "agent": "judge"
+    },
+    {
+      "type": "adjudication",
+      "agent": "fundamentals",
+      "adjudicated_stance": 0.4,
+      "attacks_landed": [
+        "The thesis says earnings strength outweighs leverage, but the balance sheet shows liabilities are substantially larger than equity and current assets provide only a narrow liquidity buffer."
+      ],
+      "rationale": "The attack is grounded in the cited balance-sheet figures and validly reduces the margin of safety, but it does not negate the exceptionally strong profitability and cash position. The proposed moderation to a still-moderately bullish stance is appropriate."
+    },
+    {
+      "type": "adjudication",
+      "agent": "sentiment",
+      "adjudicated_stance": 0.32,
+      "attacks_landed": [
+        "The bullish sentiment case is vulnerable because the AI catalyst is already highly anticipated, while the market backdrop and event-specific downside risk create a meaningful asymmetric disappointment scenario."
+      ],
+      "rationale": "The attack is supported by the explicit sell-the-news risk and the sharp Nasdaq 100 decline, which materially weaken the catalyst case. The cited WWDC and Siri/AI expectations still provide a positive directional basis, so a reduced but positive stance is warranted."
+    },
+    {
+      "type": "adjudication",
+      "agent": "technicals",
+      "adjudicated_stance": 0.48,
+      "attacks_landed": [
+        "The bullish trend is weakened by a recent pullback near 52-week resistance on exceptionally light volume, which suggests limited confirmation of the latest price action and leaves the stock vulnerable to rejection."
+      ],
+      "rationale": "The attack is grounded in the recent negative return, proximity to the 52-week high, and unusually low volume, all of which reduce breakout confirmation. However, price remains above all cited moving averages with strong three-month momentum, supporting a cautious bullish stance."
+    },
+    {
+      "type": "verdict",
+      "aggregate_stance": 0.4,
+      "direction": "bull",
+      "conviction": 0.4,
+      "high_conviction": false,
+      "dissent": "low",
+      "voting_lenses": 3
+    }
+  ],
+  "usage": {
+    "llm_calls": 8,
+    "cost_usd": 0.03531,
+    "tokens": {
+      "input": 19098,
+      "output": 2702,
+      "cache_read": 0,
+      "cache_creation": 0
+    }
+  }
+}

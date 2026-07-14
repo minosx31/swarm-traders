@@ -1,0 +1,361 @@
+{
+  "ticker": "META",
+  "as_of": "2026-06-26",
+  "prices": {
+    "bars": 252,
+    "first_date": "2025-06-26",
+    "last_date": "2026-06-26",
+    "source_url": "https://finance.yahoo.com/quote/META/history"
+  },
+  "fundamentals": {
+    "period_end": "2026-03-31",
+    "available_at": "2026-04-30",
+    "source_url": "https://finance.yahoo.com/quote/META/financials",
+    "keys": {
+      "income_stmt.revenue": 56311000000.0,
+      "income_stmt.cost_of_revenue": 10218000000.0,
+      "income_stmt.rd_expense": 17699000000.0,
+      "income_stmt.operating_expenses": 33439000000.0,
+      "income_stmt.operating_income": 22872000000.0,
+      "income_stmt.income_tax": -5021000000.0,
+      "income_stmt.net_income": 26773000000.0,
+      "income_stmt.eps_basic": 10.57,
+      "income_stmt.eps_diluted": 10.44,
+      "balance_sheet.total_assets": 395250000000.0,
+      "balance_sheet.current_assets": 109765000000.0,
+      "balance_sheet.cash_and_equivalents": 23426000000.0,
+      "balance_sheet.total_liabilities": 151569000000.0,
+      "balance_sheet.current_liabilities": 46753000000.0,
+      "balance_sheet.long_term_debt": 58748000000.0,
+      "balance_sheet.stockholders_equity": 243681000000.0,
+      "balance_sheet.retained_earnings": 144647000000.0,
+      "balance_sheet.accounts_receivable": 17470000000.0,
+      "balance_sheet.goodwill": 24748000000.0
+    }
+  },
+  "technicals": {
+    "keys": {
+      "technicals.close_latest": 550.25,
+      "technicals.return_5d": -0.046724,
+      "technicals.return_1m": -0.133016,
+      "technicals.return_3m": 0.005881,
+      "technicals.return_6m": -0.171006,
+      "technicals.sma_20": 582.989716,
+      "technicals.pct_vs_sma_20": -0.056158,
+      "technicals.sma_50": 612.42561,
+      "technicals.pct_vs_sma_50": -0.101524,
+      "technicals.sma_200": 648.864453,
+      "technicals.pct_vs_sma_200": -0.15198,
+      "technicals.high_52w": 787.419189,
+      "technicals.low_52w": 525.233154,
+      "technicals.pct_vs_high_52w": -0.301198,
+      "technicals.volume_avg_20": 19194785,
+      "technicals.volume_latest_vs_avg_20": -0.01704
+    }
+  },
+  "news": [
+    {
+      "source_id": "fh-140748317",
+      "title": "Apple Vision Pro Hardware Chief Reportedly Jumps To OpenAI As Sam Altman's AI Device Ambitions Gather Momentum",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=444e311f3d16ec8ec0e379c4ca262468333a94a673112e9fc64169f660765d31"
+    },
+    {
+      "source_id": "fh-140741458",
+      "title": "Weekly Wrap: Bitcoin Nears Two-Year Low",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=4290197178e1b88f1a38f68a814aa5ef1ad5b4b377a14d0059136a464a5c2f78"
+    },
+    {
+      "source_id": "fh-140741488",
+      "title": "Market Chatter: Meta Could Explore Partnerships With Polymarket, Kalshi for New Prediction Market App",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=110e047e2075ccef32594cc7936d37b6be60be2ebef45519f415b938c3767dad"
+    },
+    {
+      "source_id": "fh-140740421",
+      "title": "Zuckerberg asks Meta to explore working with Polymarket and Kalshi, NYT reports",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=003e7a7502aeca6ca81ad3171cc64167792235ed452680dd62f2aef3a0214355"
+    },
+    {
+      "source_id": "fh-140740407",
+      "title": "Apple\u2019s Vision Pro and Smart Glasses Chief to Join OpenAI",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=b518a901364f46e4437f7933ee3932ca8bac28f7d0b01a27cb46e98b0d1ee298"
+    },
+    {
+      "source_id": "fh-140739032",
+      "title": "The Magnificent 7 Are Facing Magnificent Worries",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=c38fa03453f3304a0383b45af4c97cf646e2ef058551c23b9241e5277c00df46"
+    },
+    {
+      "source_id": "fh-140746663",
+      "title": "China's Zhipu is closing in on top U.S. AI models with Anthropic and OpenAI held back",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=2ed60cf88e99964fba613c6fb8fd6d9d9dbe766c5901046561b57ebeef1cffdf"
+    },
+    {
+      "source_id": "fh-140737887",
+      "title": "Qualcomm Just Promised $15 Billion in AI Chip Sales, but There\u2019s a Catch: The Chips Don\u2019t Exist Yet",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=b9c210bac5e75c746dd0eebc88e95ee225edfb8089fa5647b7c9dfdb8259c210"
+    },
+    {
+      "source_id": "fh-140746664",
+      "title": "AI trade is not dead, says Deepwater's Gene Munster",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=b17930bdb42e6cf2aa6c05ce3b440ff48bab43ca9ad535603876ead40c76398a"
+    },
+    {
+      "source_id": "fh-140739047",
+      "title": "Chamath Says Alphabet, Meta and Microsoft Aren\u2019t Bleeding Cash \u2014 They\u2019re Building Moats",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=831a4ab6884f22ec97dfd4f4016b0ec0e18a4234e67600371bcdfd70140b8c78"
+    },
+    {
+      "source_id": "fh-140737890",
+      "title": "Apple Stock Just Dropped 6.6%, and One Tiny, Boring Chip Is to Blame",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=7538bcf8b6438ae2f258b80b16f449200092632591de1ab5e681609904378d7a"
+    },
+    {
+      "source_id": "fh-140746665",
+      "title": "How Z.AI is closing in on America's AI frontier",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=b69a4f67e16879d5935b265844dd21c8e8bb5191c635fdaa4a8fb35f41999a3e"
+    },
+    {
+      "source_id": "fh-140737896",
+      "title": "Wedbush Issues Bold Call on Beaten-Down Nvidia and Microsoft Stocks",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=871519cde70b5ac0a561aad0935e98ce20f294131830d494fadd00848bf87d8e"
+    },
+    {
+      "source_id": "fh-140739060",
+      "title": "Trump Vows 100% Tariff on Countries Over Digital Services Taxes",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=7167c670a78f8bc442101d56d3aac6f158f84e3f0dae7a3a51998b81e008cbfe"
+    },
+    {
+      "source_id": "fh-140748318",
+      "title": "'Zuckerberg Urges Meta to Explore Working With Polymarket and Kalshi' - NY Times",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=0cf340a240dfd9f286a6e449e0b5081da40373f8664f5c263215532c0c59cec9"
+    },
+    {
+      "source_id": "fh-140737981",
+      "title": "Does the Clarity Act have a human trafficking blind spot?",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=91c801581b13d2788d91ff2316aa9919a54bce13668e10afb7f5a76edef20081"
+    },
+    {
+      "source_id": "fh-140747198",
+      "title": "From Tech Giants to MANGOS: A New ETF Trend Emerges",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=a73deebc936a0ae4566f3e74cadafc34f148676f1563da0c651f551560e8ce28"
+    },
+    {
+      "source_id": "fh-140736298",
+      "title": "Meta Stock Price Prediction: The Case for Nearly 50% Upside",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=e7fddbfc9a73f587f455ab6f2c97484a83a3cb05860af6caf421da2f65461df0"
+    },
+    {
+      "source_id": "fh-140736306",
+      "title": "Wedbush brushes off tech sell-off as buying chance in multi-year AI bull run",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=9e7a317e8793469247c6b934a591bd0e039d1e7994bc661d4d349e74d7e9b02b"
+    },
+    {
+      "source_id": "fh-140736331",
+      "title": "The AI Selloff Is Getting Brutal: 10 Tech Giants Already Deep in Bear Market Territory",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=03a868d316dacf7976f881f974c2555472e35673baec842989b18ce2676c1ad4"
+    },
+    {
+      "source_id": "fh-140739248",
+      "title": "'Who Are These Lunatics?' CoreWeave's Credit Approach Gets A Pep Talk From The 'Dean Of Valuation'",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=5b53e961be29eb296ab502884d8ec1282f50fe9a4fb989c86eb3c6b98b63c130"
+    },
+    {
+      "source_id": "fh-140738470",
+      "title": "Stock Market's Character May Have Begun To Change",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=0d34e5237476fb7ce77e4fa23d28b742c6d1a77792e5627a578da30b982ee463"
+    },
+    {
+      "source_id": "fh-140736403",
+      "title": "Company News for Jun 26, 2026",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=618fe621c816f8110acdc0f19297d47a4a903ca9c1bf5a227e3828772df91dc9"
+    },
+    {
+      "source_id": "fh-140736352",
+      "title": "Meta Stock\u2019s $156 Billion Flex: Too Good To Be True?",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=4b47465c3dd152dcfc1c6f8d8a3059272c92e5ef977010ff756751784d8754d5"
+    },
+    {
+      "source_id": "fh-140737279",
+      "title": "Final Trades: Uber, Nvidia, Enbridge and Meta",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=95a09c791929566c47dcee8949b8a6a826527218ad656a562d89bd1b2eab3b3c"
+    },
+    {
+      "source_id": "fh-140737328",
+      "title": "Trump threatens 100% tariff on countries putting 'Digital Services Tax on American Companies'",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=8edfbbb23b929cf52aed33a35d15448a71c67d73e8a174a31cb1d41d92caa6b5"
+    },
+    {
+      "source_id": "fh-140737982",
+      "title": "Apple Raised Mac Prices by Up to $300 Overnight. iPhones Could Be Next.",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=c0e47185e6b15adddde1b603ba18c3fdc48894267b30a5c678b5a5d11466af14"
+    },
+    {
+      "source_id": "fh-140737316",
+      "title": "Trading the tech wreck: Investor's next moves",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=44fd2e59bf892181568baec9259b6cd096a4faf3cc6745b8388e71bffb57f3df"
+    },
+    {
+      "source_id": "fh-140735299",
+      "title": "AbbVie to Host Second-Quarter 2026 Earnings Conference Call",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=5fe7bf3e337199b0122e308217346945ded049af6d4e16b8e6dab4fed0a9954c"
+    },
+    {
+      "source_id": "fh-140737282",
+      "title": "The bottleneck is the trade: Here's what you need to know",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=eecfb20770cf60c099b05e75e611880d3d19c20d71f21551729c590ed87876b9"
+    },
+    {
+      "source_id": "fh-140734492",
+      "title": "Ranking the FAANG Stocks From Most to Least Attractive, Based on Future Cash Flow",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=684fd2161cd22030b91fb2cbced74da83b4f8757c42e9a8dbdf3c9f584396821"
+    },
+    {
+      "source_id": "fh-140734539",
+      "title": "Meta and Snap Face Australia Youth Crackdown",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=7bf2ee738f2f39a3ffdba0a6c6cb9863d482883470da4488d4967ea5e9323ff4"
+    },
+    {
+      "source_id": "fh-140738801",
+      "title": "Bitcoin And MSTR Are Reeling, But Polymarket Continues To Onboard Users To Crypto",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=2b17a86da083f8ffdc803f59767d769e4c196f25387ff74c273dddd9238cb91f"
+    },
+    {
+      "source_id": "fh-140734496",
+      "title": "The Week in Numbers: Micron climbs high, Apple raises prices",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=9eaa90b5fdb195f62a20d039dc6b8e7c8fa627e78e8dab4bfa00886a4440e808"
+    },
+    {
+      "source_id": "fh-140734498",
+      "title": "BofA Boosts Price Target on Nebius (NBIS) Amid Data Center Expansion and AI Infrastructure Demand",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=ced72a67a37832f74f917dde69363662c653c51a18f9e38c938f9dd2e0f01710"
+    },
+    {
+      "source_id": "fh-140737331",
+      "title": "This next catalyst could move SpaceX stock",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=537fa65a326f4c9b74305c72cfea3d0715c1894c881ee4bba877cf9744de5b3c"
+    },
+    {
+      "source_id": "fh-140737421",
+      "title": "Ex-Trump advisor John Bolton pleads guilty to retaining national defense information",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=337f00b2f493c47b7b7c14b731b16c9a499947fd07b3264091fe52e96480fa0a"
+    },
+    {
+      "source_id": "fh-140737284",
+      "title": "Lack of dynamism in U.S. jobs market, says professor",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=9b3133d0b5fb7e8aa055c33b623c436302b81de28f557bb83beecd72dc94ee35"
+    },
+    {
+      "source_id": "fh-140734505",
+      "title": "The AI boom now has a price tag \u2014 and Micron just sent the bill: Chart of the Day",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=5402d5e41cb78da91642b7dfd6d188d1f78691acd9ca352e81102d81fb66f3f3"
+    },
+    {
+      "source_id": "fh-140734531",
+      "title": "How Low Can Microsoft Stock Go?",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=7df2d0b4dd31db81a0d427d2c3e3a1926c276364247e6b10ede95729d2d62400"
+    },
+    {
+      "source_id": "fh-140735713",
+      "title": "Magnificent Seven\u2019s Black June Triggers $1 Billion Exodus From MAGS ETF",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=cc8aa534c6092c50063fe144b364f6703d2bf2c8d3d7698fc1ba956d65d2107f"
+    },
+    {
+      "source_id": "fh-140735714",
+      "title": "Dan Ives Says Microsoft And Meta Are Being Treated Like 'Bear Market' Stocks",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=26a8f8c4b26fcb7543f1440cbd2a687ff073254cda65a36f635fed068aa1b3ab"
+    },
+    {
+      "source_id": "fh-140734031",
+      "title": "Meta (META) Picks CRED Founder Kunal Shah To Run WhatsApp Globally",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=3f2b67e69304d7f641e4af813675df0627593537d46a9cb2e94d6cabca985861"
+    },
+    {
+      "source_id": "fh-140737321",
+      "title": "OpenAI and Anthropic face new AI reality as users shift from 'tokenmaxxing' to efficiency",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=b18f797aa63635826f015746f7ffcc70607cd901381a2005272aac9981ce940d"
+    },
+    {
+      "source_id": "fh-140735715",
+      "title": "\u2018Maleficent 7\u2019? Analyst Warns Microsoft Could Crash To $250",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=18aa1d5cd3118c4fb8613fbe7fec61e53842c91638aedc3e0fc4427a498ebba3"
+    },
+    {
+      "source_id": "fh-140734012",
+      "title": "FTSE 100 Live: London stocks slip as Apple's memory crisis spooks markets",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=9f1c598191904290cd85f81c34ae27749a4329a2b4b8536cd4c1890dd4f1bbfc"
+    },
+    {
+      "source_id": "fh-140733576",
+      "title": "Micron Beats Meta in Market Cap: Can It Catch Nvidia Next?",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=cb1dcd497d3b446ea6257597a9f5e7e77b9e05167c107d25764d10aa655a51f2"
+    },
+    {
+      "source_id": "fh-140732174",
+      "title": "A new AI bottleneck is starting to worry investors",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=ef228ba605a777189ebae1e3652b46a3b0b62a848454b6a1fb81e2573e81e729"
+    },
+    {
+      "source_id": "fh-140732178",
+      "title": "Qualcomm's massive AI expansion already has 2 Mag 7 giants on board",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=ee6cdba7b0d74e660593b503d74c39247fd8d1909910eeac315d0bd68b47201d"
+    },
+    {
+      "source_id": "fh-140737424",
+      "title": "CNBC Daily Open: One session, two major sell-offs",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=091c5d40af10321c06a22aa708bedfce044e0e8ed301fde679b584b5a898093b"
+    }
+  ],
+  "leak_check": {
+    "violations": []
+  }
+}

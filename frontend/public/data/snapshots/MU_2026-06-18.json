@@ -1,0 +1,363 @@
+{
+  "ticker": "MU",
+  "as_of": "2026-06-18",
+  "prices": {
+    "bars": 252,
+    "first_date": "2025-06-18",
+    "last_date": "2026-06-18",
+    "source_url": "https://finance.yahoo.com/quote/MU/history"
+  },
+  "fundamentals": {
+    "period_end": "2026-02-26",
+    "available_at": "2026-03-19",
+    "source_url": "https://finance.yahoo.com/quote/MU/financials",
+    "keys": {
+      "income_stmt.revenue": 23860000000.0,
+      "income_stmt.cost_of_revenue": 6105000000.0,
+      "income_stmt.gross_profit": 17755000000.0,
+      "income_stmt.rd_expense": 1250000000.0,
+      "income_stmt.sga_expense": 344000000.0,
+      "income_stmt.operating_income": 16135000000.0,
+      "income_stmt.interest_expense": 32000000.0,
+      "income_stmt.income_tax": 2371000000.0,
+      "income_stmt.net_income": 13785000000.0,
+      "income_stmt.eps_basic": 12.25,
+      "income_stmt.eps_diluted": 12.07,
+      "balance_sheet.total_assets": 101509000000.0,
+      "balance_sheet.current_assets": 41413000000.0,
+      "balance_sheet.cash_and_equivalents": 13908000000.0,
+      "balance_sheet.total_liabilities": 29050000000.0,
+      "balance_sheet.current_liabilities": 14296000000.0,
+      "balance_sheet.stockholders_equity": 72459000000.0,
+      "balance_sheet.retained_earnings": 66824000000.0,
+      "balance_sheet.inventory": 8267000000.0,
+      "balance_sheet.accounts_receivable": 15389000000.0,
+      "balance_sheet.goodwill": 1150000000.0
+    }
+  },
+  "technicals": {
+    "keys": {
+      "technicals.close_latest": 1133.815552,
+      "technicals.return_5d": 0.138693,
+      "technicals.return_1m": 0.622907,
+      "technicals.return_3m": 1.553552,
+      "technicals.return_6m": 3.881186,
+      "technicals.sma_20": 965.429007,
+      "technicals.pct_vs_sma_20": 0.174416,
+      "technicals.sma_50": 732.686514,
+      "technicals.pct_vs_sma_50": 0.547477,
+      "technicals.sma_200": 400.56027,
+      "technicals.pct_vs_sma_200": 1.830574,
+      "technicals.high_52w": 1133.815552,
+      "technicals.low_52w": 104.711929,
+      "technicals.pct_vs_high_52w": 0.0,
+      "technicals.volume_avg_20": 54443120,
+      "technicals.volume_latest_vs_avg_20": 0.18734
+    }
+  },
+  "news": [
+    {
+      "source_id": "fh-140666981",
+      "title": "Is The AI Super-Cycle Real Enough To Bet On Micron Stock?",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=5e9801eb82c262674bd5f1d51840a2d8eda4347be4fecab0a316d9ce4c973d9f"
+    },
+    {
+      "source_id": "fh-140667003",
+      "title": "Micron Earnings Loom: How Expectations Have Evolved",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=76bf9ca82ef5af608e201ac3cfb1bfd1e72764116969f3ae0a460f4e1d03af6d"
+    },
+    {
+      "source_id": "fh-140667351",
+      "title": "This Week's Market Wrap: Oil Collapse, Fed Reset, And AI's Growing Reach",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=af6392f7bfcf445d62e554b22a926fce6972c106cf9ff37ef10ed13cb69f096d"
+    },
+    {
+      "source_id": "fh-140666567",
+      "title": "Prediction: This Will Be Micron's Next Big Move",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=27bfa877675343e53237b42fbfa68a5392785407a11e8ed61a97a9a3069c6a89"
+    },
+    {
+      "source_id": "fh-140666573",
+      "title": "Apple\u2019s Unsustainable Memory Costs and the Rethinking of Micron\u2019s Valuation",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=34338b07f9c3aa8b0d38a31a36bd900144fb3fd2236684c80f16180a088be3a9"
+    },
+    {
+      "source_id": "fh-140665907",
+      "title": "Dow Jones Futures: Nvidia Leads 5 Chips Near Buy Points; SpaceX Stock Needs This",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=e2204aa41595a7c08a7a73945249a8d8af4dd39bb87ab8c55393eb9c4ecfbafe"
+    },
+    {
+      "source_id": "fh-140665908",
+      "title": "Prediction: These Will Be Micron's and Sandisk's Stock Prices by the End of 2027",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=c1946963f4ccac87a4f298ec69454b710d59d1874745cd2c5c90145364993124"
+    },
+    {
+      "source_id": "fh-140665926",
+      "title": "Apple\u2019s Latest Reveal Proves That Micron Has \u201cMore Room To Run\u201d",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=b6bdce3ade06e21793ab3d3df8f376332a5b41e6a03a79df65aa9c79e220d242"
+    },
+    {
+      "source_id": "fh-140665964",
+      "title": "S&P 500 Posts Weekly Gain Amid US-Iran Memorandum of Understanding",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=918a3a25780476d6bfe2a64ed78f69c02a369897f1fc8928fb371f0b0f067bd4"
+    },
+    {
+      "source_id": "fh-140667326",
+      "title": "Stocks Sharply Higher as US-Iran Peace Deal Eases Inflation Risks",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=0553f224dfed08d97c7f9cae8d542032879de9c09d4cdc8aefcddf98b6e6a0cd"
+    },
+    {
+      "source_id": "fh-140666098",
+      "title": "The Unstoppable Stock Market Rally Is Defying Fed Fears",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=ce16f578b362f1be7b4129683be4c0842388486a8af6d712fc36b7bfb61824e7"
+    },
+    {
+      "source_id": "fh-140665018",
+      "title": "Sector Update: Tech Stocks Climb Late Afternoon",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=b980d5dc805a24d44e1845d04b16eb1dd3d657ff5c6f483db0e3053087dc48c7"
+    },
+    {
+      "source_id": "fh-140671317",
+      "title": "Jim Cramer looks ahead to next week's market game plan",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=4e3247a4ba68e79220ae9c462ac4aa7028f156510f25537a46a3737825a4f4e1"
+    },
+    {
+      "source_id": "fh-140665071",
+      "title": "Buyers Push Micron Stock To Nose-Bleed Levels As Earnings Approach; Darden, FedEx Results Also On Tap",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=e572924c914715876713fd1e8839d19ecf43f72a5adc99ebc33314fb56af4b30"
+    },
+    {
+      "source_id": "fh-140665019",
+      "title": "Western Digital, FormFactor, and Vishay Intertechnology Shares Skyrocket, What You Need To Know",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=8a71d6ce738aa10d9ad32828f6c66904a42502f2be21d3b316de7d22f2c87e4b"
+    },
+    {
+      "source_id": "fh-140665073",
+      "title": "Micron Technology (MU) Stock Sees Fair Value Lift As AI Memory Demand Drives Analyst Optimism",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=3596d3bd60bcc7275f5f39b2fffc864041083208111588ae508c15e8a69456d5"
+    },
+    {
+      "source_id": "fh-140664853",
+      "title": "Which S&P500 stocks are moving on Thursday?",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=dd64cbbb830e991e0263458f1688da8c01a6c265be317718578b6aaa10300baa"
+    },
+    {
+      "source_id": "fh-140665021",
+      "title": "Qualcomm (QCOM) Stock Is Up, What You Need To Know",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=e0d28600d9a6a5d674dc3e51be0e83d0697a6f052d76ac5069dca454511c5c94"
+    },
+    {
+      "source_id": "fh-140665022",
+      "title": "Allegro MicroSystems, Lam Research, and Applied Materials Shares Are Soaring, What You Need To Know",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=134a2218111afbd1f926b0d410801abdd16c1c9440438bfb8639c488333bd28b"
+    },
+    {
+      "source_id": "fh-140665023",
+      "title": "Entegris, Monolithic Power Systems, and Photronics Shares Are Soaring, What You Need To Know",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=0865049ad9bd534406ffbf9ef51629e2b07806e34c378c5a06122874e4f2733c"
+    },
+    {
+      "source_id": "fh-140665024",
+      "title": "Kulicke and Soffa, Microchip Technology, and Teradyne Shares Are Soaring, What You Need To Know",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=7c4817a65e89ee1e09ad8b2ab4f6c3f01ce377235681a2715012855ca0fe00c5"
+    },
+    {
+      "source_id": "fh-140665025",
+      "title": "Power Integrations, Lattice Semiconductor, and onsemi Stocks Trade Up, What You Need To Know",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=9f67d8b79412e9ab1eea58e06d6471e708eddded0992e6bdbcf3a2fb527827ac"
+    },
+    {
+      "source_id": "fh-140665079",
+      "title": "Micron stock draws aggressive target reset from 5-star analyst",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=6776d72e7006734316f242fbf76c07abe41038ee64f3771768b17d4b18862e6d"
+    },
+    {
+      "source_id": "fh-140665015",
+      "title": "Micron Technology (MU) Is Up 17.0% After Nvidia HBM4 Win And AI Board Hire - Has The Bull Case Changed?",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=7a7193cc28b543be6161be9a98dbd996bb452c9417eb9dedee2765332a614505"
+    },
+    {
+      "source_id": "fh-140664465",
+      "title": "Thursday's session: most active stock in the S&P500 index",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=c09445703a003e6a5e03a1420917a9e30d4813da8d5892392b6d7e5a478205dc"
+    },
+    {
+      "source_id": "fh-140665081",
+      "title": "Micron's AI Run Gets Another Boost",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=4b32a1bb9f2cdef664e00805ecff4261e0ed32b036502838332a4e8daed1b4bd"
+    },
+    {
+      "source_id": "fh-140665032",
+      "title": "Apple Price Hike Warning Sends Micron Stock Soaring",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=6893d068840026b287dfadaf5a8502e700aba5cb938aeee5590e4079a6bf4abc"
+    },
+    {
+      "source_id": "fh-140665034",
+      "title": "Why Micron (MU) Stock Is Up Today",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=c8c31ee16e10bae6f188c3b1f89d094b45e6b7be071955694438c0efcc30973a"
+    },
+    {
+      "source_id": "fh-140663965",
+      "title": "Veteran Analyst Firm Hikes Micron Stock Target 100% Just Before Earnings",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=c6d59b13e055660e8797ebe00f159d9aecc7affb707842debe5b502a5ff2ceec"
+    },
+    {
+      "source_id": "fh-140665641",
+      "title": "Nvidia: 3 Reasons Why The Stock Will Continue To Trail The Market",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=0d1f9a3192e524511af8b97d005fb69b04bde1eb4b33566adce7393669a01c91"
+    },
+    {
+      "source_id": "fh-140671305",
+      "title": "Apple raising prices is a 'very positive indication' when it comes to chip demand: D.A. Davidson's Luria",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=48406dca2eb1b698344b845ffabfb1ca5dcb92d04c26c27291be7cca211d2904"
+    },
+    {
+      "source_id": "fh-140663696",
+      "title": "Uncover the latest developments among S&P500 stocks in today's session.",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=69fb9b185cc93245bc1f1a21120e9892e087610afd274931e76a4184eb8060a9"
+    },
+    {
+      "source_id": "fh-140542605",
+      "title": "Earnings Calendar and Analysis for This Week (June 8-12)",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=216d128b83f71d76e6bce40b8b46e11723d78dea2fbe2da4a9c9e36d4bf5b412"
+    },
+    {
+      "source_id": "fh-140663900",
+      "title": "SanDisk Jumps 11%, Western Digital Rises 7% After Apple Flags \u201cUnavoidable\u201d Memory Price Hikes",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=147fce9260ce1273ccd234d7b70edcb45c294b8a157bfa80183b6e60d1fddc78"
+    },
+    {
+      "source_id": "fh-140662997",
+      "title": "Why Micron Stock Just Jumped",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=cba3c8a74f7d46d766f1e2bb396bc1156ef07d5d6249cd24cbd85414246d66b7"
+    },
+    {
+      "source_id": "fh-140663061",
+      "title": "Micron Poised to Top Third-Quarter Estimates as Memory Prices Jump, Wedbush Says",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=8e69f3c75956c7f5b38cd4fe77a84b4682c57d7181f7c4b495af551180e68c8d"
+    },
+    {
+      "source_id": "fh-140663013",
+      "title": "SanDisk and Micron surge as Apple confirms memory price pass-through",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=57a7ef01d026d7a9fa9f9e524693ff371e867cb27d8a215b3e68557547890c95"
+    },
+    {
+      "source_id": "fh-140663016",
+      "title": "Intel, Sandisk, Accenture, SpaceX, and More Stocks That Explain Today\u2019s Market",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=1c71ec7f11bbe21d3a287a06dbe4ac8243847f27f9b4af0eafc086a80aeceb8f"
+    },
+    {
+      "source_id": "fh-140664348",
+      "title": "Micron, Cisco & AT&T: Lessons From Dot Com Bust",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=597a0c47751a97809cc50b9e0036ff796338654fd46245a8a3bb48a19d82a966"
+    },
+    {
+      "source_id": "fh-140663021",
+      "title": "Why Apple Price Hikes Are Sending Micron Stock to a Record High",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=180509a13bc08f95616cea58a0193e758bc0ab1ee30874426a38b406079a946b"
+    },
+    {
+      "source_id": "fh-140662450",
+      "title": "Wall Street scrambles to lift Micron price targets ahead of earnings",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=f137cf04c13c99ab3a178606e6a57a6a6a0467572284f39322bf83acfbd30118"
+    },
+    {
+      "source_id": "fh-140664696",
+      "title": "Apple's Price-Hike Warning Exposes AI's Hidden Cost\u2014And A Fresh ETF Opportunity",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=d2f06d5eca70749eb42db98d4593e990e6e4d3da79a90dc43b9d965e846961d3"
+    },
+    {
+      "source_id": "fh-140664275",
+      "title": "10 Information Technology Stocks With Whale Alerts In Today's Session",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=b9811fa6b9f9b65f69558642136594ac0dca6adaef1fd66513976bfa00d6e65e"
+    },
+    {
+      "source_id": "fh-140663058",
+      "title": "Perplexity's CEO Predicts Micron Could Overtake Meta In Stunning AI Power Shift: 'Whatever Is The Bottleneck Will...'",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=aa23bbffd3d1ed76fa62b8a9b43a088e7fd213ac767829119f9144970b348b7f"
+    },
+    {
+      "source_id": "fh-140663066",
+      "title": "AI's Data Explosion Creates a Multi-Year Growth Runway for Seagate",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=f82ededa1afacdba3ad20e4042c52b39d64ce583e77e79e7635f98d2ccdd5b1a"
+    },
+    {
+      "source_id": "fh-140663067",
+      "title": "Curious about Micron (MU) Q3 Performance? Explore Wall Street Estimates for Key Metrics",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=96b1cfb5c1ade445e67eb1018cfd3ea7f35715f770a8176fb5d413cd3b6661ac"
+    },
+    {
+      "source_id": "fh-140671445",
+      "title": "Josh Brown's 'best stocks in the market': Macom",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=b99250f98ec950492fe3632629040831c047ee2e4385f7e12a3b8dc59df23359"
+    },
+    {
+      "source_id": "fh-140663714",
+      "title": "Unstoppable Quant Stocks: 3 Longest-Running Strong Buys",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=7b7be031b16403323f097adbc47606f3e09ee3219366744a9d84d0c513d2cf64"
+    },
+    {
+      "source_id": "fh-140662451",
+      "title": "Bandwidth and Blue Bird have been highlighted as Zacks Bull and Bear of the Day",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=00f2680c21b1a4ed3f0d1be74581918de5632a9216ea0881fd3943d783f1034b"
+    },
+    {
+      "source_id": "fh-140671446",
+      "title": "Stocks making the biggest moves midday: Sandisk, Intel, Enphase Energy, Accenture, Exxon Mobil & more",
+      "published_at": "2026-06-18",
+      "url": "https://finnhub.io/api/news?id=7c53d213870ff61f259c444555ed8b6134043c19627bef7efe358a914e74002b"
+    }
+  ],
+  "leak_check": {
+    "violations": []
+  }
+}

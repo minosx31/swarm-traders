@@ -1,0 +1,363 @@
+{
+  "ticker": "MU",
+  "as_of": "2026-07-13",
+  "prices": {
+    "bars": 251,
+    "first_date": "2025-07-14",
+    "last_date": "2026-07-13",
+    "source_url": "https://finance.yahoo.com/quote/MU/history"
+  },
+  "fundamentals": {
+    "period_end": "2026-05-28",
+    "available_at": "2026-06-25",
+    "source_url": "https://finance.yahoo.com/quote/MU/financials",
+    "keys": {
+      "income_stmt.revenue": 41456000000.0,
+      "income_stmt.cost_of_revenue": 6400000000.0,
+      "income_stmt.gross_profit": 35056000000.0,
+      "income_stmt.rd_expense": 1316000000.0,
+      "income_stmt.sga_expense": 407000000.0,
+      "income_stmt.operating_income": 33318000000.0,
+      "income_stmt.interest_expense": 0.0,
+      "income_stmt.income_tax": 4978000000.0,
+      "income_stmt.net_income": 28243000000.0,
+      "income_stmt.eps_basic": 25.03,
+      "income_stmt.eps_diluted": 24.67,
+      "balance_sheet.total_assets": 134112000000.0,
+      "balance_sheet.current_assets": 66737000000.0,
+      "balance_sheet.cash_and_equivalents": 24995000000.0,
+      "balance_sheet.total_liabilities": 33388000000.0,
+      "balance_sheet.current_liabilities": 19488000000.0,
+      "balance_sheet.stockholders_equity": 100724000000.0,
+      "balance_sheet.retained_earnings": 94682000000.0,
+      "balance_sheet.inventory": 8567000000.0,
+      "balance_sheet.accounts_receivable": 26894000000.0,
+      "balance_sheet.goodwill": 1150000000.0
+    }
+  },
+  "technicals": {
+    "keys": {
+      "technicals.close_latest": 937.0,
+      "technicals.return_5d": -0.048489,
+      "technicals.return_1m": 0.050751,
+      "technicals.return_3m": 1.228165,
+      "technicals.return_6m": 1.866913,
+      "technicals.sma_20": 1050.501379,
+      "technicals.pct_vs_sma_20": -0.108045,
+      "technicals.sma_50": 907.296438,
+      "technicals.pct_vs_sma_50": 0.032739,
+      "technicals.sma_200": 468.15446,
+      "technicals.pct_vs_sma_200": 1.001476,
+      "technicals.high_52w": 1213.373413,
+      "technicals.low_52w": 104.711937,
+      "technicals.pct_vs_high_52w": -0.227773,
+      "technicals.volume_avg_20": 52447385,
+      "technicals.volume_latest_vs_avg_20": -0.329335
+    }
+  },
+  "news": [
+    {
+      "source_id": "fh-140892499",
+      "title": "Why Micron (MU) Shares Are Sliding Today",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=b9253263f64b987646b9bb4bb2c715d854c2a03497f51ae103e9df0c113c89fd"
+    },
+    {
+      "source_id": "fh-140892466",
+      "title": "Jim Cramer: South Korea Is Mispricing SK Hynix. Here\u2019s Why He\u2019s Still Bullish on AI Memory",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=76c0ffa485bea950f3977ccda7317699e62c70486d03efbb135e1d49769ceadc"
+    },
+    {
+      "source_id": "fh-140892468",
+      "title": "Analyst Dan Ives Calls Memory Chips the \u201cGolden Child\u201d of the AI Revolution with \u201c15-to-1\u201d Demand-to-Supply Imbalance",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=5405df7ec35760d176c765faff84811b2bb768e9743a60afc0f920c9bc7bd3c1"
+    },
+    {
+      "source_id": "fh-140892502",
+      "title": "SanDisk Stock's Run Hides Its Real Portfolio Job",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=ed98f90653cf01b2d35a258ee37a78737b165123be1f09a4784059109658ce7b"
+    },
+    {
+      "source_id": "fh-140891276",
+      "title": "Micron (MU) Just Put $3 Billion Into GlobalWafers To Secure AI Supply",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=4a71eb1ad44ee57b40fa901a85c06484134fdc8075ab658fd9f0d5043bac5e2e"
+    },
+    {
+      "source_id": "fh-140891277",
+      "title": "What investors can expect this earnings season",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=b38ffd51dba938baf3c6ea3d02bad1711f7ed36ed3642fe9d3681962751d49b7"
+    },
+    {
+      "source_id": "fh-140891278",
+      "title": "Dow Jones Futures: Nasdaq Sells Off, Oil Prices Spike On Trump Blockade; Micron, Sandisk, SK Hynix, SpaceX Dive",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=37d1dfdf078f105692cc7c27759a6da7d3b41bbfaaad21bded32c9a43f63bd94"
+    },
+    {
+      "source_id": "fh-140891279",
+      "title": "Stock Market Today: Dow, Nasdaq Close Lower As Oil Prices Spike; This Memory ETF In Bear Market",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=8448714e57b2e7d7cc09981e8baa78c7fe37b4b936bb4999914ffc74b8aa4fb6"
+    },
+    {
+      "source_id": "fh-140891280",
+      "title": "Chip stocks may be selling off, but profits are set to triple by 2027: Chart of the Day",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=75b47058424873634e5c482cfe1d08661fc1b95eb01fc1ee4dd5d4356561ef5c"
+    },
+    {
+      "source_id": "fh-140889970",
+      "title": "Stock Market Today: Dow Lower As Oil Spikes On Hormuz Conflict; Memory ETF In Bear Market (Live Coverage)",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=84b5ec9e1ad0bb44e19a8dc3463a4092c845006977dcefe49c9d9d0f9147ee08"
+    },
+    {
+      "source_id": "fh-140889971",
+      "title": "Micron Flags Next AI Chip Bottleneck",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=244dbef6698aecdd2306fbc4fe2241465ee3ef768d78b3943b6b04a5b0a07051"
+    },
+    {
+      "source_id": "fh-140889913",
+      "title": "Has Micron Technology Stock Peaked?",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=0e242a0aa611cf81f7136162ecb2932e069ec1fd302e3ecea3aa8e71d48d894d"
+    },
+    {
+      "source_id": "fh-140889929",
+      "title": "SK Hynix, Sandisk, AppLovin, Intuit, Meta, SpaceX, and More Stocks That Explain Today\u2019s Market",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=772af12dc47ae60b953e939e1c02cc7e57fe8ee97810c5e78ebbb634d6f27926"
+    },
+    {
+      "source_id": "fh-140888922",
+      "title": "Stay informed about the most active stocks in the S&P500 index on Monday's session.",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=2688322ca92f5d3c1483ed79195c577694d4737e96ae3a9fb8e5d3ea5d3e792a"
+    },
+    {
+      "source_id": "fh-140889935",
+      "title": "Tech View: Record Profits, Insider buying, & Cheap Valuations",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=48cb9deb827217d3c8df140b208da9e5fa6c111f13a7ef32b7559da090aefa9d"
+    },
+    {
+      "source_id": "fh-140888279",
+      "title": "A Generational Transfer Is Happening: Amazon, Google, Microsoft Are the Losers. NVIDIA and Micron the Winners.",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=db342a0be2bc2e470676a6afdb55918020024f1959d2c7840ad222b36da82e30"
+    },
+    {
+      "source_id": "fh-140890874",
+      "title": "Undercovered Dozen: SK Hynix, Reddit, Austal, Netlist, And More",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=aeb09051fefdeb721b42719b840455732c5c7611df00d7c438365a90396a98a1"
+    },
+    {
+      "source_id": "fh-140890875",
+      "title": "Back To Square One: Strait Of Hormuz Closes Again",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=c09556302beffa7d7bad133e79fc7dc6e2890563ae40e854fc170dedf987b2d5"
+    },
+    {
+      "source_id": "fh-140888366",
+      "title": "These overlooked chip stocks are getting an AI boost",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=d7611342ece5a2d025a4d805719fb4b678619709bd210697d7bbb36be34cb7f3"
+    },
+    {
+      "source_id": "fh-140890612",
+      "title": "Oracle: Could Be One Of The First Dominos To Fall",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=9f09705c76de92e6b77310aabb8300fc09274b2993f4da2ad9aab50a1c8976cb"
+    },
+    {
+      "source_id": "fh-140888367",
+      "title": "Micron's Wafer Bet Raises Supply Questions",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=0986624d9347e60a41d33e69807d4a9495e8354e744c4edf3087ff6a15b0be38"
+    },
+    {
+      "source_id": "fh-140888368",
+      "title": "Stock Market Today, July 13: SK Hynix Tumbles 15% in South Korea, Leading Semiconductor Drop at Midday",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=8460d2a47f8d87174a291290655a443a37f1c416d86d29c3f103d568cf8f36e3"
+    },
+    {
+      "source_id": "fh-140888369",
+      "title": "Here is Why Growth Investors Should Buy Micron (MU) Now",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=a544fc62dbbdd9f10d12e3072ebc87f6312b51b9f03032ef878a21454b8f290b"
+    },
+    {
+      "source_id": "fh-140888295",
+      "title": "Samsung Stock Fell Despite a 19x Profit Jump. Here's What That Means for Micron Investors",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=323427b53cf9eefa62aca3847bc54c2e1fa5bc821321c966498dcc50a3dbf7ec"
+    },
+    {
+      "source_id": "fh-140887733",
+      "title": "These S&P500 stocks are moving in today's session",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=e8c7542148bbc108976f5a596a58170a4921b816dbf824084b032173e60431f3"
+    },
+    {
+      "source_id": "fh-140890510",
+      "title": "From Best ETF Debut Ever to Bear Market: DRAM\u2019s Wild Ride as Micron And AI Memory Stocks Tumbled",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=1d7299686aa876037f037ac322b543e3d4463f9ab2fc18a966fb1116cbc2add0"
+    },
+    {
+      "source_id": "fh-140888371",
+      "title": "Stock Market Today: Dow Drops As Trump Reinstates Hormuz Blockade; Oil Refiners Rise (Live Coverage)",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=4a0fec29a793510f39902e1945c35a94bbe62afd4aebfb0bc9eda88fd19ee852"
+    },
+    {
+      "source_id": "fh-140888339",
+      "title": "Intel Just Announced A $5.7B Investment In Ireland \u2013 Retail Says Move Strengthens The Chipmaker\u2019s Position",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=8e508f5c8cb499c33a93f85f4bbd5f9fedc513b3dac1a7bc62b470264cdd3804"
+    },
+    {
+      "source_id": "fh-140888373",
+      "title": "Why Micron Stock Dropped Today",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=419491e4efeb5d002cf9487964e5781334435addd21bf4972d73342cc3cb720c"
+    },
+    {
+      "source_id": "fh-140888374",
+      "title": "If You Invest $1,000 in the Vanguard Total Stock Market ETF Right Now, Here's What History Says It Could Be Worth in 20 Years",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=05e25612e2d5e1bde72a7cbbadeea4df701a461021fcc4f04dd1fca05d335932"
+    },
+    {
+      "source_id": "fh-140889660",
+      "title": "Baird International And Global Growth Funds Q2 2026 Contributors And Detractors",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=988faa5279f6bb7023f37e0c82bdbb474e0802b57d4e2da7d56058e5bd5f2aa0"
+    },
+    {
+      "source_id": "fh-140886805",
+      "title": "Jim Cramer Highlights Analyst Rating as the Reason for Sandisk Rally",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=cf2c954bf67a0b49ac910510df02baf1f549a55e09d7944d4ed573e21cad0ba1"
+    },
+    {
+      "source_id": "fh-140889975",
+      "title": "Micron pours first concrete at $100B New York chip fab",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=20b0cee8737bc266f8b25a3f3c63558be67a40c888f95e4c9a56ade9524f5a7a"
+    },
+    {
+      "source_id": "fh-140886706",
+      "title": "Nvidia, Micron, and other chip players are poised to become cash-producing machines",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=651787bdd01e7d4809925eeb1e95c1b3609221087f45b49985fb5b262b744e23"
+    },
+    {
+      "source_id": "fh-140886731",
+      "title": "Tech Sell-Off: How investors should navigate the market",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=8435df224924bad4944dc0a5aef0ec056b6d0b638902ab7f23030a7cf0bf2e08"
+    },
+    {
+      "source_id": "fh-140886808",
+      "title": "\u2018An Absolute Casino.\u2019 The $500 Billion Leveraged ETF Craze Proving Buffett Right",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=5cd961c3e071d736a8347bc1366e10b130b0123588d28a8c8ef796c76a8d6e0f"
+    },
+    {
+      "source_id": "fh-140886346",
+      "title": "What's going on in today's session: S&P500 gap up and gap down stocks",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=6180471f5e99320b9ddb99c9835a011abad89b5d0dfa7a4a3db88d67397426f0"
+    },
+    {
+      "source_id": "fh-140886721",
+      "title": "SK Hynix, Sandisk, Apple, Meta, and More Stocks That Explain Today\u2019s Market",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=586e8588a44f92cb7f321b1f956de95dae9c5dbf0b2188f884d47df9251d4159"
+    },
+    {
+      "source_id": "fh-140886810",
+      "title": "Memory Chip Trade Stumbles After SK Hynix\u2019s Historic Drop",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=6f75e2b23ec17af2c8a79bda344d68410ab429dd3aaf4d29acf7da9679ccb008"
+    },
+    {
+      "source_id": "fh-140886771",
+      "title": "Forget Hyperscalers: Here Are the AI Gold Rush Winners to Buy Now",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=1693d99e8667fba2aa9fc38ce989ec4e32e4e57217ba8a1ef54601aa6cfcf917"
+    },
+    {
+      "source_id": "fh-140888375",
+      "title": "Your Phones and Computers Will Likely Be More Expensive for Years to Come",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=5d070c6c9068453b33bc672112c555dd9b99cf3bb98c3945739587fd43b1d941"
+    },
+    {
+      "source_id": "fh-140888274",
+      "title": "5 Things That Should Happen Before The Next Bear Market",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=683d63d07bef6fdf139c8229dedc266404acffc392a6039bf8337bb09e2a2efe"
+    },
+    {
+      "source_id": "fh-140886812",
+      "title": "Will Micron's Long-Term Supply Contracts Improve Revenue Visibility?",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=cb4ba1c1093180f591dbeb6906539a3bfc0130b581e2636c7ed95f1dcbfc9b9e"
+    },
+    {
+      "source_id": "fh-140885653",
+      "title": "This Strategist Says the Tech Wreck Is Your Buy Signal: Micron and SanDisk on Sale?",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=4fb5260cf909f587cf8f7a693fb86376123cdc42a30296557d7aa340fb0c97f1"
+    },
+    {
+      "source_id": "fh-140885756",
+      "title": "Stock Market Today: Nasdaq Slides On New U.S.-Iran Strikes; SK Hynix Plunges (Live Coverage)",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=966ddaa9c15b770e7f6d3115e2029d65a80125f510369fc96d9fabeec4db5130"
+    },
+    {
+      "source_id": "fh-140885757",
+      "title": "Micron, SanDisk, Western Digital Fall 6% as SK Hynix\u2019s Weak Outlook Rattles Memory Stocks",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=42d1edba85f645d8fc7ce039cfdbb2f54aac3f4535f5e03ab90f51d36df7a266"
+    },
+    {
+      "source_id": "fh-140889679",
+      "title": "10 Information Technology Stocks With Whale Alerts In Today\u2019s Session",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=a9022fdc8241b02d945c4a3d7df8c0b0ad76d2c178dbf06f014a06efb84f42ab"
+    },
+    {
+      "source_id": "fh-140888176",
+      "title": "Why SK hynix Will Drag Down Markets, Again",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=ddb77d1da466bbdf9509ca45d9c830c253cb30e75061166291f32ceee480c5e3"
+    },
+    {
+      "source_id": "fh-140885758",
+      "title": "Micron New Investment Could Be an Early Warning for the AI Industry",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=46addba9b688af3ffec377a291a961cbd2f81ad05c17fffc0412c4a4367ad9e8"
+    },
+    {
+      "source_id": "fh-140885662",
+      "title": "Nvidia, Broadcom, AMD Lead AI Chip Stock Selloff After SK Hynix Slump",
+      "published_at": "2026-07-13",
+      "url": "https://finnhub.io/api/news?id=a2e564263f3cea202159b0eff6135e9ca59a291bb7bc141be230c1991ac0c69d"
+    }
+  ],
+  "leak_check": {
+    "violations": []
+  }
+}

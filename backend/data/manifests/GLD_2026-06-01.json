@@ -1,0 +1,348 @@
+{
+  "ticker": "GLD",
+  "as_of": "2026-06-01",
+  "prices": {
+    "bars": 251,
+    "first_date": "2025-06-02",
+    "last_date": "2026-06-01",
+    "source_url": "https://finance.yahoo.com/quote/GLD/history"
+  },
+  "fundamentals": {
+    "period_end": "2026-03-31",
+    "available_at": "2026-05-05",
+    "source_url": "https://finance.yahoo.com/quote/GLD/financials",
+    "keys": {
+      "income_stmt.operating_expenses": 165651000.0,
+      "income_stmt.net_income": 10223230000.0,
+      "income_stmt.eps_basic": 27.18,
+      "balance_sheet.total_assets": 155167600000.0,
+      "balance_sheet.cash_and_equivalents": 0.0,
+      "balance_sheet.total_liabilities": 56775000.0
+    }
+  },
+  "technicals": {
+    "keys": {
+      "technicals.close_latest": 411.26001,
+      "technicals.return_5d": -0.006186,
+      "technicals.return_1m": -0.029269,
+      "technicals.return_3m": -0.160694,
+      "technicals.return_6m": 0.07345,
+      "technicals.sma_20": 420.687495,
+      "technicals.pct_vs_sma_20": -0.02241,
+      "technicals.sma_50": 424.844799,
+      "technicals.pct_vs_sma_50": -0.031976,
+      "technicals.sma_200": 402.6772,
+      "technicals.pct_vs_sma_200": 0.021314,
+      "technicals.high_52w": 495.899994,
+      "technicals.low_52w": 300.959991,
+      "technicals.pct_vs_high_52w": -0.17068,
+      "technicals.volume_avg_20": 6030065,
+      "technicals.volume_latest_vs_avg_20": 0.021365
+    }
+  },
+  "news": [
+    {
+      "source_id": "fh-140503096",
+      "title": "Here's How Much $1000 Invested In SPDR Gold Shares 5 Years Ago Would Be Worth Today",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=881c595fd75cc808a1dfdf2920c45862bbb8c77e44eb93ad38b898ea58c470c6"
+    },
+    {
+      "source_id": "fh-140490955",
+      "title": "Single Stock Volatility Jumps To A Record Vs. The VIX Index",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=15da35504566dec2c717e4f1543455f47814f3fe81bef11d7d5ebb7ec912c428"
+    },
+    {
+      "source_id": "fh-140484884",
+      "title": "Major Asset Classes: May 2026 Performance Review",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=42a77d8f17d15a6a3645b61cc09d5f4c15a2e9d06434d00a4312c5a66a7f198f"
+    },
+    {
+      "source_id": "fh-140483975",
+      "title": "Undercovered Dozen: Aeluma, Agnico Eagle, Ciena, Rayonier And More",
+      "published_at": "2026-06-01",
+      "url": "https://finnhub.io/api/news?id=8320aa866bf759646ded622b30ed0ffb69a33c22a8c94107498f7f05d9ae67b6"
+    },
+    {
+      "source_id": "fh-140482322",
+      "title": "Gold Falls To Two-Month Low As Iran War Fears Send Oil Prices, Dollar Climbing",
+      "published_at": "2026-05-30",
+      "url": "https://finnhub.io/api/news?id=6d1c6971f1cd90d7c56ddca8e289475f9db63408d31be482de1a20cbb5fae70c"
+    },
+    {
+      "source_id": "fh-140469512",
+      "title": "Gold Is Up Again in 2026 and After Reviewing Every Way to Access the Metal, These 3 ETFs Cover the Trade at Three Different Risk Levels",
+      "published_at": "2026-05-30",
+      "url": "https://finnhub.io/api/news?id=9785a77a595fef8af08a3813e97ec652486264ba1cd72a33812f26103b5b2ec7"
+    },
+    {
+      "source_id": "fh-140468795",
+      "title": "I Wouldn't Want To Retire Without These 3 Investments",
+      "published_at": "2026-05-30",
+      "url": "https://finnhub.io/api/news?id=6c88df711013ab51bdc8f009c7086a5a17e06a956c92660d5fd19dbafff75f29"
+    },
+    {
+      "source_id": "fh-140468063",
+      "title": "Weekly Commentary: Party Like It's 1999, 1996 And 2007",
+      "published_at": "2026-05-30",
+      "url": "https://finnhub.io/api/news?id=e0c4ad3dc369acf533897c5282c86bc073530dca2a9aad9dd1bdaf8756c369ea"
+    },
+    {
+      "source_id": "fh-140467893",
+      "title": "Week-In-Review: Market Moves, AI Momentum, And What's Next",
+      "published_at": "2026-05-30",
+      "url": "https://finnhub.io/api/news?id=3f7cdf946404dac71a9cd55964322f0155b1cbfc3659346fc7b53c03623bc370"
+    },
+    {
+      "source_id": "fh-140467458",
+      "title": "DRDGOLD: A Debt-Free Gold Proxy With Strong Margins And Execution Risk",
+      "published_at": "2026-05-30",
+      "url": "https://finnhub.io/api/news?id=aa4d0c4315745dd0bd977f7a66e529eff7cb540dd6c9593b0a1f66cc10444895"
+    },
+    {
+      "source_id": "fh-140481516",
+      "title": "TSX Closer: The Index Rises For a Second Straight Day, Back To Within 100 Points of Its Record Close",
+      "published_at": "2026-05-29",
+      "url": "https://finnhub.io/api/news?id=87d4434c90a751bafe8bf0a2ab40601efcc7ae8fbd9076a98da38e6adea75e44"
+    },
+    {
+      "source_id": "fh-140462825",
+      "title": "Gold And Silver: I Am Reminded Of Silver Thursday",
+      "published_at": "2026-05-29",
+      "url": "https://finnhub.io/api/news?id=c979db0975738b041bd087ea5edf11233deee82bb783fe22baae3a881c8e52a0"
+    },
+    {
+      "source_id": "fh-140457251",
+      "title": "Exchange-Traded Funds, Equity Futures Rise Pre-Bell Friday Amid US-Iran Deal Hopes",
+      "published_at": "2026-05-29",
+      "url": "https://finnhub.io/api/news?id=9018151747dffc60084c94fb2c810dce5154fcc294f319e7dd7ab9f27063b006"
+    },
+    {
+      "source_id": "fh-140482329",
+      "title": "Gold Trading Higher Again on Expectations the U.S. and Iran are Near a Peace Deal",
+      "published_at": "2026-05-29",
+      "url": "https://finnhub.io/api/news?id=c5a28c233b63f747e9d7dd8f9f15bbca2af6174189a3a6f73f6780e37aed564e"
+    },
+    {
+      "source_id": "fh-140450865",
+      "title": "Bitcoin Slumps, But Strategy Isn't Buying. Here's Why.",
+      "published_at": "2026-05-29",
+      "url": "https://finnhub.io/api/news?id=5e2c6dbb8c7a15caf053cfe3671db3cde661d871da5da4d661280e804414a087"
+    },
+    {
+      "source_id": "fh-140457669",
+      "title": "Bitcoin ETFs Are Starting To Look More Like Gold Than Tech \u2014 And Wall Street May Love It",
+      "published_at": "2026-05-29",
+      "url": "https://finnhub.io/api/news?id=77865751070156abd2a2a1ad622f89aa7811fef6a10df49e117b8814f3869b01"
+    },
+    {
+      "source_id": "fh-140456082",
+      "title": "I'm Betting Big On This Near-Perfect Retirement Strategy That Most Investors Miss",
+      "published_at": "2026-05-29",
+      "url": "https://finnhub.io/api/news?id=454704f875749790eaafe6d1a33a096ad35454463b028f771b47a341628d25e5"
+    },
+    {
+      "source_id": "fh-140454908",
+      "title": "The New Retirement Reality: The Danger Of Becoming Too Conservative",
+      "published_at": "2026-05-29",
+      "url": "https://finnhub.io/api/news?id=df55647df4b480cf18c0afb4239ad91fde477086e8a0828fdbdd4eaccef476b1"
+    },
+    {
+      "source_id": "fh-140458675",
+      "title": "Crypto Meets Safe Havens: Direxion Launches 2X Bitcoin, Ether, Gold ETFs",
+      "published_at": "2026-05-28",
+      "url": "https://finnhub.io/api/news?id=b9ea4205957013b4f83f25ac5d9b745855bdeb14649656f34d2e9cb799d13945"
+    },
+    {
+      "source_id": "fh-140482333",
+      "title": "Update: Gold Rises Midafternoon on Reports Iran and the U.S. Agreed to Extend Their Ceasefire",
+      "published_at": "2026-05-28",
+      "url": "https://finnhub.io/api/news?id=fea2bc9e83159c0ab137512c150f63a917fe71664e789f8b21ccbe81fb0092ea"
+    },
+    {
+      "source_id": "fh-140443760",
+      "title": "Exchange-Traded Funds, Equity Futures Lower Pre-Bell Thursday Amid New US Attacks on Iran",
+      "published_at": "2026-05-28",
+      "url": "https://finnhub.io/api/news?id=b2cd274f7073a64f55d171959efac4525d8d1e5c1ec01a9d350b44443c694660"
+    },
+    {
+      "source_id": "fh-140482337",
+      "title": "Gold Falls to a Two-Month Low on Inflation Worries as Oil Prices Rise and the U.S. Reports Inflation Jump in April",
+      "published_at": "2026-05-28",
+      "url": "https://finnhub.io/api/news?id=1014cd7c5037b1d5ccb93e3f3976d30729194b10a4a0ff7357d9dd7a68c340f2"
+    },
+    {
+      "source_id": "fh-140447440",
+      "title": "Fed's Favorite Inflation Gauge Hits 3.8%, Highest Since May 2023 (UPDATED)",
+      "published_at": "2026-05-28",
+      "url": "https://finnhub.io/api/news?id=3aedb77955654f75cd0e9a8865c5da6fa8921e04eac901c93540c85eb74362a4"
+    },
+    {
+      "source_id": "fh-140443003",
+      "title": "Gold Continues To See Consistent Exit Of Metal From Comex Vaults",
+      "published_at": "2026-05-28",
+      "url": "https://finnhub.io/api/news?id=f66b188a3f79f755e16e938535f70d87333ebcc55f7fb3f842d66aaffc19f47e"
+    },
+    {
+      "source_id": "fh-140442349",
+      "title": "Inflection Points: 2026 - A Commodity Odyssey",
+      "published_at": "2026-05-28",
+      "url": "https://finnhub.io/api/news?id=a5c06dded42fbde67c07e5d03d9fb07d51aa1428c885c203def8b972108d7fa0"
+    },
+    {
+      "source_id": "fh-140442101",
+      "title": "What I Believe Could Rally If We See A Military Resolution",
+      "published_at": "2026-05-28",
+      "url": "https://finnhub.io/api/news?id=8417b127aaf82d50d8c86168dce84f841fd3552d70945b721ad4b713392580d2"
+    },
+    {
+      "source_id": "fh-140441160",
+      "title": "Should You Buy Gold While It's Under $5,000?",
+      "published_at": "2026-05-28",
+      "url": "https://finnhub.io/api/news?id=c2a47c6b01166255a88102d943c97d7e8953fd1361cf39932f45930cc5dc38b9"
+    },
+    {
+      "source_id": "fh-140447442",
+      "title": "FBI Finds $40 Million In Gold, Rolexes And Cash At Ex-CIA Official's Home As Bullion Demand Surges",
+      "published_at": "2026-05-28",
+      "url": "https://finnhub.io/api/news?id=20b53533e44648892a9d5db40623e61f4c673411de35bdc3aa464a66ca6acb65"
+    },
+    {
+      "source_id": "fh-140441456",
+      "title": "Gold Bearish Breakdown Below 200-Day MA, Further Potential Weakness Ahead",
+      "published_at": "2026-05-28",
+      "url": "https://finnhub.io/api/news?id=d0617c9fa7950a723319f42a7e070a6600d05ca4d441e056f0530958ff54e058"
+    },
+    {
+      "source_id": "fh-140440232",
+      "title": "Gold Is Approaching The First Buy Signal Since 2022",
+      "published_at": "2026-05-27",
+      "url": "https://finnhub.io/api/news?id=290a464b0e3d8603a1733124567158519d49d3d7c924b0bb3135d6d0d06e5232"
+    },
+    {
+      "source_id": "fh-140482341",
+      "title": "Update: Gold Trading at a Two-Month Low Even as Falling Oil Prices Ease Inflation Concerns",
+      "published_at": "2026-05-27",
+      "url": "https://finnhub.io/api/news?id=e95266b5df0e4c5808b773d514d29b0acfd677fc4a0975cd119b3bf8474da322"
+    },
+    {
+      "source_id": "fh-140442237",
+      "title": "Exchange-Traded Funds, Equity Futures Higher Pre-Bell Amid S&P 500, Nasdaq Rally, Middle East Peace Optimism",
+      "published_at": "2026-05-27",
+      "url": "https://finnhub.io/api/news?id=58c32824b34499dbab5af04053268d710303e45494485fb610d32dfd4d54d88c"
+    },
+    {
+      "source_id": "fh-140482345",
+      "title": "Gold Trading at a Two-Month Low Even as Falling Oil Prices Ease Inflation Concerns",
+      "published_at": "2026-05-27",
+      "url": "https://finnhub.io/api/news?id=3f17d328d163f609d9579e307a01e999d5d119644fe6227f874e2a933e4e7a91"
+    },
+    {
+      "source_id": "fh-140433508",
+      "title": "AI Valuations 'On A Tear'? Why Morgan Stanley Is Pushing Energy Stocks Like SLB, Plus Gold",
+      "published_at": "2026-05-27",
+      "url": "https://finnhub.io/api/news?id=98dfc9c65523d8ee8a05d2c6c4dcc9d7a0bec2225be3ff24871c4c33aa303e71"
+    },
+    {
+      "source_id": "fh-140482347",
+      "title": "Update: Gold Edges Lower Amid Uncertainty Around Progress of Peace Talks In the Middle East",
+      "published_at": "2026-05-26",
+      "url": "https://finnhub.io/api/news?id=b6e68e1a79f381f35fc1c0a870c4e457e365dcddf6f2107ce64b940ed264086c"
+    },
+    {
+      "source_id": "fh-140433510",
+      "title": "The Fed Is Trapped And Markets Aren't Ready For What's Next, Top Macro Analyst Says",
+      "published_at": "2026-05-26",
+      "url": "https://finnhub.io/api/news?id=d36bd923bab6eaff466e920255be4e3859abb0f354b874fc6f12d419e17a6dfb"
+    },
+    {
+      "source_id": "fh-140420188",
+      "title": "Exchange-Traded Funds, Equity Futures Rise Pre-Bell Tuesday Amid Renewed Hopes Around Middle East Peace Deal",
+      "published_at": "2026-05-26",
+      "url": "https://finnhub.io/api/news?id=421a0b2f3b4545359593913bd050eb1772226c4c0d977945c493631502fc982b"
+    },
+    {
+      "source_id": "fh-140482351",
+      "title": "Gold Edges Lower Amid Uncertainty Around Progress of Peace Talks In the Middle East",
+      "published_at": "2026-05-26",
+      "url": "https://finnhub.io/api/news?id=d28ba4628c20b96790a7394dac3a090a96e1e0a861507be45fffea9628690f48"
+    },
+    {
+      "source_id": "fh-140482353",
+      "title": "Update: Gold Rises as the USD Weakens While U.S. and Iran Talk to End Their War",
+      "published_at": "2026-05-25",
+      "url": "https://finnhub.io/api/news?id=642ada62cc2fdf61dc2114674fe102306f6f3d6235cb260f30b79440a682a0ca"
+    },
+    {
+      "source_id": "fh-140482354",
+      "title": "Gold ETFs Shine Again as Ceasefire Hopes Lift Market Optimism",
+      "published_at": "2026-05-25",
+      "url": "https://finnhub.io/api/news?id=3330c6fce5db14862077459fa733d43e642c6a1f3ef818a209561518b3d70c5b"
+    },
+    {
+      "source_id": "fh-140482356",
+      "title": "What Is the Best Way to Own Gold in 2026?",
+      "published_at": "2026-05-25",
+      "url": "https://finnhub.io/api/news?id=73f8a0b37b66618982486354192489410f5db4ea80f911844e472206ee3617ca"
+    },
+    {
+      "source_id": "fh-140482358",
+      "title": "Gold Rises as the USD Weakens While U.S. and Iran Talk to End Their War",
+      "published_at": "2026-05-25",
+      "url": "https://finnhub.io/api/news?id=4ecde6ca4e8412a9abc7274f5f1d69f3860dfbde136d0369942318374615a353"
+    },
+    {
+      "source_id": "fh-140412650",
+      "title": "Trump's Possible Iran Deal Is Putting Gold ETFs Back In Focus As Bullion Prices Climb",
+      "published_at": "2026-05-25",
+      "url": "https://finnhub.io/api/news?id=292bc3512c2da10c3c14fad345fd1fdc9d96921063542beb01e1a825d97c44e5"
+    },
+    {
+      "source_id": "fh-140409318",
+      "title": "IGLD: All That Glitters May Not Be GLD; In 2026, That's The Point",
+      "published_at": "2026-05-25",
+      "url": "https://finnhub.io/api/news?id=10688734ee62c3770235a88da470cd3b546b056590afe7c74fa26c03bb829b60"
+    },
+    {
+      "source_id": "fh-140407931",
+      "title": "Feel Stocks Are Impossibly High, Me Too, Here's What I'm Doing",
+      "published_at": "2026-05-24",
+      "url": "https://finnhub.io/api/news?id=6ebc3d0534604a69f40ca78f298e12ed16322755736085f82271c6e746f21c57"
+    },
+    {
+      "source_id": "fh-140405042",
+      "title": "A Final Path To Peace? Markets Weekly Outlook",
+      "published_at": "2026-05-24",
+      "url": "https://finnhub.io/api/news?id=e986cc0c83d17f6be2e71d7843d36973b68f8f7618813c0c90449e5ef9f12228"
+    },
+    {
+      "source_id": "fh-140404088",
+      "title": "Gold's Collapse Is Ignoring The Stagflationary Recession Ahead",
+      "published_at": "2026-05-24",
+      "url": "https://finnhub.io/api/news?id=07788ccf9b1ef8ecc0faccc5a2b3e65d2774e3518316ca2a0cbbbcbfde19528c"
+    },
+    {
+      "source_id": "fh-140396512",
+      "title": "Weekly Commentary: The Warsh Fed",
+      "published_at": "2026-05-23",
+      "url": "https://finnhub.io/api/news?id=29538514869c5fbc083f282358e1a0231d1ec43eeca99bc9eed3edf0cac02847"
+    },
+    {
+      "source_id": "fh-140396040",
+      "title": "India Gold Market Update: Import Tightening",
+      "published_at": "2026-05-23",
+      "url": "https://finnhub.io/api/news?id=e9f2395bb3e1752271f20417ad8881ec5521795d570a147cf1ea72454b6f1a0a"
+    },
+    {
+      "source_id": "fh-140393012",
+      "title": "Iran Optimism Drives Semi Mania, Potential Short Squeeze Ahead",
+      "published_at": "2026-05-22",
+      "url": "https://finnhub.io/api/news?id=f3cb85d50258305e8177ddff52445942a4958158ab53d95497690a68708d3c80"
+    }
+  ],
+  "leak_check": {
+    "violations": []
+  }
+}

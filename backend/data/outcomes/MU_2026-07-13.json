@@ -1,0 +1,11 @@
+{
+  "note": "What actually happened after as_of. NEVER enters agent-visible state (ADR 0002).",
+  "as_of": "2026-07-13",
+  "prices_after": [
+    {
+      "date": "2026-07-14",
+      "close": 980.4000244140625,
+      "volume": 4342571
+    }
+  ]
+}

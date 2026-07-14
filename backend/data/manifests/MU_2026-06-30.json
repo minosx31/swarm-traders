@@ -1,0 +1,363 @@
+{
+  "ticker": "MU",
+  "as_of": "2026-06-30",
+  "prices": {
+    "bars": 252,
+    "first_date": "2025-06-30",
+    "last_date": "2026-06-30",
+    "source_url": "https://finance.yahoo.com/quote/MU/history"
+  },
+  "fundamentals": {
+    "period_end": "2026-05-28",
+    "available_at": "2026-06-25",
+    "source_url": "https://finance.yahoo.com/quote/MU/financials",
+    "keys": {
+      "income_stmt.revenue": 41456000000.0,
+      "income_stmt.cost_of_revenue": 6400000000.0,
+      "income_stmt.gross_profit": 35056000000.0,
+      "income_stmt.rd_expense": 1316000000.0,
+      "income_stmt.sga_expense": 407000000.0,
+      "income_stmt.operating_income": 33318000000.0,
+      "income_stmt.interest_expense": 0.0,
+      "income_stmt.income_tax": 4978000000.0,
+      "income_stmt.net_income": 28243000000.0,
+      "income_stmt.eps_basic": 25.03,
+      "income_stmt.eps_diluted": 24.67,
+      "balance_sheet.total_assets": 134112000000.0,
+      "balance_sheet.current_assets": 66737000000.0,
+      "balance_sheet.cash_and_equivalents": 24995000000.0,
+      "balance_sheet.total_liabilities": 33388000000.0,
+      "balance_sheet.current_liabilities": 19488000000.0,
+      "balance_sheet.stockholders_equity": 100724000000.0,
+      "balance_sheet.retained_earnings": 94682000000.0,
+      "balance_sheet.inventory": 8567000000.0,
+      "balance_sheet.accounts_receivable": 26894000000.0,
+      "balance_sheet.goodwill": 1150000000.0
+    }
+  },
+  "technicals": {
+    "keys": {
+      "technicals.close_latest": 1154.112549,
+      "technicals.return_5d": 0.097474,
+      "technicals.return_1m": 0.188764,
+      "technicals.return_3m": 2.58698,
+      "technicals.return_6m": 3.056468,
+      "technicals.sma_20": 1049.901517,
+      "technicals.pct_vs_sma_20": 0.099258,
+      "technicals.sma_50": 829.756985,
+      "technicals.pct_vs_sma_50": 0.390904,
+      "technicals.sma_200": 435.689366,
+      "technicals.pct_vs_sma_200": 1.648934,
+      "technicals.high_52w": 1213.373413,
+      "technicals.low_52w": 104.711937,
+      "technicals.pct_vs_high_52w": -0.04884,
+      "technicals.volume_avg_20": 57925610,
+      "technicals.volume_latest_vs_avg_20": -0.272298
+    }
+  },
+  "news": [
+    {
+      "source_id": "fh-140776224",
+      "title": "Why Is IPG Photonics (IPGP) Stock Soaring Today",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=d1290712fd25527bb9af0947c1fa569fe7e33138fabfabaa3d29656ebcedaa49"
+    },
+    {
+      "source_id": "fh-140776225",
+      "title": "Why Intel (INTC) Stock Is Up Today",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=43b1e6754b8979dbac5bee8587da3a10f7c46246c10712b0eca09f41734d2213"
+    },
+    {
+      "source_id": "fh-140781580",
+      "title": "CNBC Daily Open: AI demand fuels investors' portfolios while oil posts biggest monthly decline",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=3f9cbb5d278ee82a84ebe13ffcf969fa69e1c795ee299f1c12b63e3c574f3049"
+    },
+    {
+      "source_id": "fh-140775174",
+      "title": "Micron, Intel and AMD add $2 trillion in value in Q2 rally",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=0c33935880cb501fa457ec6608dcf929e32411e22c71348a3f66d628d29d52fa"
+    },
+    {
+      "source_id": "fh-140775178",
+      "title": "Palo Alto Networks (PANW) Gains Momentum in AI Security and Observability",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=f73d50b7fe9a181e3ff9e55b4b71de35686b35a0718d85b9ec67f77d412e2aae"
+    },
+    {
+      "source_id": "fh-140775197",
+      "title": "Investors are abandoning Mag7 stocks as AI boom transforms",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=4904725d474b0cdd8240208a11f28e1e369f4dbb396a1f2b16b14fb68a753074"
+    },
+    {
+      "source_id": "fh-140776940",
+      "title": "Micron and Other Memory Makers Are Being Sued Over Price Fixing Claims. This Is Nothing More Than Headline Risk for MU Stock.",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=fbde51f25385e508d075373f9be92e82de4af3eb90d5bdb872cd92c318c93177"
+    },
+    {
+      "source_id": "fh-140775229",
+      "title": "Micron Stock Notches Best Ever Quarter. Why 1 Analyst Sees Even More Gains.",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=70dbf0d1a3b480214d68d390850120fe52235f5b034cebeb5939ab737b6d757d"
+    },
+    {
+      "source_id": "fh-140776941",
+      "title": "MU Stock Alert: What to Know as Micron Commits $250M to Trump Accounts",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=ebdf1f100b31973d9b21f86ef426c7e50e8645e45c9f76625c339221c126e493"
+    },
+    {
+      "source_id": "fh-140774413",
+      "title": "Sector Update: Tech Stocks Rise Late Afternoon",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=d74bc712ee8492dafdd33b494cca940433cb538edbbf3dda5ab57aba05b66e92"
+    },
+    {
+      "source_id": "fh-140775230",
+      "title": "How Micron Used The AI Boom To Tame Its Oldest Demon",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=fde9c77d30ab13d00f8699cc92f7b29b0fe445bfe268b3a0d779fdfb508a309f"
+    },
+    {
+      "source_id": "fh-140774468",
+      "title": "Bernstein Triples Its SanDisk Target",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=5fa5f63ee1d1bd5c543e95697ce9aeb0be87ffc5ecb707ac5c3d0f14538f02be"
+    },
+    {
+      "source_id": "fh-140774469",
+      "title": "Micron Drops Surprise $250 Million Move Beyond AI Chips",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=1bc7d0fdc1a0d971aa6f20d9526231a33a93ea7ace99e8e26e72e1ba7cdd7551"
+    },
+    {
+      "source_id": "fh-140774417",
+      "title": "Nvidia, AMD, Intel Lead AI Chip Stock Rally as Wall Street Rebounds",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=1801a253240f737b3de5e31d30a52d80be81fbf665fc143d5a5008a9c675048c"
+    },
+    {
+      "source_id": "fh-140775194",
+      "title": "Apple's Reported Push To Buy Chinese Memory Chips Isn't About Lower Prices, It's About Surviving A Worsening AI-Driven Supply Crunch, Says Analyst",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=b17bbc03bda9387420449d48dc7a284d2fb56cf429b9bb5fd9532a29411da727"
+    },
+    {
+      "source_id": "fh-140775232",
+      "title": "Applied Materials (AMAT) Hits New All-Time Highs: Still Time to Buy Stock in the AI Chip Equipment Leader?",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=2bf645019be3e8dc860debf604cdb9cee69fddd5fc79b7d616550a7e28baee20"
+    },
+    {
+      "source_id": "fh-140774471",
+      "title": "These Were the Best and Worst S&P 500 Stocks for the Second Quarter",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=a8b97c71156b1e366f9afc680263cc4bb45864842805879b3c25a14f69c12702"
+    },
+    {
+      "source_id": "fh-140776559",
+      "title": "Dear Micron Stock Fans, Mark Your Calendars for July 10",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=f7b681083a9d4075b919f51a9abbfdd1ee6ec797db1cd17858fb36711638d33a"
+    },
+    {
+      "source_id": "fh-140775726",
+      "title": "More Bark, More Beta: Corgi Debuts 31 Single-Stock ETFs Covering Nvidia, Tesla And More",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=72bf0ae826fe1cfbddf3f651ac1489245c4b00cc230f67a8d212075c3981c87a"
+    },
+    {
+      "source_id": "fh-140773944",
+      "title": "Looking for the most active stocks in the S&P500 index on Tuesday?",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=1ced7bb16d986dbc5d54041d714c9881556f83d762c9209f572bdb225bda7c90"
+    },
+    {
+      "source_id": "fh-140773393",
+      "title": "Is Rambus One of the Best AI Stocks to Buy Right Now?",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=177ca2a2be76d9e54335bc3374f99c4e050d9d15a6a21c28d24f9b36d7283340"
+    },
+    {
+      "source_id": "fh-140773397",
+      "title": "Apple Is Raising Prices Due to Higher Memory Costs. Is the Stock in Trouble?",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=58dcac139a8e69a29a83f2d28ef0743252c066a5d744ec82b64e1f81549e0772"
+    },
+    {
+      "source_id": "fh-140775117",
+      "title": "Micron: This Cycle Is Different",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=893ea4b501570f079f7d3c0699adc4d6915d2f35b3cf5551d5b12130cca2f8cb"
+    },
+    {
+      "source_id": "fh-140773455",
+      "title": "Micron Commits $250M to Trump Accounts Program",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=8c17343ea98d50d4f52e7688a3a67ce4bac460765ae9c392ba3c1bf03cd0b5f7"
+    },
+    {
+      "source_id": "fh-140773456",
+      "title": "Chip Stocks Stand Out in a Rough Quarter for Tech",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=78782ffdf29c9658bbeecadf3af6510830a2525615858cdf83774449abbe979e"
+    },
+    {
+      "source_id": "fh-140773457",
+      "title": "Micron Stock Price Prediction: After a 4x First Half, the Forecast Flashes Sell",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=26924dfc26ed85e8043e5c3370c237bac2570c4c52273601f63861ac900b7e30"
+    },
+    {
+      "source_id": "fh-140773458",
+      "title": "Forget SanDisk: This Coiled-Spring Semiconductor Titan Is Primed to Outperform",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=3340cebdae4cd008cf64799dddb2f59dc07b201a5c835071b1381ac0703534c6"
+    },
+    {
+      "source_id": "fh-140773459",
+      "title": "Surging Earnings Estimates Signal Upside for Micron (MU) Stock",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=dc0dfc2a1ee9d32dc55e32ddd6042ce8fa43c8048f3d5cc36d10c1a8b65fb75b"
+    },
+    {
+      "source_id": "fh-140772765",
+      "title": "Micron Hit With Price-Fixing Lawsuit: Real Collusion or Simple Supply and Demand?",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=5eea74d0c9dfef483fa7a25357806f60eaffc62e284b96eeeed43d571822048e"
+    },
+    {
+      "source_id": "fh-140772696",
+      "title": "Top Midday Stories: Air Products Ends Louisiana Clean Energy Project; Patrick Industries, LCI to Merge in All-Stock Deal",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=3a8c38473c77b5932ff08950482ab712b281e6589094436f56d375637113cf61"
+    },
+    {
+      "source_id": "fh-140772698",
+      "title": "Micron Stock Redefined Its Future, But the Market Isn't Convinced Yet",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=9d4823b9f14c03436575405e6abef4e684ab584e4e753940fdff558681ba0602"
+    },
+    {
+      "source_id": "fh-140772699",
+      "title": "Why Micron Technology's Stock Could Fall After July 10",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=8d7d2f6b480aed25bcd68a187d7747131445e555b84850955be43d9337772164"
+    },
+    {
+      "source_id": "fh-140773460",
+      "title": "Home Prices Increased More Than Expected",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=2f8ccd2186afe369d9825877f6c88c68977d022a4c7c0ca29abf24f340cc0f78"
+    },
+    {
+      "source_id": "fh-140773417",
+      "title": "Micron and Apple Trade Blame as Prices Soar on Laptops, Phones, and More",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=f7c89cdcfa20a5f783b3ff92dd4c1e86908588d01dbe05fe280433ac38a7c36b"
+    },
+    {
+      "source_id": "fh-140772769",
+      "title": "Seagate vs. Micron: Which AI Storage Stock Has More Upside?",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=cc6d30c7383c1acad2675c55aaeb0b436da1e92cc2cc021cb2be26a04e60422b"
+    },
+    {
+      "source_id": "fh-140772712",
+      "title": "Palantir Price Prediction: The Stock Will Hit $150 on This Date",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=0c0f4610c765cff41d3ca6a4b94af799e02e229947498d1fd0416743f9458cd5"
+    },
+    {
+      "source_id": "fh-140784459",
+      "title": "Sandisk Stock Rallies Tuesday: What's Happening?",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=197e5e6affb6cd9eb7c9e665aff25b2b6886d2d952ea6d2adbcb771f10679531"
+    },
+    {
+      "source_id": "fh-140772771",
+      "title": "Memory stocks are still \u201cearly innings\u201d \u2014 here\u2019s the ETF to invest in now",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=80b0dcef1c1e50b92e4ae70a906d0d49ed89f9697ace7f04f58715f963061218"
+    },
+    {
+      "source_id": "fh-140772772",
+      "title": "Xiaomi, Oppo, Vivo slash shipment targets up to 30% amid memory crunch - Nikkei",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=ef78b67587eaacfb51ffaaf366de78c3cf3e760e0f6ce8c09f70bd105b89b874"
+    },
+    {
+      "source_id": "fh-140772773",
+      "title": "Pre-Markets Dip into Red, Jobs & Housing Data Today",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=e32c090fdcc3c864e1a2646b694195c244a2ea195d13998d7d7f2c352d16200d"
+    },
+    {
+      "source_id": "fh-140772725",
+      "title": "Were the Mag 7 more like the Lag 7 in Q2 2026?",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=c2a403ab0c77234b4c77901c6ade624c76c9b49f98322ae41329c0ab9276091d"
+    },
+    {
+      "source_id": "fh-140771916",
+      "title": "Cencora Pick of the Week at Smart Insider Following Chairman's Share Purchase",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=6da1f19181912dd63ffe08d6f250cf6fb09b3615bd9bb907a4908b31548d4916"
+    },
+    {
+      "source_id": "fh-140774008",
+      "title": "10 Information Technology Stocks Whale Activity In Today\u2019s Session",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=7a01e8a166ee66addafb0837431f58a8a4ad812c6bff00831ce6a93f5e0899b8"
+    },
+    {
+      "source_id": "fh-140771917",
+      "title": "1 Nasdaq 100 Stock for Long-Term Investors and 2 We Brush Off",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=caef435d734e91f834366576e18802aaade4c739ca2e27314db87d342f14fba6"
+    },
+    {
+      "source_id": "fh-140772775",
+      "title": "Zacks Investment Ideas feature highlights: Micron Technology",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=119deef9557a97438002e31ce6ca2af35b3292294a92ae981c56b16030212e75"
+    },
+    {
+      "source_id": "fh-140771918",
+      "title": "Micron Announces $250 Million Investment in Trump Accounts Reaching 1 Million Children, Families and the Future Workforce",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=2cfacdaff838a044a9218993b91c4e70d904053bcc883a33e07a39e85e62e9d5"
+    },
+    {
+      "source_id": "fh-140772776",
+      "title": "June Markets in Focus: Dissecting the Memory Trade + Rotation Out of Tech",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=410134980502f054a3acdffcb9e6c7820a17bb3303d682b9514d9dd9f1a985fb"
+    },
+    {
+      "source_id": "fh-139964018",
+      "title": "Live On CNBC, Kevin Simpson Announces Bought More Palo Alto Networks",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=19c9a624f40e7c94aa157363d46f13bf5b0dcd2b7a469a000e0370dee136acd7"
+    },
+    {
+      "source_id": "fh-140772777",
+      "title": "AAOI Rides on Datacenter and CATV Businesses: More Growth Ahead?",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=9df44db6956782d7bd22d7224c8816afc7a2b8391259ae7569216913cf0611b3"
+    },
+    {
+      "source_id": "fh-140771919",
+      "title": "SanDisk stock target lifted at Bernstein to $3000 on new memory LTAs",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=7e940b35aab8a9d34a79d8f918759d686b7d8297b951b0a07afa8fa1ebff96d2"
+    }
+  ],
+  "leak_check": {
+    "violations": []
+  }
+}

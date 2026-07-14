@@ -1,0 +1,392 @@
+{
+  "ticker": "META",
+  "as_of": "2026-06-30",
+  "model": "openai-gpt-5.6-luna",
+  "recorded_at": "20260714T134705Z",
+  "events": [
+    {
+      "type": "agent_start",
+      "agent": "fundamentals"
+    },
+    {
+      "type": "agent_start",
+      "agent": "sentiment"
+    },
+    {
+      "type": "agent_start",
+      "agent": "technicals"
+    },
+    {
+      "type": "thesis",
+      "agent": "fundamentals",
+      "stance": 0.72,
+      "summary": "Bullish fundamentals: META shows strong quarterly profitability and substantial financial resilience, with operating income of $22.9B, net income of $26.8B, and equity substantially exceeding liabilities. The primary limitation is that the supplied data contains no market price or valuation multiple, so this is an operating-quality rather than explicit valuation call.",
+      "evidence": [
+        {
+          "kind": "numeric",
+          "claim": "Quarterly revenue was $56.311B while operating income was $22.872B, implying approximately a 40.6% operating margin.",
+          "citation_key": "income_stmt.revenue",
+          "cited_value": 56311000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Quarterly net income was $26.773B, with diluted EPS of $10.44.",
+          "citation_key": "income_stmt.net_income",
+          "cited_value": 26773000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Shareholders' equity was $243.681B versus total liabilities of $151.569B, indicating a sizeable book-equity cushion.",
+          "citation_key": "balance_sheet.stockholders_equity",
+          "cited_value": 243681000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Current assets were $109.765B versus current liabilities of $46.753B, supporting strong reported short-term coverage.",
+          "citation_key": "balance_sheet.current_assets",
+          "cited_value": 109765000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Long-term debt was $58.748B compared with total assets of $395.250B, a moderate balance-sheet burden relative to the asset base.",
+          "citation_key": "balance_sheet.long_term_debt",
+          "cited_value": 58748000000.0,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "grounding",
+      "agent": "fundamentals",
+      "gated_in": true,
+      "grounded": 5,
+      "dropped": 0
+    },
+    {
+      "type": "thesis",
+      "agent": "sentiment",
+      "stance": -0.55,
+      "summary": "News sentiment for META is moderately bearish: coverage highlights investor concern over AI infrastructure spending, a reported restriction of Meta\u2019s access to Google\u2019s Gemini models, and regulatory pressure, despite some potentially positive product initiatives and AI ecosystem partnerships.",
+      "evidence": [
+        {
+          "kind": "textual",
+          "claim": "The Magnificent Seven, including Meta, reportedly lost about $2.3 trillion in June as investors scrutinized AI infrastructure spending.",
+          "source_id": "fh-140771840",
+          "quoted_span": "collectively lost around $2. 3 trillion in market value during June as investors reassessed the scale of artificial intelligence infrastructure spending",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=1bc5b4ddf2fd8a8b2b7434fc66ad8cacb9cc352b81a0e02ca63c1d2d84ae2f5d",
+          "verified_quote": true
+        },
+        {
+          "kind": "textual",
+          "claim": "Google reportedly restricted Meta\u2019s access to Gemini models because of compute shortages, disrupting internal AI projects and forcing Meta to accelerate in-house development.",
+          "source_id": "fh-140771897",
+          "quoted_span": "Google has restricted Meta Platforms' access to its Gemini AI models, citing industry wide compute shortages",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=75583602e1a80f62b4dee361589714d513bd213bb9ec2f50cd382d244efbabbe",
+          "verified_quote": true
+        },
+        {
+          "kind": "textual",
+          "claim": "Coverage characterizes Meta as facing a new AI challenge after Google limited Gemini access.",
+          "source_id": "fh-140774449",
+          "quoted_span": "Meta Stock Faces New AI Challenge as Google Limits Gemini Access",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=27691c631fcd3a0bddd70ad96c77249d0350c1ac62f78e5e8904577bd3620744",
+          "verified_quote": true
+        },
+        {
+          "kind": "textual",
+          "claim": "Australia introduced legislation that could expose Meta and other platforms to legal action and potentially millions in fines over under-16 social-media restrictions.",
+          "source_id": "fh-140771936",
+          "quoted_span": "could see its internet regulator take legal action against non-compliant tech giants",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=f79f90a882f3644fc3e28240aedab373842a636c17bc6c1f481317bed1ee833d",
+          "verified_quote": true
+        },
+        {
+          "kind": "textual",
+          "claim": "Meta is reportedly pursuing a standalone prediction-market app, a possible new growth catalyst but still an unproven initiative.",
+          "source_id": "fh-140771937",
+          "quoted_span": "directed a team to build a standalone prediction-market app",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=7d69eacde5f959e839fbe17311c118010f450e9fcdb705f2dba3fea1d481b3ee",
+          "verified_quote": true
+        }
+      ]
+    },
+    {
+      "type": "grounding",
+      "agent": "sentiment",
+      "gated_in": true,
+      "grounded": 5,
+      "dropped": 0
+    },
+    {
+      "type": "thesis",
+      "agent": "technicals",
+      "stance": -0.68,
+      "summary": "META's technical picture is bearish: the stock is below its 20-, 50-, and 200-day moving averages, with negative 1-month and 6-month returns and a substantial drawdown from its 52-week high. The near-term 5-day stabilization is minor, while volume is essentially average and does not provide strong reversal confirmation.",
+      "evidence": [
+        {
+          "kind": "numeric",
+          "claim": "META is trading 2.4931% below its 20-day SMA.",
+          "citation_key": "technicals.pct_vs_sma_20",
+          "cited_value": -0.024931,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "META is trading 7.3018% below its 50-day SMA.",
+          "citation_key": "technicals.pct_vs_sma_50",
+          "cited_value": -0.073018,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "META is trading 12.9387% below its 200-day SMA.",
+          "citation_key": "technicals.pct_vs_sma_200",
+          "cited_value": -0.129387,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "META's 1-month return is -10.8612%.",
+          "citation_key": "technicals.return_1m",
+          "cited_value": -0.108612,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "META's 6-month return is -14.9249%.",
+          "citation_key": "technicals.return_6m",
+          "cited_value": -0.149249,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "META is 28.4638% below its 52-week high.",
+          "citation_key": "technicals.pct_vs_high_52w",
+          "cited_value": -0.284638,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "The latest 5-day return is only +0.1939%, indicating limited short-term rebound momentum.",
+          "citation_key": "technicals.return_5d",
+          "cited_value": 0.001939,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Latest volume is 1.5896% below the 20-day average, offering no notable volume confirmation of a reversal.",
+          "citation_key": "technicals.volume_latest_vs_avg_20",
+          "cited_value": -0.015896,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "grounding",
+      "agent": "technicals",
+      "gated_in": true,
+      "grounded": 8,
+      "dropped": 0
+    },
+    {
+      "type": "agent_start",
+      "agent": "red_team"
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "fundamentals",
+      "kind": "logical",
+      "critique": "The bullish fundamentals thesis treats a single strong quarterly snapshot as durable operating quality while acknowledging that it does not establish valuation, so it cannot support a bullish investment stance rather than only a positive profitability description.",
+      "counter_evidence": []
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "fundamentals",
+      "kind": "evidence",
+      "critique": "The thesis overstates financial resilience by emphasizing total equity and assets while the supplied balance sheet includes $58.748B of long-term debt, and it does not establish that the reported earnings or margins will persist.",
+      "counter_evidence": [
+        {
+          "kind": "numeric",
+          "claim": "Meta reported $58.748B of long-term debt.",
+          "citation_key": "balance_sheet.long_term_debt",
+          "cited_value": 58748000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Meta reported $395.250B of total assets, against which the debt burden is being characterized.",
+          "citation_key": "balance_sheet.total_assets",
+          "cited_value": 395250000000.0,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "sentiment",
+      "kind": "evidence",
+      "critique": "The moderately bearish sentiment thesis understates the possibility that the reported AI-access disruption is strategically constructive because it is prompting Meta to accelerate in-house systems, while positive initiatives and analyst optimism provide counterweight.",
+      "counter_evidence": [
+        {
+          "kind": "textual",
+          "claim": "Meta is accelerating work on in-house AI systems to reduce reliance on external providers.",
+          "source_id": "fh-140771897",
+          "quoted_span": "Meta is accelerating work on its in house AI systems",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=75583602e1a80f62b4dee361589714d513bd213bb9ec2f50cd382d244efbabbe",
+          "verified_quote": true
+        },
+        {
+          "kind": "textual",
+          "claim": "An analyst expects the Magnificent Seven to significantly outperform in the second half of the year, a view that includes Meta as a named member of the group in the supplied coverage context.",
+          "source_id": "fh-140772722",
+          "quoted_span": "expects the Magnificent Seven stocks to significantly outperform in the second half of the year",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=d1e8560f0203e36c1b1d81b521e0310316454474cc318d2adf35302be5f30f15",
+          "verified_quote": true
+        }
+      ]
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "sentiment",
+      "kind": "logical",
+      "critique": "The bearish sentiment thesis conflates reported risks affecting the broader Magnificent Seven or the sector with META-specific sentiment and gives limited weight to the explicitly described prediction-market initiative as a potential catalyst, so its moderate bearish magnitude is not fully supported by the mixed evidence.",
+      "counter_evidence": []
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "technicals",
+      "kind": "evidence",
+      "critique": "The bearish technical thesis ignores the positive three-month performance and the latest five-day gain, which indicate that the intermediate-term tape is not uniformly negative and that a stabilization or reversal case remains possible.",
+      "counter_evidence": [
+        {
+          "kind": "numeric",
+          "claim": "META's three-month return is positive 5.1143%.",
+          "citation_key": "technicals.return_3m",
+          "cited_value": 0.051143,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "META's latest five-day return is positive 0.1939%.",
+          "citation_key": "technicals.return_5d",
+          "cited_value": 0.001939,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "technicals",
+      "kind": "logical",
+      "critique": "The thesis treats being below moving averages and a 52-week-high drawdown as conclusive bearish evidence, but those are lagging or distance measures and do not by themselves establish continued downside; the stated lack of volume confirmation also cannot prove that a reversal will fail.",
+      "counter_evidence": []
+    },
+    {
+      "type": "grounding",
+      "agent": "red_team",
+      "gated_in": true,
+      "grounded": 6,
+      "dropped": 0
+    },
+    {
+      "type": "agent_start",
+      "agent": "fundamentals"
+    },
+    {
+      "type": "agent_start",
+      "agent": "sentiment"
+    },
+    {
+      "type": "agent_start",
+      "agent": "technicals"
+    },
+    {
+      "type": "rebuttal",
+      "agent": "fundamentals",
+      "proposed_stance": 0.45,
+      "response": "I concede that one quarter cannot establish persistence or valuation, and that $58.748B of long-term debt is a meaningful limitation; the data nevertheless supports a moderated bullish operating-quality stance because quarterly revenue was $56.311B with $22.872B operating income and $26.773B net income ([income_stmt.revenue]; [income_stmt.operating_income]; [income_stmt.net_income]), while equity of $243.681B exceeded liabilities of $151.569B and current assets of $109.765B exceeded current liabilities of $46.753B ([balance_sheet.stockholders_equity]; [balance_sheet.total_liabilities]; [balance_sheet.current_assets]; [balance_sheet.current_liabilities])."
+    },
+    {
+      "type": "rebuttal",
+      "agent": "technicals",
+      "proposed_stance": -0.56,
+      "response": "I concede that META\u2019s +5.1143% three-month return [technicals.return_3m] and +0.1939% five-day return [technicals.return_5d] support a stabilization/reversal possibility, and that moving-average position and the 52-week drawdown are not conclusive on their own. However, the broader tape remains materially weak: returns are -10.8612% over one month [technicals.return_1m] and -14.9249% over six months [technicals.return_6m], while price remains 2.4931%, 7.3018%, and 12.9387% below the 20-, 50-, and 200-day SMAs, respectively [technicals.pct_vs_sma_20; technicals.pct_vs_sma_50; technicals.pct_vs_sma_200]; the modest five-day gain is not accompanied by above-average volume, with latest volume 1.5896% below its 20-day average [technicals.volume_latest_vs_avg_20]. I therefore reduce the bearish conviction but retain a moderate bearish stance of -0.56."
+    },
+    {
+      "type": "rebuttal",
+      "agent": "sentiment",
+      "proposed_stance": -0.43,
+      "response": "I concede that the evidence is mixed: Meta\u2019s reported acceleration of in-house AI systems could be strategically constructive [fh-140771897], and the prediction-market app is described as a possible growth catalyst [fh-140771932]. However, the bearish direction remains supported because Google\u2019s restriction reportedly disrupted Meta\u2019s AI projects [fh-140771897], Meta faces a new AI challenge [fh-140774449], and the broader Magnificent Seven\u2014including Meta\u2014lost about $2.3 trillion as investors scrutinized AI infrastructure spending [fh-140771840]; Australia\u2019s legislation also creates potential legal and fine exposure [fh-140771936]. I therefore moderate the magnitude from -0.55 to -0.43 rather than reverse direction."
+    },
+    {
+      "type": "agent_start",
+      "agent": "judge"
+    },
+    {
+      "type": "adjudication",
+      "agent": "fundamentals",
+      "adjudicated_stance": 0.45,
+      "attacks_landed": [
+        "The bullish thesis relies on a single quarterly snapshot and does not establish earnings or margin persistence or valuation, limiting it to a moderated operating-quality conclusion rather than a full investment call.",
+        "The balance-sheet resilience framing should acknowledge the meaningful $58.748B of long-term debt, although equity exceeds liabilities and current assets exceed current liabilities."
+      ],
+      "rationale": "The reported profitability, margins, equity cushion, and current-asset coverage are strong grounded evidence for a positive operating-quality stance. The attacks validly reduce confidence because there is no valuation evidence, no persistence data, and debt is meaningful, so the rebutted moderate bullish stance is appropriate."
+    },
+    {
+      "type": "adjudication",
+      "agent": "sentiment",
+      "adjudicated_stance": -0.43,
+      "attacks_landed": [
+        "The bearish thesis gives insufficient weight to the possibility that the AI-access disruption could accelerate strategically constructive in-house development.",
+        "The evidence is mixed and includes a possible growth catalyst, while some reported concerns apply to the broader Magnificent Seven or sector rather than being uniquely META-specific; this limits the magnitude of the bearish conclusion."
+      ],
+      "rationale": "The cited AI disruption, regulatory exposure, and market concern provide grounded bearish signals, but the in-house development response and prediction-market initiative are credible counterweights. The rebuttal appropriately moderates the bearish stance without reversing it."
+    },
+    {
+      "type": "adjudication",
+      "agent": "technicals",
+      "adjudicated_stance": -0.56,
+      "attacks_landed": [
+        "The positive 3-month and modest 5-day returns show the tape is not uniformly negative and leave a stabilization or reversal possibility.",
+        "Moving-average positioning and the 52-week-high drawdown are lagging or distance measures, not conclusive proof of continued downside; below-average volume likewise cannot prove a reversal will fail."
+      ],
+      "rationale": "The negative 1-month and 6-month returns and price below the 20-, 50-, and 200-day averages are substantial evidence of a weak trend. The attacks correctly prevent a strongly bearish conclusion, but the small short-term gains and lack of volume confirmation do not outweigh the broader weakness, supporting the rebutted moderate bearish stance."
+    },
+    {
+      "type": "verdict",
+      "aggregate_stance": -0.18,
+      "direction": "neutral",
+      "conviction": 0.18,
+      "high_conviction": false,
+      "dissent": "high",
+      "voting_lenses": 3
+    }
+  ],
+  "usage": {
+    "llm_calls": 8,
+    "cost_usd": 0.038141,
+    "tokens": {
+      "input": 20549,
+      "output": 2932,
+      "cache_read": 0,
+      "cache_creation": 0
+    }
+  }
+}

@@ -1,0 +1,364 @@
+{
+  "ticker": "AAPL",
+  "as_of": "2026-06-05",
+  "prices": {
+    "bars": 252,
+    "first_date": "2025-06-05",
+    "last_date": "2026-06-05",
+    "source_url": "https://finance.yahoo.com/quote/AAPL/history"
+  },
+  "fundamentals": {
+    "period_end": "2026-03-28",
+    "available_at": "2026-05-01",
+    "source_url": "https://finance.yahoo.com/quote/AAPL/financials",
+    "keys": {
+      "income_stmt.revenue": 111184000000.0,
+      "income_stmt.cost_of_revenue": 56403000000.0,
+      "income_stmt.gross_profit": 54781000000.0,
+      "income_stmt.rd_expense": 11419000000.0,
+      "income_stmt.sga_expense": 7477000000.0,
+      "income_stmt.operating_expenses": 18896000000.0,
+      "income_stmt.operating_income": 35885000000.0,
+      "income_stmt.income_tax": 6255000000.0,
+      "income_stmt.net_income": 29578000000.0,
+      "income_stmt.eps_basic": 2.02,
+      "income_stmt.eps_diluted": 2.01,
+      "balance_sheet.total_assets": 371082000000.0,
+      "balance_sheet.current_assets": 144114000000.0,
+      "balance_sheet.cash_and_equivalents": 45572000000.0,
+      "balance_sheet.total_liabilities": 264591000000.0,
+      "balance_sheet.current_liabilities": 134641000000.0,
+      "balance_sheet.long_term_debt": 74404000000.0,
+      "balance_sheet.stockholders_equity": 106491000000.0,
+      "balance_sheet.retained_earnings": 12359000000.0,
+      "balance_sheet.inventory": 6747000000.0,
+      "balance_sheet.accounts_receivable": 30339000000.0,
+      "balance_sheet.accounts_payable": 57349000000.0
+    }
+  },
+  "technicals": {
+    "keys": {
+      "technicals.close_latest": 307.339996,
+      "technicals.return_5d": -0.015125,
+      "technicals.return_1m": 0.069956,
+      "technicals.return_3m": 0.194839,
+      "technicals.return_6m": 0.083621,
+      "technicals.sma_20": 304.240001,
+      "technicals.pct_vs_sma_20": 0.010189,
+      "technicals.sma_50": 281.08515,
+      "technicals.pct_vs_sma_50": 0.093405,
+      "technicals.sma_200": 264.763942,
+      "technicals.pct_vs_sma_200": 0.160808,
+      "technicals.high_52w": 315.200012,
+      "technicals.low_52w": 194.866928,
+      "technicals.pct_vs_high_52w": -0.024937,
+      "technicals.volume_avg_20": 47811570,
+      "technicals.volume_latest_vs_avg_20": 0.365998
+    }
+  },
+  "news": [
+    {
+      "source_id": "fh-140545262",
+      "title": "Why Dan Ives Sees Apple WWDC As A Major AI Catalyst for AAPL",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=927c21b003aa25b0cd2674e2f6da5d482c75048662f5b813082eb11254848546"
+    },
+    {
+      "source_id": "fh-140544072",
+      "title": "Apple (AAPL) Stock Moves -1.18%: What You Should Know",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=8fe298875e88a3351189538684397f4299e935bea199fe814233c77ca6c42bb5"
+    },
+    {
+      "source_id": "fh-140542484",
+      "title": "Dow Jones Futures: What To Do As Market Rally Faces First Real Test; SpaceX IPO, Apple, Oracle Loom",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=ccdbc2588262cc9729c28b65fe8800fa630c306eca838662c30fdd2f2540306b"
+    },
+    {
+      "source_id": "fh-140544073",
+      "title": "What investors can expect from Apple's WWDC",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=cbe51cebeb5f36631efc69f3c7d76a3af4e97021ca520b35a7ee96a9d502465a"
+    },
+    {
+      "source_id": "fh-140542486",
+      "title": "Apple Has a Big Week Ahead With AI Siri Expected at WWDC. Here's How Much Traders See The Stock Moving",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=1b586e35d118e342738278f93e3f8c6576c448f825940db7c46e0cb782d56dcb"
+    },
+    {
+      "source_id": "fh-140546202",
+      "title": "Stocks Settle Sharply Lower as Tech Companies Routed",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=12c91d9ab421dca877e20a94bac8123c8734377bde6697e6945497ec99a15247"
+    },
+    {
+      "source_id": "fh-140542487",
+      "title": "What Is The Biggest Threat To Google Stock?",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=13dc952f639f742251766518dd5a237a7fdbbe92a2d8bb51c859766af9e24652"
+    },
+    {
+      "source_id": "fh-140550600",
+      "title": "Jim Cramer looks ahead to next week's market game plan",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=b8e9703979166c094762baf9e8125ba8134170120b1dff6a1f025292dce9d3bd"
+    },
+    {
+      "source_id": "fh-140540355",
+      "title": "AI Layoffs Already Have Surpassed Last Year\u2019s Total. Tech Workers Are Being Cut First.",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=25784f6155675cba4be302db17f529ddabcc13be5bf245b8f756b63d7a9ed268"
+    },
+    {
+      "source_id": "fh-140540356",
+      "title": "Apple Stock Nears All-Time High: Where Will It End The Year?",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=96e70e2dfad89aac68092755fa55663366d590f31a74d68dd382973a3e5238f5"
+    },
+    {
+      "source_id": "fh-140540361",
+      "title": "Why June 8 Could Be a Huge Day for Apple Stock",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=65b62cccd911826ea725dd9580ae74d78bd6a620ccc436cf0f01091d23d62098"
+    },
+    {
+      "source_id": "fh-140545352",
+      "title": "Morgan Stanley Revamps Its Dell Stock Price Target After Blowout Earnings. Dell Is Expanding Beyond the AI Boom.",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=057b6ab40fa1e600c2f9d8c55e3d71abf573ef1b206e32f9deb4573850689c8a"
+    },
+    {
+      "source_id": "fh-140538981",
+      "title": "What's going on in today's session: S&P500 most active stocks",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=a5d9aba34cb3f9fe4e8acd658e21dbcea3b040c99b5800a033451a54981e4c66"
+    },
+    {
+      "source_id": "fh-140540362",
+      "title": "Apple bets its AI future on Monday's WWDC",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=d9a1504446cbb216dbd8f1e4672060978cd7f18da52fd76854b4a5875d3e36cc"
+    },
+    {
+      "source_id": "fh-140538301",
+      "title": "Apple's WWDC Hinges on Siri and AI",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=4fb5026072ddf9ca2d149814ec1609bd9d25421449a7e9462ea5b3701cf5e640"
+    },
+    {
+      "source_id": "fh-140550601",
+      "title": "Tim Cook\u2019s contrarian AI bet faces its biggest test at Apple\u2019s WWDC on Monday",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=93a4e808dc4bb856b8e76b0435ad97dfe66d4dfa595baeda8d6e9bacea1fb2fc"
+    },
+    {
+      "source_id": "fh-140538307",
+      "title": "Hon Hai Revenue Jumps 34% As AI Server Demand Accelerates",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=48091708e3dbc9c844ceb5c94e498055643b9d61eb8a309c276504b2777843f1"
+    },
+    {
+      "source_id": "fh-140538325",
+      "title": "Apple WWDC Preview Puts Siri in Focus",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=25e80d81c51031f4ec8a26b73d29e6206ae6edd2fc903da7442f4a7fe45b5d3a"
+    },
+    {
+      "source_id": "fh-140550576",
+      "title": "Marvell Technology and Flex to join S&P 500 index, replacing Pool and Campbell's",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=2a59ad3952719751d694943f72a2105b9d409446dcdf7e4b69b2b2bdfdb89ecf"
+    },
+    {
+      "source_id": "fh-140538326",
+      "title": "Vanguard\u2019s $223 Billion Growth ETF VUG Is Quietly Beating Most Large Cap Active Funds at One Tenth the Cost",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=3c19de58ad8132736701055f596bc10cefbe91f7f0ee8d7af7dff55c94ff4807"
+    },
+    {
+      "source_id": "fh-140538327",
+      "title": "Apple Stock And The Signal Hiding In The CEO's Script",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=db88c965282e0b9ef96003d14d9b39b9f7f149a9a698effee91ce0c2a0a8527a"
+    },
+    {
+      "source_id": "fh-140538328",
+      "title": "Dell Technologies (DELL): The Best American Stock to Buy and Hold for the Next Decade",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=85217b40d8c8b37e787b028a5353dc06ce066b3e2212fb462b0b3d6ef686b250"
+    },
+    {
+      "source_id": "fh-140538329",
+      "title": "Arm Insiders Sold $25.6 Million in Stock. They Missed a Historic Rally.",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=9804f9f6233c54aa2361a0ea040406e46eedfcea1acc493edaaa8f38bad3b245"
+    },
+    {
+      "source_id": "fh-140538330",
+      "title": "Apple Is About to Make Its Biggest Bet on AI Yet on Monday",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=174e8b0aaae58d96e174169ee10838f524bce543c0ecbf284c6a6216fc7fc7c1"
+    },
+    {
+      "source_id": "fh-140550605",
+      "title": "'Closing Bell' panel talks what to expect from Apple's WWDC next week",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=d7e04accf90bfd5e12178bf4ab2280803033cfb133d7821a8ec6033d5d8f1726"
+    },
+    {
+      "source_id": "fh-140538331",
+      "title": "Apple\u2019s AI Do-Over Is Here. The Pressure Is On for WWDC.",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=42004adfed313d953a2db774ab016613fb085315b9bc99250797b7fc756f64da"
+    },
+    {
+      "source_id": "fh-140536509",
+      "title": "Meta Stock Turns $1,000 Into $5,300 in 10 Years But Did It Beat The S&P 500?",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=298f2e1903a94906177c4840180af848603353576ffcdb0c13c0bc2400102897"
+    },
+    {
+      "source_id": "fh-140536489",
+      "title": "The S&P 500 Snubs SpaceX as Elon Musk Describes a Coming \u2018Massive Growth Phase\u2019",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=c76ec10ffa4b50ecba06a3786f2716de7b80a83ca340bbd0623ce1de199881cd"
+    },
+    {
+      "source_id": "fh-140536511",
+      "title": "Uyeda Says SEC Focused on RIA Fiduciary Process, Not Product Choice",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=a33af87ab6e0a8fa4aeef347e961c95e637cf7247052934c639b71c19aa0e0cd"
+    },
+    {
+      "source_id": "fh-140536512",
+      "title": "Apple Expected to Detail AI Push at Developer Conference, Wedbush Says",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=16162e9f1e2fe9cdc89a0e4e2b857d5d02d9ad2383402e894251923a255450ce"
+    },
+    {
+      "source_id": "fh-140536507",
+      "title": "Read Between The Lines To Analyze Nvidia, Palantir And This IPO Leader",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=5a270752b0cfc581ba37819118b56387476b6efb8b60e6ff4231e47379939a7e"
+    },
+    {
+      "source_id": "fh-140536514",
+      "title": "Bernstein Sees AI-Driven Growth Opportunities for Apple Ahead of WWDC 2026 (AAPL)",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=ce934736f93519077037ab3ed8c142adc0bc333031c466446950d97e473659ae"
+    },
+    {
+      "source_id": "fh-140536515",
+      "title": "Meet the Super Semiconductor Stock Crushing Nvidia in 2026 With a Return of 120%",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=4b56dcefaa13d73b766257043b43ae00825840ad278e9e148731ea33e8fb13aa"
+    },
+    {
+      "source_id": "fh-140538092",
+      "title": "10 Information Technology Stocks With Whale Alerts In Today's Session",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=7b91c7c872cc0616be18d976b257056b6b8b72310f561abb018f2eb327187af2"
+    },
+    {
+      "source_id": "fh-140537921",
+      "title": "The Hidden $500+ Billion That Could Hurt These AI Stocks",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=44f63ff4b2320660c9e05f04c10ed02b5a5fe257bec1764de091f47c5d71b083"
+    },
+    {
+      "source_id": "fh-140535380",
+      "title": "Apple Set To Introduce AI-Powered Siri Digital Assistant At WWDC",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=533504a5a720710885303ce911d90dad9754f82b2d47f35027832580db9d3d54"
+    },
+    {
+      "source_id": "fh-140537808",
+      "title": "Investors are taking profits ahead of SpaceX IPO, says Capital Wealth's Kevin Simpson",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=0db707d043593fab7fae91fe7efdedd916aff22c844966831a745fb8149cfd27"
+    },
+    {
+      "source_id": "fh-140537373",
+      "title": "Wall Street Roundup: AI Trade Passes The Baton",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=32435f0e0cd4af2ee6ac7f9b55013e865c000232a20068f14e2b83a134af3191"
+    },
+    {
+      "source_id": "fh-140537385",
+      "title": "Apple's WWDC: Tim Cook's AI legacy at stake in his final developer conference as CEO",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=1729480b8580c4ea7d1447b32ad3e5ac58386e0a22b241dd1bccc5f9b401b77f"
+    },
+    {
+      "source_id": "fh-140535381",
+      "title": "New Book Exposes How Third Parties Have Hijacked American Healthcare -- and Offers a Revolutionary Path Forward",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=417773d4cb45fc145bfa3367a6ffaf4478a5d964ca411d80408ef941d6880c8b"
+    },
+    {
+      "source_id": "fh-140539610",
+      "title": "Congressman Discloses First Stock Purchases Over A Year Later: Investors See Red Flags",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=7295539e10cb34cc5dde21915d94d81ccec598090efe54c536a1afa907f7b846"
+    },
+    {
+      "source_id": "fh-140535382",
+      "title": "This is the most important area to watch for Apple\u2019s WWDC this year: Citi",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=82561dab810cd12983470cc51baa3ef72d61ef436e6d266c865840bc629a48c1"
+    },
+    {
+      "source_id": "fh-140537397",
+      "title": "Apple\u2019s WWDC puts Tim Cook\u2019s AI legacy on the line",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=17a7e17a7010e562749ec71d9b219d8bb88e287b223dabfbd176a20d77452307"
+    },
+    {
+      "source_id": "fh-140535383",
+      "title": "These major companies may owe you money. How to apply in Arizona",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=5d7372a98bc4ade70fea3133d6fea9ba38eaab1ffad29be0963c84bbd9ab8ecc"
+    },
+    {
+      "source_id": "fh-140539639",
+      "title": "Apple Stock Could Finally Have Its AI Moment At WWDC: Ives says 'Expect Fireworks'",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=fa247d7d2d36463db2660f8f42f38c1795a10661afac9500ac47f1b3a27bd82e"
+    },
+    {
+      "source_id": "fh-140538068",
+      "title": "Momo Aggressively Buys Semiconductor Dip; Big Setback For SpaceX; Blowout Jobs Report",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=1b16cf6cc5e48fab0f5939a67615629856e4d5a001dc115c6a7ccc123bde661e"
+    },
+    {
+      "source_id": "fh-140538098",
+      "title": "Jim Cramer Says A $4 Trillion SpaceX Could Force Investors To Dump Nvidia, Apple And Microsoft",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=517561a8a7c174e067aa61cb39f9a87b8c7d3d039dba030370fe40be8d7fbbb5"
+    },
+    {
+      "source_id": "fh-140534699",
+      "title": "Here Is What Morgan Stanley Has to Say Ahead of Apple\u2019s (AAPL) WWDC 2026 Event?",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=ac476f676843c0c95b94bb0910243bc4d61a255499bbb2f678928ed111dfffe6"
+    },
+    {
+      "source_id": "fh-140539642",
+      "title": "Wedbush Reiterates Outperform on Apple, Maintains $400 Price Target",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=374f4ae0b820ad6aad2502ba9b9c956e7a58b795e3a68957c8294fb69836a9b9"
+    },
+    {
+      "source_id": "fh-140539643",
+      "title": "AbbVie, Oracle, Apple And More On CNBC's 'Final Trades'",
+      "published_at": "2026-06-05",
+      "url": "https://finnhub.io/api/news?id=702598efcb0342499216cced8b1d269906e9eb266214b0f238fba467f8837734"
+    }
+  ],
+  "leak_check": {
+    "violations": []
+  }
+}

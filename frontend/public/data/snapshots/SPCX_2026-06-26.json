@@ -1,0 +1,456 @@
+{
+  "ticker": "SPCX",
+  "as_of": "2026-06-26",
+  "prices": {
+    "bars": 10,
+    "first_date": "2026-06-12",
+    "last_date": "2026-06-26",
+    "source_url": "https://finance.yahoo.com/quote/SPCX/history"
+  },
+  "fundamentals": {
+    "period_end": "2026-03-31",
+    "available_at": "2026-05-15",
+    "source_url": "https://finance.yahoo.com/quote/SPCX/financials",
+    "keys": {
+      "income_stmt.Tax Effect Of Unusual Items": 4400000.0,
+      "income_stmt.Tax Rate For Calcs": 0.4,
+      "income_stmt.Normalized EBITDA": -1175000000.0,
+      "income_stmt.Total Unusual Items": 11000000.0,
+      "income_stmt.Total Unusual Items Excluding Goodwill": 11000000.0,
+      "income_stmt.Net Income From Continuing Operation Net Minority Interest": -4276000000.0,
+      "income_stmt.Reconciled Depreciation": 2442000000.0,
+      "income_stmt.Reconciled Cost Of Revenue": 2388000000.0,
+      "income_stmt.EBITDA": -1164000000.0,
+      "income_stmt.EBIT": -3606000000.0,
+      "income_stmt.Net Interest Income": -451000000.0,
+      "income_stmt.Interest Expense": 664000000.0,
+      "income_stmt.Interest Income": 213000000.0,
+      "income_stmt.Normalized Income": -4282600000.0,
+      "income_stmt.Net Income From Continuing And Discontinued Operation": -4276000000.0,
+      "income_stmt.Total Expenses": 6648000000.0,
+      "income_stmt.Total Operating Income As Reported": -1943000000.0,
+      "income_stmt.Diluted Average Shares": 10607000000.0,
+      "income_stmt.Basic Average Shares": 10607000000.0,
+      "income_stmt.Diluted EPS": -0.41,
+      "income_stmt.Basic EPS": -0.41,
+      "income_stmt.Diluted NI Availto Com Stockholders": -4382000000.0,
+      "income_stmt.Net Income Common Stockholders": -4382000000.0,
+      "income_stmt.Otherunder Preferred Stock Dividend": -565000000.0,
+      "income_stmt.Preferred Stock Dividends": 671000000.0,
+      "income_stmt.Net Income": -4276000000.0,
+      "income_stmt.Net Income Including Noncontrolling Interests": -4276000000.0,
+      "income_stmt.Net Income Continuous Operations": -4276000000.0,
+      "income_stmt.Tax Provision": 6000000.0,
+      "income_stmt.Pretax Income": -4270000000.0,
+      "income_stmt.Other Income Expense": -1865000000.0,
+      "income_stmt.Other Non Operating Income Expenses": -1876000000.0,
+      "income_stmt.Special Income Charges": 11000000.0,
+      "income_stmt.Impairment Of Capital Assets": 0.0,
+      "income_stmt.Restructuring And Mergern Acquisition": -11000000.0,
+      "income_stmt.Net Non Operating Interest Income Expense": -451000000.0,
+      "income_stmt.Interest Expense Non Operating": 664000000.0,
+      "income_stmt.Interest Income Non Operating": 213000000.0,
+      "income_stmt.Operating Income": -1954000000.0,
+      "income_stmt.Operating Expense": 4260000000.0,
+      "income_stmt.Research And Development": 3514000000.0,
+      "income_stmt.Selling General And Administration": 746000000.0,
+      "income_stmt.Gross Profit": 2306000000.0,
+      "income_stmt.Cost Of Revenue": 2388000000.0,
+      "income_stmt.Total Revenue": 4694000000.0,
+      "income_stmt.Operating Revenue": 4694000000.0,
+      "balance_sheet.Ordinary Shares Number": 13075865175.0,
+      "balance_sheet.Share Issued": 13075865175.0,
+      "balance_sheet.Net Debt": 14413000000.0,
+      "balance_sheet.Total Debt": 30603000000.0,
+      "balance_sheet.Tangible Book Value": 20146000000.0,
+      "balance_sheet.Invested Capital": 64798000000.0,
+      "balance_sheet.Working Capital": 5296000000.0,
+      "balance_sheet.Net Tangible Assets": 27195000000.0,
+      "balance_sheet.Capital Lease Obligations": 338000000.0,
+      "balance_sheet.Common Stock Equity": 34533000000.0,
+      "balance_sheet.Preferred Stock Equity": 7049000000.0,
+      "balance_sheet.Total Capitalization": 70309000000.0,
+      "balance_sheet.Total Equity Gross Minority Interest": 41582000000.0,
+      "balance_sheet.Stockholders Equity": 41582000000.0,
+      "balance_sheet.Gains Losses Not Affecting Retained Earnings": 1755000000.0,
+      "balance_sheet.Other Equity Adjustments": 1755000000.0,
+      "balance_sheet.Retained Earnings": -41311000000.0,
+      "balance_sheet.Additional Paid In Capital": 74083000000.0,
+      "balance_sheet.Capital Stock": 7055000000.0,
+      "balance_sheet.Common Stock": 6000000.0,
+      "balance_sheet.Preferred Stock": 7049000000.0,
+      "balance_sheet.Total Liabilities Net Minority Interest": 60512000000.0,
+      "balance_sheet.Total Non Current Liabilities Net Minority Interest": 36076000000.0,
+      "balance_sheet.Other Non Current Liabilities": 1320000000.0,
+      "balance_sheet.Preferred Securities Outside Stock Equity": 7049000000.0,
+      "balance_sheet.Non Current Deferred Liabilities": 6029000000.0,
+      "balance_sheet.Non Current Deferred Revenue": 6029000000.0,
+      "balance_sheet.Long Term Debt And Capital Lease Obligation": 28727000000.0,
+      "balance_sheet.Long Term Debt": 28727000000.0,
+      "balance_sheet.Current Liabilities": 24436000000.0,
+      "balance_sheet.Other Current Liabilities": 1577000000.0,
+      "balance_sheet.Current Deferred Liabilities": 7207000000.0,
+      "balance_sheet.Current Deferred Revenue": 7207000000.0,
+      "balance_sheet.Current Debt And Capital Lease Obligation": 1876000000.0,
+      "balance_sheet.Current Capital Lease Obligation": 338000000.0,
+      "balance_sheet.Current Debt": 1538000000.0,
+      "balance_sheet.Other Current Borrowings": 1538000000.0,
+      "balance_sheet.Payables And Accrued Expenses": 13776000000.0,
+      "balance_sheet.Current Accrued Expenses": 3173000000.0,
+      "balance_sheet.Interest Payable": 68000000.0,
+      "balance_sheet.Payables": 10603000000.0,
+      "balance_sheet.Total Tax Payable": 601000000.0,
+      "balance_sheet.Accounts Payable": 10002000000.0,
+      "balance_sheet.Total Assets": 102094000000.0,
+      "balance_sheet.Total Non Current Assets": 72343000000.0,
+      "balance_sheet.Other Non Current Assets": 2682000000.0,
+      "balance_sheet.Non Current Deferred Assets": 213000000.0,
+      "balance_sheet.Non Current Deferred Taxes Assets": 213000000.0,
+      "balance_sheet.Goodwill And Other Intangible Assets": 14387000000.0,
+      "balance_sheet.Other Intangible Assets": 2706000000.0,
+      "balance_sheet.Goodwill": 11681000000.0,
+      "balance_sheet.Net PPE": 55061000000.0,
+      "balance_sheet.Accumulated Depreciation": -14692000000.0,
+      "balance_sheet.Gross PPE": 69753000000.0,
+      "balance_sheet.Leases": 842000000.0,
+      "balance_sheet.Construction In Progress": 14045000000.0,
+      "balance_sheet.Other Properties": 27997000000.0,
+      "balance_sheet.Machinery Furniture Equipment": 22372000000.0,
+      "balance_sheet.Land And Improvements": 4497000000.0,
+      "balance_sheet.Properties": 0.0,
+      "balance_sheet.Current Assets": 29732000000.0,
+      "balance_sheet.Other Current Assets": 495000000.0,
+      "balance_sheet.Restricted Cash": 67000000.0,
+      "balance_sheet.Prepaid Assets": 109000000.0,
+      "balance_sheet.Inventory": 2588000000.0,
+      "balance_sheet.Finished Goods": 699000000.0,
+      "balance_sheet.Work In Process": 835000000.0,
+      "balance_sheet.Raw Materials": 1054000000.0,
+      "balance_sheet.Receivables": 2798000000.0,
+      "balance_sheet.Other Receivables": 275000000.0,
+      "balance_sheet.Taxes Receivable": 690000000.0,
+      "balance_sheet.Accounts Receivable": 1833000000.0,
+      "balance_sheet.Allowance For Doubtful Accounts Receivable": -47000000.0,
+      "balance_sheet.Gross Accounts Receivable": 1880000000.0,
+      "balance_sheet.Cash Cash Equivalents And Short Term Investments": 23675000000.0,
+      "balance_sheet.Other Short Term Investments": 7823000000.0,
+      "balance_sheet.Cash And Cash Equivalents": 15852000000.0,
+      "balance_sheet.Cash Equivalents": 8671000000.0,
+      "balance_sheet.Cash Financial": 7181000000.0
+    }
+  },
+  "technicals": {
+    "keys": {
+      "technicals.close_latest": 153.229996,
+      "technicals.return_5d": -0.17173,
+      "technicals.high_52w": 211.389999,
+      "technicals.low_52w": 153.0,
+      "technicals.pct_vs_high_52w": -0.275131
+    }
+  },
+  "news": [
+    {
+      "source_id": "fh-140742959",
+      "title": "This Week's Market Wrap: AI Memory Shock, Crude Cracks, And Data Boxes In The Fed",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=1c05d80b484fc80f4edac27600c8ac2915fb138233bca6ec9ce42d41a131bb3d"
+    },
+    {
+      "source_id": "fh-140749567",
+      "title": "Space Exploration Technologies Issues $25B In Senior Unsecured Notes Across 5 Maturities Under Indenture With Bank Of NY Mellon; Issues $7B 5.35% Senior Notes Due 2031; Issues $6B 5.65% Senior Notes Due 2033; Issues $6B 5.88% Senior Notes Due 2036; Issues $2.5B 6.6% Senior Notes Due 2046; Issues $3.5B 6.65% Senior Notes Due 2056",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=f8465f8d38a308a6088c70f55e004d3a75bddabd7a6807f724ec4b44bdb722a7"
+    },
+    {
+      "source_id": "fh-140749568",
+      "title": "Private Equity's Exit Window May Finally Be Reopening And Spacex Could Be The Catalyst",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=a0a4df8b662fbf7f3f57d58e27863268c5d5f8a759cf57dfe15c4966f7d0f95c"
+    },
+    {
+      "source_id": "fh-140747076",
+      "title": "U.S. Federal Trade Commission Grants Approval To Elon Musk To Acquire Mesh Optical Technologies Corporation",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=2d2ea8bc1e205d72c8a79698e94cd0e409c2ced753b11c02a7371563dcb7731b"
+    },
+    {
+      "source_id": "fh-140748303",
+      "title": "CNBC\u2019s Seema Mody Posts On X \"We're hearing from two sources that Spacex's inclusion into the Nasdaq 100 could be announced as early as tonight\"",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=2809712deb7b6c1f373566f4446012d455930b192c7f3fe0a135858d52dd5174"
+    },
+    {
+      "source_id": "fh-140747077",
+      "title": "Bitcoin, SpaceX Or The S&P 500? Readers Snubbed Buffett-less Berkshire \u2014 But Who Won?",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=2c22ca6409f7ecf46c0ca8e6314f8f99ec8c406f972c9ac4f496537846a7ca28"
+    },
+    {
+      "source_id": "fh-140740182",
+      "title": "Europe\u2019s Reckoning: SpaceX\u2019s Record IPO Exposes the Continent\u2019s Space Gap",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=c0e2f6bdb45eaa402fc39df0e022227913ce2802e563ff4b865d1f774b2b0841"
+    },
+    {
+      "source_id": "fh-140740959",
+      "title": "Verizon, AT&T, T-Mobile, SpaceX Among Winners In FCC $3.5B Wireless Auction",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=c1dedc30508204d64d8babe1a91d68686416fab50736e5fbeaa2f29bc200f9ba"
+    },
+    {
+      "source_id": "fh-140739248",
+      "title": "'Who Are These Lunatics?' CoreWeave's Credit Approach Gets A Pep Talk From The 'Dean Of Valuation'",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=5b53e961be29eb296ab502884d8ec1282f50fe9a4fb989c86eb3c6b98b63c130"
+    },
+    {
+      "source_id": "fh-140738318",
+      "title": "Tesla: 2 Moonshots Have Now Become Medium-Term Catalysts (Rating Upgrade)",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=2a757412eebc34bf94766291974f38bf3a6f4e388a7e5813299e54aeaea4a4f0"
+    },
+    {
+      "source_id": "fh-140738319",
+      "title": "Wall Street Roundup: What Isn't Priced In?",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=836bcfe7c2e7088a1d512d316d935002acddd7e4f3d6233f67bdf2745c49da75"
+    },
+    {
+      "source_id": "fh-140749575",
+      "title": "The Perfect Storm: SpaceX Bond Traders Stunned As $305 Million Vanishes In Days",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=80449e8a74fb14510ade54db72a0d1ff2cd218731f3e9bd7f3208d55316fbb3f"
+    },
+    {
+      "source_id": "fh-140737711",
+      "title": "Space Exploration Technologies Corp. (SPCX) Discusses Reusable Rocket Innovations and Advancements in Starship Capabilities - Slideshow",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=0f63a8e26e5bdaf696762b8103ced661db1009f3571b9697e29eedf0c77e51fe"
+    },
+    {
+      "source_id": "fh-140739250",
+      "title": "OpenAI IPO Reportedly Delayed To 2027: 'There's No Rational Argument' For $1 Trillion Valuation, Says Gary Marcus",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=38616df47d57cab0dd606bd8814fb9e6fa04799b381b27cefb5f07c5db0172e9"
+    },
+    {
+      "source_id": "fh-140736208",
+      "title": "What's Going On With SpaceX Stock Friday?",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=b5401687453fde219e9e86c3569e2daaa09857156214c9cba87fde7d727b825c"
+    },
+    {
+      "source_id": "fh-140735858",
+      "title": "2026's Second Half Could Give Us A Massive Buying Opportunity",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=e9afd9743451fb144477ad5ba8a98d884a14c989e00864482c35e013b2bf27d9"
+    },
+    {
+      "source_id": "fh-140736209",
+      "title": "Jeff Bezos' 2016 'Lottery Ticket' Warning Comes True As Blue Origin Workers Miss Out On SpaceX-Style IPO Windfall",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=6878eb13ee8e8dc91411616cb123d3119addcda32836b755e3050eceb0d89a3b"
+    },
+    {
+      "source_id": "fh-140736210",
+      "title": "Argus Research Initiates Coverage On SpaceX with Hold Rating",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=747fa33df64dbc2ea3c9d88a3a560519d7683d3746a0271c32a05dce3146d17d"
+    },
+    {
+      "source_id": "fh-140736211",
+      "title": "Quantum Cyber Stock Rises After Board Approves Acquisition of SpaceX Equity Stake",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=648d11e685a274a7ceaf8295a76cc85b98eabd9aa6fbb8ff4459360b62c3133c"
+    },
+    {
+      "source_id": "fh-140736212",
+      "title": "Quantum Cyber Board Approves Engaging Investment Bankers To Acquire An Equity Stake In SpaceX",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=1f9407f687314c55d36c65ff7a1baaa8faa53659bae124f5f6d1a1f7d5997d6b"
+    },
+    {
+      "source_id": "fh-140735685",
+      "title": "Why Is Triller Group Stock Surging On Friday?",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=5e9c4c042443e29672c577226a3eaed31c6c3bc4078e1c9f05518a9b3215239e"
+    },
+    {
+      "source_id": "fh-140735747",
+      "title": "Could Elon Musk\u2019s SpaceX Buy T-Mobile? Analyst Sees Wireless Giant As \u2018Clear Choice\u2019",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=4849a7d0a904855086d97bd253b6e48e3e12e129a3c806b19036a61453fe001e"
+    },
+    {
+      "source_id": "fh-140733833",
+      "title": "Wall Street Breakfast Podcast: Will Tech Stocks Rebound?",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=d5d14f689a25454d6e8f694f11fae87ee1653aed7025c0eabc9f78fdd3139160"
+    },
+    {
+      "source_id": "fh-140735756",
+      "title": "Why Synaptics Shares Are Trading Higher By Over 5%; Here Are 20 Stocks Moving Premarket",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=ce9551c4457b0170e223451652c62ac339deb458e7513114021da7edcbab6441"
+    },
+    {
+      "source_id": "fh-140736216",
+      "title": "SpaceX Stock Holding Above $135 IPO Price Is An Unlikely Outcome For Prediction Market Bettors As SPCX Plunges 32% From Peak",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=92faf4fd353e313e66a164346653ab1cbd9a58019a1873abb9961e8bbeaea1d0"
+    },
+    {
+      "source_id": "fh-140736217",
+      "title": "'Elon Musk\u2019s SpaceX Plans Starlink Mobile Push Into US Consumer Market' - FT",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=39444592a7c5fd6c3678c3a40f1a3d6f2f5fa0a8a55bc431e8aebe4b5acd7de5"
+    },
+    {
+      "source_id": "fh-140735686",
+      "title": "Exposure To Elon Musk's SpaceX Is Sending Triller Group Stock Soaring After Hours: Here's What You Should Know",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=4bbf0346eb23bfa780e2524acaafbbac27a91dde5af33899e17f616fa1d44a74"
+    },
+    {
+      "source_id": "fh-140735751",
+      "title": "Elon Musk Should 'Consider Selling EVs Again,' Says Ross Gerber As TSLA Stock Declines",
+      "published_at": "2026-06-26",
+      "url": "https://finnhub.io/api/news?id=6a2d011f82e8f99c9f8f4dd826603866faf42d67d924d5f5a164f6d0fc271eda"
+    },
+    {
+      "source_id": "fh-140736220",
+      "title": "Elon Musk's SpaceX Offers Free Internet To Quake-Ravaged Venezuela: 'Working Rapidly To Deploy Starlink Terminals'",
+      "published_at": "2026-06-25",
+      "url": "https://finnhub.io/api/news?id=785d30b617ceca801c736578d1623681c12c94a9884de2a8ded7f97d8e161286"
+    },
+    {
+      "source_id": "fh-140736221",
+      "title": "OpenAI Pushes Reportedly IPO To Next Year As SpaceX's Rough Post-Listing Performance Comes In Focus",
+      "published_at": "2026-06-25",
+      "url": "https://finnhub.io/api/news?id=0b6595ecaf36bff1af10859d64cc54a9c96a1ad28e60f06403bd3fa6f8f3bcbf"
+    },
+    {
+      "source_id": "fh-140735753",
+      "title": "Elon Musk's $1 Million Election Giveaway Wasn't Random, Plaintiffs Allege \u2014 Judge Says Tesla, SpaceX CEO Must Testify",
+      "published_at": "2026-06-25",
+      "url": "https://finnhub.io/api/news?id=e8501cc49b230d4609f8ec6000587c19b061a56ac5063077d704ac3ae43081ce"
+    },
+    {
+      "source_id": "fh-140731367",
+      "title": "Elon Musk Was First Trillionaire, Prediction Markets Pick This Magnificent Seven CEO To Be Second To Join Elite Club",
+      "published_at": "2026-06-25",
+      "url": "https://finnhub.io/api/news?id=ad44ec1e696bad1933ea6585e6a05078074b9a37872b206bea996e42e34ddfab"
+    },
+    {
+      "source_id": "fh-140735688",
+      "title": "The SpaceX Version Of MSTR Has Arrived\u2014And Its Stock Soared 393%",
+      "published_at": "2026-06-25",
+      "url": "https://finnhub.io/api/news?id=757599653f7fb41e17910f1bae38d02d7a049ed5423624cb9ae6b63dcf883bf2"
+    },
+    {
+      "source_id": "fh-139940222",
+      "title": "Making The Natural Gas Trade Great Again",
+      "published_at": "2026-06-25",
+      "url": "https://finnhub.io/api/news?id=d3d167f1ffe09f404fe943b48717e5f63b3486902278558b25e5eb3f39f1a774"
+    },
+    {
+      "source_id": "fh-140728066",
+      "title": "Why Is Redwire Stock Falling On Thursday?",
+      "published_at": "2026-06-25",
+      "url": "https://finnhub.io/api/news?id=8624bbea6d924384f608d7ba0c9236d8763628cd80257b56def80a4c63e2695b"
+    },
+    {
+      "source_id": "fh-140728067",
+      "title": "8 Communication Services Stocks With Whale Alerts In Today\u2019s Session",
+      "published_at": "2026-06-25",
+      "url": "https://finnhub.io/api/news?id=b4dbf751c5d123990ffe3c0ddf0911c2c5172068907b96300ff25b5cb2c92f5c"
+    },
+    {
+      "source_id": "fh-140726441",
+      "title": "4 Signs Of A Schizophrenic Market",
+      "published_at": "2026-06-25",
+      "url": "https://finnhub.io/api/news?id=2b7fee851b1e74255c51294ac303aa246bd7edc363ae669067d4c14b4c6ce341"
+    },
+    {
+      "source_id": "fh-140726911",
+      "title": "SpaceX Bond Deal Signals Market 'Bubble,' Allianz Exec Warns: Elon Musk Got '$70 Billion Of Funny Money'",
+      "published_at": "2026-06-25",
+      "url": "https://finnhub.io/api/news?id=522c055a37f4395802a6d908693af45780800ee022824a79fb8f12b3989803df"
+    },
+    {
+      "source_id": "fh-140728069",
+      "title": "'SpaceX Credit Derivatives Start to Trade After Debut Bond Sale' - Bloomberg News",
+      "published_at": "2026-06-25",
+      "url": "https://finnhub.io/api/news?id=44314212de4bcad50fdd2c26b3cb2293a39db03dc67664d66e90d83cfcb8e557"
+    },
+    {
+      "source_id": "fh-140725653",
+      "title": "ARKX: Golden Dome, CLPS, And SpaceX IPO Reshape The Space ETF Investment Case",
+      "published_at": "2026-06-25",
+      "url": "https://finnhub.io/api/news?id=75fe3ec3d54007bd73fc73568406e856b1673b6a85491dc9155c15f52a471bab"
+    },
+    {
+      "source_id": "fh-140725508",
+      "title": "Space Stocks In June Gloom: Rocket Lab, Redwire, Firefly Fade While SpaceX Steals The Show",
+      "published_at": "2026-06-25",
+      "url": "https://finnhub.io/api/news?id=56f101ba8ca376ebee2dff59db4a8ce2066c7ace41656e32bcf6ec8e4961b3a6"
+    },
+    {
+      "source_id": "fh-140725445",
+      "title": "Triller Group Subsidiary To Acquire 3.917M SpaceX Shares Through Sac1 For $411.304M",
+      "published_at": "2026-06-25",
+      "url": "https://finnhub.io/api/news?id=ad9c86ab6b0f5b6a4299b8596aa7016ed176ff854463bf6c9be6b2c3047c8ee5"
+    },
+    {
+      "source_id": "fh-140727734",
+      "title": "Tesla Bulls Push Wild Robotaxi Theory, But Gary Black Says The SpaceX Merger Talk Makes No Sense At All",
+      "published_at": "2026-06-25",
+      "url": "https://finnhub.io/api/news?id=a51c7a3e421baae4dd7598ce4abe79afdcd2450cd53afa6338a5133eb45c44e1"
+    },
+    {
+      "source_id": "fh-140728073",
+      "title": "Could SpaceX Be The Latest FOMO Trap? Asset Manager Warns Many Buyers Don\u2019t Fully Understand What They Own: 'It's When Your Family...'",
+      "published_at": "2026-06-25",
+      "url": "https://finnhub.io/api/news?id=1bb2b5576d8823601ea8b49656aee12c31a7274fb1e66ceffc23756bbc530234"
+    },
+    {
+      "source_id": "fh-140722693",
+      "title": "SpaceX: Is The Starlink TAM Overstated? A Critical Valuation Review",
+      "published_at": "2026-06-25",
+      "url": "https://finnhub.io/api/news?id=adc7c9e1e688826cc5414fef550a00e16d255e93de3004d19fb3408ef07ff7ec"
+    },
+    {
+      "source_id": "fh-140725138",
+      "title": "Jeff Bezos Challenges Elon Musk\u2019s Tesla And SpaceX With Zoox Robotaxi, Blue Origin Mars Push",
+      "published_at": "2026-06-25",
+      "url": "https://finnhub.io/api/news?id=3ad20021aaa2199d5aad3d77cfe37a0dae700f015a45a186796b7a21e768a781"
+    },
+    {
+      "source_id": "fh-140725139",
+      "title": "Gary Black Says Tesla Stock Continues To Underperform Nasdaq 100 Despite 10-Year Treasury Yield Drop And Crude Falling To $73",
+      "published_at": "2026-06-25",
+      "url": "https://finnhub.io/api/news?id=defb3e551f47fa2cd7e76d8e2a3a0225c4b3d9b7a8c21ea60cc59556c087f2ce"
+    },
+    {
+      "source_id": "fh-140721143",
+      "title": "Why Rocket Lab Still Matters After SpaceX",
+      "published_at": "2026-06-24",
+      "url": "https://finnhub.io/api/news?id=4cc4cc710a6bdf96a83b509b854603e5928eb49be058df2be79e63901ea979a3"
+    },
+    {
+      "source_id": "fh-140717947",
+      "title": "Debunking The Bulls' Main Arguments On AI",
+      "published_at": "2026-06-24",
+      "url": "https://finnhub.io/api/news?id=b4c55fae16addefb1ae51b1b10e5d29c701baeef67191108a739543ee0d28135"
+    },
+    {
+      "source_id": "fh-140715415",
+      "title": "Volatility Is Taking A Breather Ahead Of Micron Earnings",
+      "published_at": "2026-06-24",
+      "url": "https://finnhub.io/api/news?id=b8dcd63238131500c5286645ac234510fb105e0ecf4680827b62b90254c122f0"
+    }
+  ],
+  "leak_check": {
+    "violations": []
+  }
+}

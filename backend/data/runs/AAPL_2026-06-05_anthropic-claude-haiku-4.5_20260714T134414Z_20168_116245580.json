@@ -1,0 +1,382 @@
+{
+  "ticker": "AAPL",
+  "as_of": "2026-06-05",
+  "model": "anthropic-claude-haiku-4.5",
+  "recorded_at": "20260714T134414Z",
+  "events": [
+    {
+      "type": "agent_start",
+      "agent": "fundamentals"
+    },
+    {
+      "type": "agent_start",
+      "agent": "sentiment"
+    },
+    {
+      "type": "agent_start",
+      "agent": "technicals"
+    },
+    {
+      "type": "thesis",
+      "agent": "technicals",
+      "stance": 0.65,
+      "summary": "AAPL is in a strong uptrend with price trading well above key moving averages (16% above 200-day SMA) and up 19.5% over 3 months, though recent 5-day weakness and proximity to 52-week highs suggest near-term consolidation risk.",
+      "evidence": [
+        {
+          "kind": "numeric",
+          "claim": "Price is trading 16.08% above the 200-day simple moving average, indicating sustained uptrend strength.",
+          "citation_key": "technicals.pct_vs_sma_200",
+          "cited_value": 0.160808,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "AAPL has gained 19.48% over the past 3 months, demonstrating strong intermediate-term momentum.",
+          "citation_key": "technicals.return_3m",
+          "cited_value": 0.194839,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Price is 9.34% above the 50-day SMA, confirming momentum above intermediate support.",
+          "citation_key": "technicals.pct_vs_sma_50",
+          "cited_value": 0.093405,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Recent 5-day return is -1.51%, indicating short-term pullback from momentum.",
+          "citation_key": "technicals.return_5d",
+          "cited_value": -0.015125,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Price is trading 2.49% below the 52-week high, near recent resistance levels.",
+          "citation_key": "technicals.pct_vs_high_52w",
+          "cited_value": -0.024937,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "grounding",
+      "agent": "technicals",
+      "gated_in": true,
+      "grounded": 5,
+      "dropped": 0
+    },
+    {
+      "type": "thesis",
+      "agent": "fundamentals",
+      "stance": 0.65,
+      "summary": "Apple demonstrates strong fundamental health with robust profitability (48% gross margin, 32% operating margin), solid liquidity coverage (1.07x current ratio), and conservative leverage (70% debt-to-assets), though elevated debt levels merit monitoring.",
+      "evidence": [
+        {
+          "kind": "numeric",
+          "claim": "Apple's gross margin is exceptionally strong at 49.2%, indicating pricing power and efficient manufacturing.",
+          "citation_key": "income_stmt.gross_profit",
+          "cited_value": 54781000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Operating margin of 32.3% demonstrates substantial operational leverage and cost discipline.",
+          "citation_key": "income_stmt.operating_income",
+          "cited_value": 35885000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Net profit margin of 26.6% reflects strong bottom-line profitability with effective tax management.",
+          "citation_key": "income_stmt.net_income",
+          "cited_value": 29578000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Current ratio of 1.07x (current assets of $144.1B vs current liabilities of $134.6B) provides adequate liquidity to meet short-term obligations.",
+          "citation_key": "balance_sheet.current_assets",
+          "cited_value": 144114000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Long-term debt of $74.4B represents 70% of total assets, indicating manageable leverage relative to the asset base.",
+          "citation_key": "balance_sheet.long_term_debt",
+          "cited_value": 74404000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Stockholders' equity of $106.5B represents 29% of total assets, providing a solid equity cushion.",
+          "citation_key": "balance_sheet.stockholders_equity",
+          "cited_value": 106491000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Cash and equivalents of $45.6B provide substantial financial flexibility and reduce refinancing risk.",
+          "citation_key": "balance_sheet.cash_and_equivalents",
+          "cited_value": 45572000000.0,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "grounding",
+      "agent": "fundamentals",
+      "gated_in": true,
+      "grounded": 7,
+      "dropped": 0
+    },
+    {
+      "type": "thesis",
+      "agent": "sentiment",
+      "stance": 0.65,
+      "summary": "Apple's WWDC on June 8 is shaping up as a major AI catalyst with Wall Street expecting a significant Siri overhaul and ecosystem integration strategy. However, the stock faces near-term headwinds from broader tech selloff and valuation concerns, though multiple analysts remain constructive on the company's AI monetization potential.",
+      "evidence": [
+        {
+          "kind": "textual",
+          "claim": "Wedbush's Dan Ives views Apple's WWDC as marking the company's real entry into consumer AI with iOS 27 and ecosystem leverage driving monetization.",
+          "source_id": "fh-140545262",
+          "quoted_span": "Apple's WWDC could mark its real entry into consumer AI, with iOS 27 and ecosystem leverage driving a potential monetization shift",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=927c21b003aa25b0cd2674e2f6da5d482c75048662f5b813082eb11254848546",
+          "verified_quote": false
+        },
+        {
+          "kind": "textual",
+          "claim": "Apple is expected to unveil a major AI strategy anchored by a significantly upgraded Siri at its June 8 WWDC.",
+          "source_id": "fh-140540362",
+          "quoted_span": "Wall Street expecting the company to lay out an ambitious AI strategy anchored by a significantly upgraded Siri and deeper integration across its software platforms",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=d9a1504446cbb216dbd8f1e4672060978cd7f18da52fd76854b4a5875d3e36cc",
+          "verified_quote": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Apple stock closed down 1.18% on June 5, 2026 at $307.56.",
+          "citation_key": "fh-140544072",
+          "cited_value": -1.18,
+          "grounded": false,
+          "reason": "citation_key not in snapshot"
+        },
+        {
+          "kind": "textual",
+          "claim": "Apple is seen as best positioned in the AI race while generating strong positive free cash flow despite industry-wide capex surges.",
+          "source_id": "fh-140537921",
+          "quoted_span": "Apple and Alphabet are best positioned in the AI race, generating strong positive free cash flow despite industry-wide capex surges",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=44f63ff4b2320660c9e05f04c10ed02b5a5fe257bec1764de091f47c5d71b083",
+          "verified_quote": true
+        },
+        {
+          "kind": "textual",
+          "claim": "Wedbush maintains an Outperform rating on Apple with a $400 price target.",
+          "source_id": "fh-140539642",
+          "quoted_span": "Wedbush analyst Dan Ives reiterates Apple (NASDAQ:AAPL) with a Outperform and maintains $400 price target",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=374f4ae0b820ad6aad2502ba9b9c956e7a58b795e3a68957c8294fb69836a9b9",
+          "verified_quote": false
+        },
+        {
+          "kind": "textual",
+          "claim": "Tim Cook's final developer conference as CEO carries high stakes for the stock, with even strong AI showings potentially becoming a sell-the-news event.",
+          "source_id": "fh-140537397",
+          "quoted_span": "even a strong AI showing could become a sell-the-news event",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=17a7e17a7010e562749ec71d9b219d8bb88e287b223dabfbd176a20d77452307",
+          "verified_quote": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "The Nasdaq 100 closed down 4.77% on June 5, 2026, reflecting broader tech sector weakness.",
+          "citation_key": "fh-140546202",
+          "cited_value": -4.77,
+          "grounded": false,
+          "reason": "citation_key not in snapshot"
+        }
+      ]
+    },
+    {
+      "type": "grounding",
+      "agent": "sentiment",
+      "gated_in": true,
+      "grounded": 5,
+      "dropped": 2
+    },
+    {
+      "type": "agent_start",
+      "agent": "red_team"
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "fundamentals",
+      "kind": "logical",
+      "critique": "The thesis claims '70% debt-to-assets' as conservative leverage, but debt-to-assets actually equals 20% ($74.4B / $371.1B), contradicting the stated figure and reframing the leverage profile as exceptionally strong rather than merely manageable.",
+      "counter_evidence": []
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "fundamentals",
+      "kind": "evidence",
+      "critique": "The current ratio of 1.07x is barely above the critical 1.0x threshold where current liabilities equal current assets, leaving minimal cushion for unexpected obligations or asset impairments.",
+      "counter_evidence": [
+        {
+          "kind": "numeric",
+          "claim": "Current ratio of 1.07x represents only a 7% cushion above the break-even point where liquidity becomes strained.",
+          "citation_key": "balance_sheet.current_assets",
+          "cited_value": 144114000000.0,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Current liabilities of $134.6B are nearly as large as current assets of $144.1B, creating tight liquidity.",
+          "citation_key": "balance_sheet.current_liabilities",
+          "cited_value": 134641000000.0,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "sentiment",
+      "kind": "evidence",
+      "critique": "The thesis ignores a direct counter-signal: even strong AI showings at WWDC could trigger a sell-the-news event, and the Nasdaq already fell 4.77% on June 5, suggesting deteriorating sentiment heading into the event.",
+      "counter_evidence": [
+        {
+          "kind": "textual",
+          "claim": "Tim Cook's final developer conference as CEO carries high stakes where even strong AI showings could become a sell-the-news event.",
+          "source_id": "fh-140537397",
+          "quoted_span": "even a strong AI showing could become a sell-the-news event",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=17a7e17a7010e562749ec71d9b219d8bb88e287b223dabfbd176a20d77452307",
+          "verified_quote": true
+        },
+        {
+          "kind": "textual",
+          "claim": "The Nasdaq 100 Index closed down 4.77% on June 5, reflecting broad tech sector weakness ahead of WWDC.",
+          "source_id": "fh-140546202",
+          "quoted_span": "Nasdaq 100 Index ($IUXX ) (QQQ ) closed down -4.77%",
+          "grounded": true,
+          "url": "https://finnhub.io/api/news?id=12c91d9ab421dca877e20a94bac8123c8734377bde6697e6945497ec99a15247",
+          "verified_quote": true
+        }
+      ]
+    },
+    {
+      "type": "attack",
+      "agent": "red_team",
+      "target": "technicals",
+      "kind": "evidence",
+      "critique": "AAPL is trading only 2.49% below the 52-week high with a 5-day pullback of -1.51%, placing it in an extended momentum zone vulnerable to mean reversion or profit-taking that could erase recent gains quickly.",
+      "counter_evidence": [
+        {
+          "kind": "numeric",
+          "claim": "Stock is only 2.49% below the 52-week high of $315.20, leaving minimal room for further appreciation before hitting hard resistance.",
+          "citation_key": "technicals.pct_vs_high_52w",
+          "cited_value": -0.024937,
+          "grounded": true
+        },
+        {
+          "kind": "numeric",
+          "claim": "Recent 5-day return of -1.51% signals momentum erosion precisely when the stock approaches resistance.",
+          "citation_key": "technicals.return_5d",
+          "cited_value": -0.015125,
+          "grounded": true
+        }
+      ]
+    },
+    {
+      "type": "grounding",
+      "agent": "red_team",
+      "gated_in": true,
+      "grounded": 4,
+      "dropped": 0
+    },
+    {
+      "type": "agent_start",
+      "agent": "sentiment"
+    },
+    {
+      "type": "agent_start",
+      "agent": "fundamentals"
+    },
+    {
+      "type": "agent_start",
+      "agent": "technicals"
+    },
+    {
+      "type": "rebuttal",
+      "agent": "technicals",
+      "proposed_stance": 0.55,
+      "response": "The opponent correctly identifies extended valuation risk: AAPL is indeed [technicals.pct_vs_high_52w] 2.49% below the 52-week high with [technicals.return_5d] -1.51% 5-day weakness, creating legitimate mean-reversion exposure. However, this near-term pullback occurs within an intact uptrend\u2014the stock remains [technicals.pct_vs_sma_200] 16.08% above the 200-day SMA and [technicals.pct_vs_sma_50] 9.34% above the 50-day SMA, suggesting consolidation rather than trend reversal. I concede the momentum is extended and near-term risk is material, revising from +0.65 to +0.55 to reflect caution on continued gains, but maintain a constructive bias given the sustained intermediate structure."
+    },
+    {
+      "type": "rebuttal",
+      "agent": "sentiment",
+      "proposed_stance": 0.45,
+      "response": "I concede the sell-the-news risk is material: [fh-140537397] explicitly states \"even strong AI showings potentially becoming a sell-the-news event,\" and [fh-140546202] confirms the Nasdaq fell -4.77% on June 5, validating deteriorating pre-event sentiment. However, I defend the bull case's durability: [fh-140537921] shows Apple remains \"best positioned in the AI race\" with \"strong positive free cash flow despite industry-wide capex surges,\" and [fh-140539642] Wedbush maintains Outperform with $400 target despite the selloff, suggesting analyst conviction persists post-downturn. My revised stance moderates from +0.65 to +0.45\u2014acknowledging execution risk and near-term volatility are heavier than initially weighted, while retaining constructive bias grounded in structural AI monetization and cash generation advantages."
+    },
+    {
+      "type": "rebuttal",
+      "agent": "fundamentals",
+      "proposed_stance": 0.55,
+      "response": "I concede the leverage miscalculation: debt-to-assets is 20.0% ($74.4B / $371.1B [balance_sheet.total_assets]), not 70%, making Apple's leverage exceptionally strong, not merely manageable. However, the current ratio of 1.07x ([balance_sheet.current_assets] $144.1B / [balance_sheet.current_liabilities] $134.6B), while tight, is adequate given Apple's exceptional operational cash generation capacity (26.6% net margin [income_stmt.net_income] and $45.6B cash buffer [balance_sheet.cash_and_equivalents]). My revised stance reflects corrected leverage strength: +0.55 (upgraded from +0.65 on leverage accuracy, maintained on profitability and cash position fundamentals)."
+    },
+    {
+      "type": "agent_start",
+      "agent": "judge"
+    },
+    {
+      "type": "adjudication",
+      "agent": "fundamentals",
+      "adjudicated_stance": 0.55,
+      "attacks_landed": [
+        "The thesis claims '70% debt-to-assets' as conservative leverage, but debt-to-assets actually equals 20% ($74.4B / $371.1B), contradicting the stated figure and reframing the leverage profile as exceptionally strong rather than merely manageable."
+      ],
+      "rationale": "The fundamentals specialist landed a critical arithmetic error: debt-to-assets is 20%, not 70%, fundamentally altering the leverage assessment. The rebuttal's concession and stance reduction to +0.55 appropriately reflects this correction while defending the underlying thesis (strong profitability, adequate liquidity, and cash position remain valid). The current ratio attack, while correctly noted as tight, is fairly rebutted by reference to operational cash generation capacity."
+    },
+    {
+      "type": "adjudication",
+      "agent": "sentiment",
+      "adjudicated_stance": 0.45,
+      "attacks_landed": [
+        "The thesis ignores a direct counter-signal: even strong AI showings at WWDC could trigger a sell-the-news event, and the Nasdaq already fell 4.77% on June 5, suggesting deteriorating sentiment heading into the event."
+      ],
+      "rationale": "The attack landed by surfacing explicitly cited but minimized evidence (fh-140537397 on sell-the-news risk and the -4.77% Nasdaq move), which materially complicates the bull thesis. The rebuttal appropriately concedes execution and near-term volatility risk, moderating stance to +0.45. However, the defense holds that structural advantages (best-positioned AI strategy, strong FCF) and maintained analyst conviction (Wedbush Outperform) preserve constructive bias despite acknowledged event risk."
+    },
+    {
+      "type": "adjudication",
+      "agent": "technicals",
+      "adjudicated_stance": 0.55,
+      "attacks_landed": [
+        "AAPL is trading only 2.49% below the 52-week high with a 5-day pullback of -1.51%, placing it in an extended momentum zone vulnerable to mean reversion or profit-taking that could erase recent gains quickly."
+      ],
+      "rationale": "The attack validly highlights extended valuation and near-term mean-reversion risk, correctly citing the proximity to 52-week highs and recent weakness. The rebuttal's concession (moderating from +0.65 to +0.55) appropriately reflects this legitimate risk while defending the intermediate structure (16.08% above 200-day SMA, 9.34% above 50-day SMA) as evidence of consolidation rather than trend reversal. The stance adjustment balances acknowledgment of profit-taking vulnerability with sustained uptrend structure."
+    },
+    {
+      "type": "verdict",
+      "aggregate_stance": 0.517,
+      "direction": "bull",
+      "conviction": 0.517,
+      "high_conviction": false,
+      "dissent": "low",
+      "voting_lenses": 3
+    }
+  ],
+  "usage": {
+    "llm_calls": 8,
+    "cost_usd": 0.048713,
+    "tokens": {
+      "input": 27563,
+      "output": 4230,
+      "cache_read": 0,
+      "cache_creation": 0
+    }
+  }
+}

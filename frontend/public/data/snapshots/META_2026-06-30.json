@@ -1,0 +1,361 @@
+{
+  "ticker": "META",
+  "as_of": "2026-06-30",
+  "prices": {
+    "bars": 252,
+    "first_date": "2025-06-30",
+    "last_date": "2026-06-30",
+    "source_url": "https://finance.yahoo.com/quote/META/history"
+  },
+  "fundamentals": {
+    "period_end": "2026-03-31",
+    "available_at": "2026-04-30",
+    "source_url": "https://finance.yahoo.com/quote/META/financials",
+    "keys": {
+      "income_stmt.revenue": 56311000000.0,
+      "income_stmt.cost_of_revenue": 10218000000.0,
+      "income_stmt.rd_expense": 17699000000.0,
+      "income_stmt.operating_expenses": 33439000000.0,
+      "income_stmt.operating_income": 22872000000.0,
+      "income_stmt.income_tax": -5021000000.0,
+      "income_stmt.net_income": 26773000000.0,
+      "income_stmt.eps_basic": 10.57,
+      "income_stmt.eps_diluted": 10.44,
+      "balance_sheet.total_assets": 395250000000.0,
+      "balance_sheet.current_assets": 109765000000.0,
+      "balance_sheet.cash_and_equivalents": 23426000000.0,
+      "balance_sheet.total_liabilities": 151569000000.0,
+      "balance_sheet.current_liabilities": 46753000000.0,
+      "balance_sheet.long_term_debt": 58748000000.0,
+      "balance_sheet.stockholders_equity": 243681000000.0,
+      "balance_sheet.retained_earnings": 144647000000.0,
+      "balance_sheet.accounts_receivable": 17470000000.0,
+      "balance_sheet.goodwill": 24748000000.0
+    }
+  },
+  "technicals": {
+    "keys": {
+      "technicals.close_latest": 563.289978,
+      "technicals.return_5d": 0.001939,
+      "technicals.return_1m": -0.108612,
+      "technicals.return_3m": 0.051143,
+      "technicals.return_6m": -0.149249,
+      "technicals.sma_20": 577.6923,
+      "technicals.pct_vs_sma_20": -0.024931,
+      "technicals.sma_50": 607.660297,
+      "technicals.pct_vs_sma_50": -0.073018,
+      "technicals.sma_200": 647.00405,
+      "technicals.pct_vs_sma_200": -0.129387,
+      "technicals.high_52w": 787.419189,
+      "technicals.low_52w": 525.233154,
+      "technicals.pct_vs_high_52w": -0.284638,
+      "technicals.volume_avg_20": 18403645,
+      "technicals.volume_latest_vs_avg_20": -0.015896
+    }
+  },
+  "news": [
+    {
+      "source_id": "fh-140776226",
+      "title": "Meta says it can read your thoughts without surgery",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=b1f95d03bd1dca51a28cd6d6b0edbdb58f31f1e6b29eb1ed6e8803c0fdfff9b1"
+    },
+    {
+      "source_id": "fh-140780017",
+      "title": "Microsoft to Announce Fresh Layoffs Impacting Thousands as AI Investment Surge Reshapes Workforce: Report (UPDATED)",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=57ad3f930818e792ef77a8139cddcc0ecf3b92cc9051260bf4a6fd692d02195e"
+    },
+    {
+      "source_id": "fh-140776204",
+      "title": "Mizuho lifts TSMC CoWoS capacity forecasts as server CPU demand surges",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=18ec5e7aa553c65291b40a0f96c96690976bc0d59a76822cc67266edbf07996d"
+    },
+    {
+      "source_id": "fh-140775196",
+      "title": "Where Arista Networks Stock Is Most Exposed",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=8226d62a6fb9f6b6cae3a6d1d1c412f5884f7addfbf507e63dc1b3f4b5ddc93b"
+    },
+    {
+      "source_id": "fh-140775197",
+      "title": "Investors are abandoning Mag7 stocks as AI boom transforms",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=4904725d474b0cdd8240208a11f28e1e369f4dbb396a1f2b16b14fb68a753074"
+    },
+    {
+      "source_id": "fh-140775200",
+      "title": "Binance Expands bStocks Offering and Adds Microsoft, Meta and More",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=fe8deb680a67b65edfa583ec6ca575ca53229d2c1dd126908d8934a75785c183"
+    },
+    {
+      "source_id": "fh-140775189",
+      "title": "What Could Send Google Stock Into A New Gear?",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=359709b18484b0cef45e11c331ce895f4775f1d4fff78050fc572a6d1c1c9adc"
+    },
+    {
+      "source_id": "fh-140775184",
+      "title": "Retail Trading in Magnificent Seven Falls to 6%, Citi Says",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=52bb42ad0fc3a8be3182b20b77f531ec658c373358f3670cccbd676785566be6"
+    },
+    {
+      "source_id": "fh-140774441",
+      "title": "What to know about Anthropic's new Claude 'Sonnet 5' AI model",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=91750ac35a390ddcdfa30f1e10df36c89b6aba57690745ff68125fa10f6449b0"
+    },
+    {
+      "source_id": "fh-140774449",
+      "title": "Meta Stock Faces New AI Challenge as Google Limits Gemini Access",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=27691c631fcd3a0bddd70ad96c77249d0350c1ac62f78e5e8904577bd3620744"
+    },
+    {
+      "source_id": "fh-140775726",
+      "title": "More Bark, More Beta: Corgi Debuts 31 Single-Stock ETFs Covering Nvidia, Tesla And More",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=72bf0ae826fe1cfbddf3f651ac1489245c4b00cc230f67a8d212075c3981c87a"
+    },
+    {
+      "source_id": "fh-140773433",
+      "title": "Google's AI Limits Put Meta on Notice",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=6a75c1705423aca8c1f37cf40efb437adaf7930cfe9a358b1949c7c05ea0fc26"
+    },
+    {
+      "source_id": "fh-140773409",
+      "title": "Traders Bet Big on Lisa Su: Why This Chip Titan Is Primed to Siphon Nvidia\u2019s Data Center Dominance",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=d9291738aa51c1427f28e8eb8de47aaa2e85f81f7da8363d9457405cd1d4763a"
+    },
+    {
+      "source_id": "fh-140773434",
+      "title": "You\u2019ve Got Mail, Again: AOL Is Headed Back to Wall Street in Quirky IPO",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=d604c502b78b3b83a225a8ad4a9c738b6b1f21f8047cae42faea418c14e5a056"
+    },
+    {
+      "source_id": "fh-140773465",
+      "title": "DoubleVerify (DV) Is Up 7.4% After Russell 2000 Shift And DV Neura AI Launch - Has The Bull Case Changed?",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=85fd90585d687d6ea3432c1cbb4990f1220e0368e6bc49dcf5581e0ee6550ddd"
+    },
+    {
+      "source_id": "fh-140784214",
+      "title": "Meta Quest Announces Availability Of Discord",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=ed7c40231b87bb4042d405e009fde1d0454bbd0cfad5cf0dae543b6cd05c3c7e"
+    },
+    {
+      "source_id": "fh-140772722",
+      "title": "Dan Ives Says Upcoming Earnings Season Is A Huge Validation Moment For Big Tech \u2014 Expects Significant Outperformance Of Mag 7 Ahead",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=d1e8560f0203e36c1b1d81b521e0310316454474cc318d2adf35302be5f30f15"
+    },
+    {
+      "source_id": "fh-140775238",
+      "title": "Meta Shows Urgency as Investors Get Exasperated But Don't Expect a Major Rally Yet",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=006d45b23665a3bb074882e35e570660b680ca7c1406f3caf2b021c82729fde7"
+    },
+    {
+      "source_id": "fh-140774435",
+      "title": "YOLO Crowd Wants Little to Do With Tech Megacaps It Once Adored",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=d184bdde7d150f3d1d7b798bcebb4dc5bb596b6efa2118c21a7b997668bd308c"
+    },
+    {
+      "source_id": "fh-140775239",
+      "title": "Microsoft Stock Hasn\u2019t Been This Cheap in Nearly a Decade. Here\u2019s How to Buy the Dip for Less.",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=14775fbed24570a5c77915ff7b929bc34e2d418a33b4dd6d6e1e15e2fd2ac548"
+    },
+    {
+      "source_id": "fh-140773350",
+      "title": "Two Market Positives, But Warsh's Speech and Jobs Data Could Shift Sentiment; \u2018Never Sell Bitcoin\u2019 Approach Abandoned",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=6dec0771837961c8cd6ce7073142c624713d7b7abe64f38fd71268b35d402791"
+    },
+    {
+      "source_id": "fh-140771840",
+      "title": "Magnificent Seven shed $2.3 trillion in June as AI spending comes under closer scrutiny (MSFT)",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=1bc5b4ddf2fd8a8b2b7434fc66ad8cacb9cc352b81a0e02ca63c1d2d84ae2f5d"
+    },
+    {
+      "source_id": "fh-140771928",
+      "title": "Wetour Robotics (NASDAQ: WETO) Demonstrates Conductor Neural Wristband with Training Powered by Meta\u2019s Open emg2pose Dataset to Advance Physical AI Human-Machine Interaction and future physical-world models",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=5732ca23f3b3d3afdeacb80b0c32efb02c7fc5e29593a92f42e3dea6482fd3ba"
+    },
+    {
+      "source_id": "fh-140772729",
+      "title": "4 Semiconductor Stocks to Buy Right Now to Ride on the AI Capex Boom",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=ae36b0899621e74e572703caf39bd830edcc587e133e2534f2d27e189ecb3be0"
+    },
+    {
+      "source_id": "fh-140771930",
+      "title": "FibroBiologics to Participate in Fireside Chat at H.C. Wainwright 4th Annual Cell Therapy Virtual Conference",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=ec305ddec9dcd76f1fec65287344689ec41a47e276aab15b234a2d6d2421ad4f"
+    },
+    {
+      "source_id": "fh-140771847",
+      "title": "CME Group to Launch Single Stock Futures on July 27",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=84f8021f337f7a84cf7d57f253ff3f4f7deb98fb5c5cabaf5460b0797c8467dc"
+    },
+    {
+      "source_id": "fh-140771848",
+      "title": "Magnificent 7 stocks lose $2.3 trillion in June",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=45ae29641062ee38e9160a149e20958cf2a077f54f0351060ba0773e1af1818d"
+    },
+    {
+      "source_id": "fh-140771932",
+      "title": "Meta Platforms Is Reportedly Getting Into Prediction Markets. Could It Be the Company's Next Big Growth Catalyst?",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=8c734bc00434d6ce84ceb9c6c87bfd0c764bee2674016be653fb7d43e0d91432"
+    },
+    {
+      "source_id": "fh-140771933",
+      "title": "2 of Wall Street\u2019s Favorite Stocks Worth Your Attention and 1 We Question",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=dab24f1ba6460bb6b58578b04103c2cf2584f3a85acc64bbbe2eed3463aec3c5"
+    },
+    {
+      "source_id": "fh-140771854",
+      "title": "Magnificent Seven stocks lose $2.3 trillion as AI fears mount",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=62275af2bc77656cca4bbd188a3532920e8418a334ecf918dfba195dc84a28bb"
+    },
+    {
+      "source_id": "fh-140771897",
+      "title": "Meta (META) Turns Inward On AI After Google Limits Gemini Access",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=75583602e1a80f62b4dee361589714d513bd213bb9ec2f50cd382d244efbabbe"
+    },
+    {
+      "source_id": "fh-140773370",
+      "title": "Nebius: The $15 Billion Catch That's Not Priced In",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=e3f6a872344058f8685cb8923b639ecc6d1e5f3f9a71a2a9e02197e5b9b1ee9e"
+    },
+    {
+      "source_id": "fh-140771936",
+      "title": "Meta, YouTube, TikTok Could Face Millions In Fines Under Australia's Tougher Social Media Law: 'Not Here To Play Games'",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=f79f90a882f3644fc3e28240aedab373842a636c17bc6c1f481317bed1ee833d"
+    },
+    {
+      "source_id": "fh-140771937",
+      "title": "Inside Zuckerberg\u2019s Reported Plan to Take On Kalshi and Polymarket in Prediction Markets",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=7d69eacde5f959e839fbe17311c118010f450e9fcdb705f2dba3fea1d481b3ee"
+    },
+    {
+      "source_id": "fh-140773371",
+      "title": "U.S. Equity Markets: Lots Of Gambling Going On",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=f2c075bb05deff66a588a13b14e2590c15ab7656bffa4c90b601b4002f8b94a7"
+    },
+    {
+      "source_id": "fh-140773466",
+      "title": "Wall Street Just Identified 4 Reasons Robinhood Stock Could Keep Climbing",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=4c89a7a7bdc5851cd703fc5cfc7ffa6f8d02726ed854f71b7da2cb7677cfb195"
+    },
+    {
+      "source_id": "fh-140771561",
+      "title": "3 Small-Cap Stocks We Steer Clear Of",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=9626b5d54d7b1394810f370b914481f0be11464cbc6c1380b22caf35dc6d6eca"
+    },
+    {
+      "source_id": "fh-140771514",
+      "title": "Trump Threatens 100% Tariffs Over Digital Taxes. These 5 Tech Stocks Are Most at Risk",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=20c80505785dce65355116e89b13d0f9c4f3bb399a321f2fd67fb6d912104b15"
+    },
+    {
+      "source_id": "fh-140771515",
+      "title": "Chip Stocks\u2019 Best Quarter Ever Is Ending With Some Wild Swings",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=506a26c5904c2bb453d14487adbd96ee4b458131d0af12ced34e1dae1f0121e9"
+    },
+    {
+      "source_id": "fh-140773280",
+      "title": "As AI Fraud Explodes, New Report Says 15 Million Americans Were Scammed Last Year And Americans Lost About $68 Billion",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=2cef86688143f321dca5d30c2843a0d285f59b7a3115989ca1a7e6b2ae45a82a"
+    },
+    {
+      "source_id": "fh-140770036",
+      "title": "AOL Returns to Wall Street With a Strange New Name and Big Debt",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=1208a4c79d936394d4f70e4a3ee0d4257cfffec65f0967645eb19d2b178cc923"
+    },
+    {
+      "source_id": "fh-140770935",
+      "title": "Proof Pending: Can AI Deliver Lasting Growth?",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=d253130deffc1c2e50291efc2bfbe401ad385d83ea44e03d8c7c897948d58b74"
+    },
+    {
+      "source_id": "fh-140771516",
+      "title": "Magnificent Seven stocks shed $2.3tn in Wall Street tech rotation",
+      "published_at": "2026-06-30",
+      "url": "https://finnhub.io/api/news?id=fccb107cf21278a47853ae507b986f5e0ee60cc3048fd5d23139707b7a14abf1"
+    },
+    {
+      "source_id": "fh-140768768",
+      "title": "House Passes Online Safety Bill as Senate Eyes Stricter Push",
+      "published_at": "2026-06-29",
+      "url": "https://finnhub.io/api/news?id=40385b726a519bb84831d8a8f4de0b9075122012703d100dbf4e2aa02f335839"
+    },
+    {
+      "source_id": "fh-140767821",
+      "title": "Meta Platforms (META) Exceeds Market Returns: Some Facts to Consider",
+      "published_at": "2026-06-29",
+      "url": "https://finnhub.io/api/news?id=ff8f7d6467e4c94b72380c472bf5b71e3a8d628e198f62fd3df7ceeed654cd3a"
+    },
+    {
+      "source_id": "fh-140766683",
+      "title": "Retail 'FOMO' drives record SpaceX Options volume following blockbuster IPO",
+      "published_at": "2026-06-29",
+      "url": "https://finnhub.io/api/news?id=bbc40b19c6c3cdcf65992252027afccef56dbd794da3d1c848d139ac168714cd"
+    },
+    {
+      "source_id": "fh-140766657",
+      "title": "Amazon Stock Climbs During Strong Day For Magnificent Seven",
+      "published_at": "2026-06-29",
+      "url": "https://finnhub.io/api/news?id=f8debf5d0c706c3ab4356cdbab3b489dc23e4930aea040f0f0b8c5c9ba6d8d20"
+    },
+    {
+      "source_id": "fh-140766665",
+      "title": "Tesla Leads Magnificent Seven Recovery, Analysts Chime In On Deliveries",
+      "published_at": "2026-06-29",
+      "url": "https://finnhub.io/api/news?id=8ed597f8fad937afb48910262150467a6e4659273acfc952739f00ba13fc78b6"
+    },
+    {
+      "source_id": "fh-140766666",
+      "title": "Big tech faces AI spending scrutiny ahead of Q2 earnings: Wedbush",
+      "published_at": "2026-06-29",
+      "url": "https://finnhub.io/api/news?id=96107d54c4de4f83659a82f3c7015eaf7143a69a54b5c16d59622f547297fad1"
+    },
+    {
+      "source_id": "fh-140765629",
+      "title": "Sector Update: Tech Stocks Gain Late Afternoon",
+      "published_at": "2026-06-29",
+      "url": "https://finnhub.io/api/news?id=1cebd48c17a4d5e078f7740c93add4d53c019c8bfe1791313f2a4a7924a517c2"
+    }
+  ],
+  "leak_check": {
+    "violations": []
+  }
+}
