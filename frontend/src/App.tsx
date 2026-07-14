@@ -120,15 +120,14 @@ export default function App() {
   )
 
   // Replay picker options: resolve each recorded run's model tag back to its
-  // catalog entry (label/group/paid) so it renders with the same optgroups and
-  // styling as the live picker. Unresolved tags fall back to the raw slug. The
-  // timestamp is only appended when a pair has two runs of the same model.
+  // catalog entry (label/paid) so it shows the same polished labels and styling
+  // as the live picker. Unresolved tags fall back to the raw slug. The timestamp
+  // is only appended when a pair has two runs of the same model.
   const runOptions = useMemo(() => {
     const items = runs.map((r) => {
       const m = models.find((o) => modelTag(o) === r.model)
       return {
         run: r.run,
-        group: m?.group ?? 'Recorded run',
         label: m?.label ?? r.model,
         paid: m?.paid ?? false,
         recorded_at: r.recorded_at,
@@ -323,12 +322,8 @@ export default function App() {
                 aria-label="recorded run"
               >
                 {runs.length === 0 && <option value="">no recorded runs</option>}
-                {[...new Set(runOptions.map((o) => o.group))].map((group) => (
-                  <optgroup key={group} label={group}>
-                    {runOptions.filter((o) => o.group === group).map((o) => (
-                      <option key={o.run} value={o.run}>{o.display}</option>
-                    ))}
-                  </optgroup>
+                {runOptions.map((o) => (
+                  <option key={o.run} value={o.run}>{o.display}</option>
                 ))}
               </select>
               <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[11px] text-ink-3">▾</span>
