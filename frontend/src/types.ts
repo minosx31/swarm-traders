@@ -152,6 +152,15 @@ export interface ModelOption {
   label: string
   paid: boolean // true ⇒ real API credits (OpenRouter/Claude); UI warns + confirms
   group: string // optgroup label the UI buckets by (server owns provider identity)
+  est_cost_usd: number | null // estimated $/run (0 for free, null ⇒ price unknown)
+}
+
+/** GET /validate-ticker?ticker — a cheap existence probe for the NEW PAIR box. */
+export interface TickerCheck {
+  ticker: string
+  valid: boolean
+  name?: string | null // company name when the lookup resolved one
+  reason?: string // why it's invalid, when it isn't
 }
 
 /** A recorded run from GET /runs, for the replay 'which model' picker. */

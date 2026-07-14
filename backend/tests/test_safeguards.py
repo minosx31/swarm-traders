@@ -100,11 +100,28 @@ def test_cost_accumulates_with_cache_accounting():
     assert handler.tokens["cache_read"] == 90_000
 
 
-def test_non_anthropic_models_cost_zero():
+def test_local_models_cost_zero():
     handler = RunSafeguards()
     handler.on_llm_end(_llm_result("qwen3.5:9b", 50_000, 5_000))
     assert handler.cost_usd == 0.0
     assert handler.tokens["output"] == 5_000
+
+
+def test_openrouter_runs_priced_from_catalog(monkeypatch):
+    """OpenRouter runs record a real cost (not $0): priced from the live catalog
+    against the model pinned for the run, off real token counts."""
+    from alpha_swarms import llm
+
+    monkeypatch.setattr(llm, "_openrouter_pricing",
+                        lambda: {"openai/gpt-4o-mini": (1e-6, 2e-6)})  # $1/$2 per Mtok
+    llm.set_run_override("openrouter", "openai/gpt-4o-mini")
+    try:
+        handler = RunSafeguards()
+        # the OpenRouter response reports a bare model name; pricing keys off the pin
+        handler.on_llm_end(_llm_result("gpt-4o-mini", 50_000, 5_000))
+        assert handler.cost_usd == pytest.approx((50_000 * 1 + 5_000 * 2) / 1e6)
+    finally:
+        llm.set_run_override(None, None)
 
 
 def test_global_spend_counter_persists_across_runs(tmp_path, monkeypatch):

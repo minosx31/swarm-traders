@@ -1,4 +1,4 @@
-import type { DebateEvent, ModelOption, Outcome, RunOption, SnapshotManifest, WhitelistPair } from './types'
+import type { DebateEvent, ModelOption, Outcome, RunOption, SnapshotManifest, TickerCheck, WhitelistPair } from './types'
 
 export const API_BASE = import.meta.env.VITE_API_BASE ?? 'http://localhost:8000'
 
@@ -45,6 +45,14 @@ export function streamUrl(ticker: string, asOf: string, replay: boolean, opts: S
     if (opts.model) params.set('model', opts.model)
   }
   return `${API_BASE}/stream?${params}`
+}
+
+/** Check a symbol exists before the user commits to building its snapshot.
+ *  Live-only: the static demo has no backend to probe (and no NEW PAIR flow). */
+export async function validateTicker(ticker: string): Promise<TickerCheck> {
+  const res = await fetch(`${API_BASE}/validate-ticker?ticker=${encodeURIComponent(ticker)}`)
+  if (!res.ok) throw new Error(`validate failed: ${res.status}`)
+  return res.json()
 }
 
 export async function fetchModels(): Promise<ModelOption[]> {

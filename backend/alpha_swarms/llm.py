@@ -5,6 +5,7 @@ LLM_BACKEND and restarting — no code change. Never switch mid-run.
 """
 
 import os
+import time
 from contextvars import ContextVar
 
 BACKENDS = {}  # name -> factory(model=None); add a line to add a backend
@@ -194,6 +195,61 @@ OPENROUTER_OPTIONS = (
 )
 
 
+# Typical per-run token footprint, measured from recorded runs (~8 LLM calls,
+# ~30k input / ~5k output). Turns a model's $/token unit price into the per-run
+# dollar figure shown on the paid-model confirm step — an estimate, not a quote.
+TYPICAL_RUN_TOKENS = {"input": 30_000, "output": 5_000}
+
+_OPENROUTER_PRICING_TTL = 3600  # seconds — the live catalog barely moves
+_openrouter_pricing_cache: tuple[float, dict[str, tuple[float, float]]] | None = None
+
+
+def _openrouter_pricing() -> dict[str, tuple[float, float]]:
+    """model_id -> (prompt_$/token, completion_$/token) from OpenRouter's live
+    catalog (GET /api/v1/models, public — no key). Cached for an hour; returns the
+    last good cache (or {}) if the catalog is unreachable, so the UI degrades to
+    'estimate unavailable' rather than erroring."""
+    global _openrouter_pricing_cache
+    import httpx
+
+    now = time.time()
+    if _openrouter_pricing_cache and now - _openrouter_pricing_cache[0] < _OPENROUTER_PRICING_TTL:
+        return _openrouter_pricing_cache[1]
+    try:
+        resp = httpx.get("https://openrouter.ai/api/v1/models", timeout=5)
+        resp.raise_for_status()
+        pricing: dict[str, tuple[float, float]] = {}
+        for m in resp.json().get("data", []):
+            p = m.get("pricing") or {}
+            try:
+                pricing[m["id"]] = (float(p["prompt"]), float(p["completion"]))
+            except (KeyError, TypeError, ValueError):
+                continue  # a model missing per-token pricing just has no estimate
+        _openrouter_pricing_cache = (now, pricing)
+        return pricing
+    except Exception:  # noqa: BLE001 — catalog down ⇒ keep serving models, no estimate
+        return _openrouter_pricing_cache[1] if _openrouter_pricing_cache else {}
+
+
+def estimate_run_cost(backend: str, model: str) -> float | None:
+    """Estimated USD for one run of (backend, model), or None when the model is
+    unpriced (Ollama) or its price is unknown. OpenRouter prices come from the
+    live catalog; Claude-direct from the same table safeguards charges against."""
+    ti, to = TYPICAL_RUN_TOKENS["input"], TYPICAL_RUN_TOKENS["output"]
+    if backend == "openrouter":
+        prices = _openrouter_pricing().get(model)
+        if prices is None:
+            return None
+        prompt, completion = prices  # already $ per token
+        return round(ti * prompt + to * completion, 4)
+    if backend in ANTHROPIC_BACKENDS:
+        from .safeguards import _price_for
+
+        p_in, p_out, _, _ = _price_for(model)
+        return round((ti * p_in + to * p_out) / 1e6, 4)
+    return None
+
+
 def _ollama_installed() -> list[str]:
     """Model names from the local Ollama daemon; [] if it is unreachable."""
     import httpx
@@ -221,4 +277,7 @@ def available_models() -> list[dict]:
         options += OPENROUTER_OPTIONS
     if os.environ.get("ANTHROPIC_API_KEY"):
         options += CLAUDE_OPTIONS
-    return options
+    # est_cost_usd feeds the ⚠ CREDITS chip + confirm step (null ⇒ 'estimate
+    # unavailable'). Priced lazily so a run with only free models makes no network call.
+    return [{**o, "est_cost_usd": estimate_run_cost(o["backend"], o["model"]) if o["paid"] else 0.0}
+            for o in options]

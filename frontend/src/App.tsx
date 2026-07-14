@@ -1,18 +1,21 @@
 import { useEffect, useMemo, useState } from 'react'
-import { ensureSnapshot, fetchModels, fetchOutcome, fetchRuns, fetchSnapshotManifest, fetchWhitelist, STATIC } from './api'
+import { ensureSnapshot, fetchModels, fetchOutcome, fetchRuns, fetchSnapshotManifest, fetchWhitelist, STATIC, validateTicker } from './api'
 import { AgentChip } from './components'
 import { LayerFeed } from './Layers'
 import { Orchestration } from './Orchestration'
 import { Provenance } from './Provenance'
 import { useDebateStream } from './useDebateStream'
 import { VerdictFinale } from './VerdictFinale'
-import { SPECIALISTS, type ModelOption, type Outcome, type RunOption, type SnapshotManifest, type WhitelistPair } from './types'
+import { SPECIALISTS, type ModelOption, type Outcome, type RunOption, type SnapshotManifest, type TickerCheck, type WhitelistPair } from './types'
 
 // 20260704T031559Z -> "07-04 03:15" for the cached-run picker
 function fmtStamp(s: string): string {
   const m = /^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})/.exec(s)
   return m ? `${m[2]}-${m[3]} ${m[4]}:${m[5]}` : s
 }
+
+// sub-cent estimates need a third decimal to not read as "$0.00"
+const fmtCost = (n: number): string => `$${n < 0.1 ? n.toFixed(3) : n.toFixed(2)}`
 
 export default function App() {
   const { state, start } = useDebateStream()
@@ -22,6 +25,12 @@ export default function App() {
   const [newPair, setNewPair] = useState(false)
   const [building, setBuilding] = useState(false)
   const [refusal, setRefusal] = useState<string | null>(null)
+  // NEW PAIR ticker existence check — null until the box is probed on blur
+  const [tickerCheck, setTickerCheck] = useState<TickerCheck | null>(null)
+  const [checking, setChecking] = useState(false)
+  // simulate: transparently re-stream a recorded run for this pair as if live —
+  // a real-feeling run with $0 spend. Only offered when a recording exists.
+  const [simulate, setSimulate] = useState(false)
   const [models, setModels] = useState<ModelOption[]>([])
   const [sel, setSel] = useState('') // selected "backend::model"
   const [runs, setRuns] = useState<RunOption[]>([])
@@ -59,14 +68,16 @@ export default function App() {
     }, () => {})
   }, [])
 
-  // static demo: list the cached runs for the chosen pair so one can be picked by model
+  // list the recorded runs for the chosen pair: the static demo picks one by model,
+  // and a live run offers to "simulate" (replay the newest) instead of spending.
   useEffect(() => {
-    if (!replay || !ticker || !asOf) return
+    if (!ticker || !asOf) return
     fetchRuns(ticker.toUpperCase(), asOf).then((rs) => {
       setRuns(rs)
       setSelRun(rs.length > 0 ? rs[0].run : '') // newest first
-    }, () => setRuns([]))
-  }, [replay, ticker, asOf])
+      if (rs.length === 0) setSimulate(false) // nothing to simulate for this pair
+    }, () => { setRuns([]); setSimulate(false) })
+  }, [ticker, asOf])
 
   // dropdown option spaces, derived from the whitelist (= snapshots on disk)
   const tickers = useMemo(
@@ -105,14 +116,30 @@ export default function App() {
     if (dates.length > 0 && !dates.includes(asOf)) setAsOf(dates[dates.length - 1])
   }
 
+  // simulate is only offered live (the static demo is already a replay) and only
+  // when this pair has a recording to re-stream. doReplay = the no-spend path.
+  const canSimulate = !STATIC && runs.length > 0
+  const doReplay = STATIC || simulate
+
+  // probe a hand-typed ticker on blur so a bad symbol is caught before a build
+  const runTickerCheck = async () => {
+    const t = ticker.trim().toUpperCase()
+    if (!t) { setTickerCheck(null); return }
+    setChecking(true)
+    try { setTickerCheck(await validateTicker(t)) }
+    catch { setTickerCheck(null) } // probe unreachable ⇒ don't block; build still gates
+    finally { setChecking(false) }
+  }
+
   const launch = async () => {
     setRefusal(null)
     setPendingPaid(false)
     setOutcome(null) // a new run re-seals the outcome
     setOutcomeError(null)
     const t = ticker.toUpperCase()
-    if (replay) {
-      start(t, asOf, true, { run: selRun }) // the picked recording (by model), or latest
+    if (doReplay) {
+      // static: the picked recording (by model); simulate: the newest for this pair
+      start(t, asOf, true, { run: STATIC ? selRun : runs[0]?.run })
       return
     }
     if (!whitelisted) {
@@ -131,9 +158,10 @@ export default function App() {
     start(t, asOf, false, { backend: selected?.backend, model: selected?.model })
   }
 
-  // a paid (Claude) run is gated behind an explicit confirm; everything else launches directly
+  // a paid run is gated behind an explicit confirm; a simulate spends nothing, so
+  // it (like replay) launches directly
   const run = () => {
-    if (!replay && selected?.paid) {
+    if (!doReplay && selected?.paid) {
       setPendingPaid(true)
       return
     }
@@ -152,9 +180,10 @@ export default function App() {
   const feedStarted = SPECIALISTS.some(
     (s) => state.lanes[s].status !== 'idle' || state.lanes[s].thesis,
   )
-  // the model behind this run — the recorded run's in replay, the picked one live
-  const verdictModel = replay
+  // the model behind this run — the recorded run's when re-streaming, else the picked one
+  const verdictModel = STATIC
     ? runs.find((r) => r.run === selRun)?.model
+    : simulate ? runs[0]?.model
     : selected?.label
   const fieldCls =
     'appearance-none rounded-[9px] border border-hairline bg-surface py-2 pl-3 pr-8 font-mono text-[13px] text-ink outline-none transition-colors focus:border-judge disabled:opacity-40'
@@ -187,7 +216,8 @@ export default function App() {
               <input
                 className="w-20 rounded-md border border-hairline bg-surface px-2 py-1.5 text-[14px] uppercase text-ink outline-none focus:border-judge"
                 value={ticker}
-                onChange={(e) => setTicker(e.target.value)}
+                onChange={(e) => { setTicker(e.target.value); setTickerCheck(null) }}
+                onBlur={runTickerCheck}
                 placeholder="TICKER"
                 aria-label="new ticker"
               />
@@ -206,6 +236,15 @@ export default function App() {
               >
                 ×
               </button>
+              {checking ? (
+                <span className="text-[11px] text-ink-3">checking…</span>
+              ) : tickerCheck && tickerCheck.valid ? (
+                <span className="text-[11px] text-bull" title={tickerCheck.name ?? undefined}>
+                  ✓ {tickerCheck.name ?? 'valid symbol'}
+                </span>
+              ) : tickerCheck ? (
+                <span className="text-[11px] text-bear">✗ {tickerCheck.reason ?? 'unknown symbol'}</span>
+              ) : null}
             </>
           ) : (
             // dropdowns over the recorded snapshots
@@ -288,19 +327,36 @@ export default function App() {
                 </select>
                 <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[11px] text-ink-3">▾</span>
               </div>
-              {selected?.paid && (
-                <span className="text-[11px] font-semibold tracking-[0.14em] text-technicals" title="uses real API credits">⚠ CREDITS</span>
+              {selected?.paid && !simulate && (
+                <span className="text-[11px] font-semibold tracking-[0.14em] text-technicals" title="estimated real API credits per run">
+                  ⚠ {selected.est_cost_usd != null ? `≈ ${fmtCost(selected.est_cost_usd)}/run` : 'CREDITS'}
+                </span>
+              )}
+              {canSimulate && (
+                <label className="inline-flex cursor-pointer items-center gap-1.5 text-[11px] text-ink-3" title="replay the newest recorded run for this pair as a live-feeling run — no credits">
+                  <input
+                    type="checkbox"
+                    checked={simulate}
+                    onChange={(e) => setSimulate(e.target.checked)}
+                    disabled={streaming || building}
+                    className="accent-judge"
+                  />
+                  Simulate · $0
+                </label>
               )}
             </div>
           )}
 
           <button
             onClick={run}
-            disabled={streaming || building || !ticker || !asOf || (replay ? !selRun : !selected)}
+            disabled={streaming || building || !ticker || !asOf
+              || (replay ? !selRun : !selected)
+              || (newPair && tickerCheck !== null && !tickerCheck.valid)}
             className="min-w-[200px] cursor-pointer rounded-[9px] border border-judge bg-judge/[0.08] px-[18px] py-[9px] text-[13px] font-semibold tracking-[0.14em] text-judge transition-colors hover:bg-judge hover:text-page disabled:cursor-default disabled:opacity-40"
           >
             {building ? 'BUILDING SNAPSHOT…'
               : streaming ? 'IN SESSION…'
+              : simulate ? '▶ SIMULATE RUN'
               : '▶ START ANALYSIS'}
           </button>
         </div>
@@ -313,7 +369,9 @@ export default function App() {
       )}
       {pendingPaid && selected?.paid && (
         <div className="flex flex-wrap items-center gap-3 border-b border-technicals/40 bg-technicals/10 px-[30px] py-2 text-[13px] text-technicals">
-          <span>⚠ {selected.label} uses real API credits (~$ per run).</span>
+          <span>⚠ {selected.label} uses real API credits — {selected.est_cost_usd != null
+            ? `about ${fmtCost(selected.est_cost_usd)} for this run`
+            : 'cost estimate unavailable'}.</span>
           <button
             onClick={() => setPendingPaid(false)}
             className="cursor-pointer rounded border border-hairline px-2.5 py-0.5 text-[12px] text-ink-2 transition-colors hover:text-ink"

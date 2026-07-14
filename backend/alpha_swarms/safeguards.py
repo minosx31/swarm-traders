@@ -18,7 +18,8 @@ MAX_CALLS_PER_RUN = 20  # backstop above a full tool run's worst case: 3 special
 # (≤2 each) + red-team (≤3) + 3 rebuttals (≤3 each) + judge = ≤19. Pre-sliced is 8.
 
 # $ per M tokens, matched by model-name prefix: (input, output, cache_write, cache_read)
-# Non-Anthropic backends (ollama, groq free tier) fall through to $0.
+# Anthropic-direct backends only; OpenRouter is priced from its live catalog below,
+# and truly unpriced backends (ollama, groq free tier) fall through to $0.
 PRICES_PER_MTOK = {
     "claude-sonnet": (3.0, 15.0, 3.75, 0.30),
     "claude-haiku": (1.0, 5.0, 1.25, 0.10),
@@ -30,11 +31,33 @@ class BreakerTripped(RuntimeError):
     """Raised when a run exceeds MAX_CALLS_PER_RUN LLM calls."""
 
 
+def _openrouter_price_for(_model_name: str):
+    """Per-Mtok (input, output, cache_write, cache_read) for the OpenRouter model
+    pinned to this run, from its live catalog — so OpenRouter runs record a real
+    cost instead of $0. Priced off the pinned model id (guaranteed to match the
+    catalog key) rather than the response's reported name. Gated on the OpenRouter
+    backend so ollama/groq runs never touch the network. Unknown/free model ⇒ $0.
+
+    Runs here don't cache-mark prompts on non-Anthropic backends (llm.system_content),
+    so cache_read/creation are 0 and the cache columns are moot — we mirror input."""
+    from . import llm
+
+    if llm.current_backend() != "openrouter":
+        return (0.0, 0.0, 0.0, 0.0)
+    model_id = llm._override_model("openrouter") or llm.openrouter_model()
+    prices = llm._openrouter_pricing().get(model_id)
+    if prices is None:
+        return (0.0, 0.0, 0.0, 0.0)
+    prompt, completion = prices  # $ per token
+    p_in, p_out = prompt * 1e6, completion * 1e6
+    return (p_in, p_out, p_in, p_in)
+
+
 def _price_for(model_name: str):
     for prefix, prices in PRICES_PER_MTOK.items():
         if model_name.startswith(prefix):
             return prices
-    return (0.0, 0.0, 0.0, 0.0)
+    return _openrouter_price_for(model_name)
 
 
 class RunSafeguards(BaseCallbackHandler):

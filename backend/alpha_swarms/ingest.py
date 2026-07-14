@@ -6,6 +6,7 @@ historical, needs FINNHUB_API_KEY) or falls back to yfinance current headlines.
 """
 
 import os
+import re
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
@@ -27,6 +28,32 @@ from .snapshot import (
 
 class IngestError(Exception):
     """A fetch failed or produced no usable data — the pair cannot be snapshotted."""
+
+
+_SYMBOL_RE = re.compile(r"[A-Z][A-Z.\-]{0,9}")
+
+
+def check_ticker(ticker: str) -> dict:
+    """Cheap existence probe for the NEW PAIR ticker box, so a bad symbol is caught
+    before the user commits to a full snapshot build. Returns
+    {ticker, valid, name?, reason?} — a plausible-shape gate then a light yfinance
+    recent-history lookup (the same source ingest relies on). Never raises."""
+    t = ticker.strip().upper()
+    if not _SYMBOL_RE.fullmatch(t):
+        return {"ticker": t, "valid": False, "reason": "not a plausible ticker symbol"}
+    try:
+        yft = yf.Ticker(t)
+        if yft.history(period="5d").empty:
+            return {"ticker": t, "valid": False, "reason": "no market data for that symbol"}
+    except Exception:  # noqa: BLE001 — network/parse hiccup ⇒ can't confirm, don't crash
+        return {"ticker": t, "valid": False, "reason": "lookup failed — try again"}
+    name = None
+    try:  # a friendly name is best-effort; .info is heavier and may rate-limit
+        info = yft.info or {}
+        name = info.get("shortName") or info.get("longName") or None
+    except Exception:  # noqa: BLE001
+        name = None
+    return {"ticker": t, "valid": True, "name": name}
 
 
 def fetch_prices(t: yf.Ticker, start: date, end_inclusive: date) -> list[PriceBar]:

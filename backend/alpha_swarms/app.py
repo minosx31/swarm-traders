@@ -19,7 +19,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sse_starlette.sse import EventSourceResponse
 
-from .ingest import IngestError, ingest_pair
+from .ingest import IngestError, check_ticker, ingest_pair
 from .llm import BACKENDS, available_models, validate_backend
 from .manifest import build_manifest
 from .replay import list_runs, resolve_run_path, stream_replay
@@ -89,6 +89,14 @@ async def build_snapshot(ticker: str, as_of: str):
     except (IngestError, ValueError) as e:
         raise HTTPException(status_code=400, detail=str(e))
     return {"ticker": ticker.upper(), "as_of": as_of, "built": True}
+
+
+@app.get("/validate-ticker")
+async def validate_ticker(ticker: str):
+    """Does this symbol exist? Lets the NEW PAIR box tell the user before they
+    commit to a snapshot build. Always 200 with {valid, ...}; a bad symbol is a
+    normal answer, not an error."""
+    return await asyncio.to_thread(check_ticker, ticker)
 
 
 @app.get("/whitelist")
