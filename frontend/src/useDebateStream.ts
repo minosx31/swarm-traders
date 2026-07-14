@@ -10,11 +10,11 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 // Instead we dwell before each event for a beat sized to what it represents —
 // text events ~ their length (generation time), tool results ~ their recorded
 // runtime, structural events a short beat — with jitter so it never feels
-// metronomic. VITE_EVENT_DELAY_MS (the base beat, ~190ms) scales the whole
-// timeline: lower ⇒ snappier demo, higher ⇒ slower/more deliberate. The default
-// lands a typical ~30-event run around ~40s — realistic without dragging a live
-// demo (the old flat 250ms dumped the same run in ~7s).
-const BASE_MS = Number(import.meta.env.VITE_EVENT_DELAY_MS ?? 190)
+// metronomic. VITE_EVENT_DELAY_MS (the base beat, ~125ms) scales the whole
+// timeline: lower ⇒ snappier, higher ⇒ slower/more deliberate. The default keeps
+// every bundled run in the ~16-26s range — realistic but demo-safe (never over
+// 30s; the old flat 250ms dumped the same run in ~7s).
+const BASE_MS = Number(import.meta.env.VITE_EVENT_DELAY_MS ?? 125)
 
 function eventDelay(event: DebateEvent): number {
   const unit = BASE_MS / 250 // 1 at the default; scales every beat together
