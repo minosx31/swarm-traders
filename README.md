@@ -407,7 +407,7 @@ uv run pytest
 | `SPEND_FILE` | Persistent global spend counter | `backend/data/spend.json` |
 | `VITE_API_BASE` | Frontend → backend base URL (Path B, the default). Set to the hosted backend URL (e.g. the Render service) at build time; ignored in static mode | `http://localhost:8000` |
 | `VITE_STATIC` | Build-time flag: `1` builds the **replay-only static site** (Path A) — reads bundled JSON from `public/data/`, replays client-side, no backend/API/key. Unset ⇒ the live SSE build | unset |
-| `VITE_EVENT_DELAY_MS` | Static-mode client-side replay pacing | `250` |
+| `VITE_EVENT_DELAY_MS` | Static-mode replay base beat (ms); scales the whole timeline — beats are sized per event (text length, tool runtime) for a live feel | `190` |
 
 **Cost guardrails are always on:** every run is capped at 15 LLM calls, prints
 its estimated cost, and accumulates into the global counter. Each recorded run
