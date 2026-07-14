@@ -16,6 +16,7 @@
     "@fontsource/space-grotesk": "^5.2.10",
     "@fontsource/spectral": "^5.2.8",
     "@tailwindcss/vite": "^4.3.2",
+    "@vercel/analytics": "^2.0.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "tailwindcss": "^4.3.2"

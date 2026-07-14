@@ -91,6 +91,14 @@ async def build_snapshot(ticker: str, as_of: str):
     return {"ticker": ticker.upper(), "as_of": as_of, "built": True}
 
 
+@app.get("/health")
+async def health():
+    """Liveness ping. Cheap and dependency-free so an external keep-warm cron
+    (GitHub Actions) can hit it every few minutes to stop Render's free tier from
+    spinning the service down."""
+    return {"status": "ok"}
+
+
 @app.get("/validate-ticker")
 async def validate_ticker(ticker: str):
     """Does this symbol exist? Lets the NEW PAIR box tell the user before they
