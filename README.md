@@ -452,13 +452,16 @@ no code differs, only the build-time `VITE_STATIC` flag.
    **every whitelisted snapshot on disk** (every pair you have a snapshot for,
    which includes every pair you recorded a run for) — the offline stand-in for
    `GET /snapshot`. Skip this and the runs still replay, but the Provenance
-   manifest panel is empty for the pairs that have no manifest.
+   manifest panel is empty for the pairs that have no manifest. It also writes
+   `backend/data/models.json` (the paid model catalog, offline stand-in for
+   `GET /models`) so the replay picker shows the same labels/optgroups as live.
 3. **Bundle them:** `cd frontend && bun run bundle`. Copies `data/runs/*.json`
    (+ each referenced outcome) into `frontend/public/data/`, writes `index.json`
    (the offline stand-in for `GET /whitelist` + `GET /runs`), and copies
    **whatever manifests are available** — for each bundled pair it copies
    `data/manifests/{TICKER}_{as_of}.json` into `frontend/public/data/snapshots/`
-   if it exists, skipping (with a warning) any that are missing. Check the console
+   if it exists, skipping (with a warning) any that are missing. It also copies
+   `data/models.json` to `frontend/public/data/` when present. Check the console
    summary it prints — `bundled N run(s) …` and `bundled M manifest(s) …` — to
    confirm the manifest count matches the pairs you expect.
 4. **Commit `frontend/public/data/`** — Vercel builds from git, so the bundled

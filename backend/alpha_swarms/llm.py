@@ -255,6 +255,15 @@ def _ollama_installed() -> list[str]:
         return []
 
 
+def catalog() -> list[dict]:
+    """The full paid model catalog (Claude + OpenRouter), independent of which API
+    keys are set — for the static demo's bundled models.json. Lets the replay
+    picker resolve a recorded run's model_tag back to its label/group and render
+    the same optgroups as the live picker. No est_cost (that needs a live price
+    call, and replay never spends)."""
+    return [{**o, "est_cost_usd": None} for o in CLAUDE_OPTIONS + OPENROUTER_OPTIONS]
+
+
 def available_models() -> list[dict]:
     """Selectable (backend, model) options for the UI. Ollama models come from
     the local daemon; the OpenRouter and Claude options appear ONLY if their

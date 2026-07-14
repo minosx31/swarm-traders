@@ -119,6 +119,29 @@ export default function App() {
     [models, sel],
   )
 
+  // Replay picker options: resolve each recorded run's model tag back to its
+  // catalog entry (label/group/paid) so it renders with the same optgroups and
+  // styling as the live picker. Unresolved tags fall back to the raw slug. The
+  // timestamp is only appended when a pair has two runs of the same model.
+  const runOptions = useMemo(() => {
+    const items = runs.map((r) => {
+      const m = models.find((o) => modelTag(o) === r.model)
+      return {
+        run: r.run,
+        group: m?.group ?? 'Recorded run',
+        label: m?.label ?? r.model,
+        paid: m?.paid ?? false,
+        recorded_at: r.recorded_at,
+      }
+    })
+    const seen = new Map<string, number>()
+    for (const it of items) seen.set(it.label, (seen.get(it.label) ?? 0) + 1)
+    return items.map((it) => ({
+      ...it,
+      display: (seen.get(it.label) ?? 0) > 1 ? `${it.label} · ${fmtStamp(it.recorded_at)}` : it.label,
+    }))
+  }, [runs, models])
+
   const pickTicker = (t: string) => {
     setTicker(t)
     // snap as-of to that ticker's newest recorded date
@@ -182,7 +205,7 @@ export default function App() {
   )
   // the model behind this run — the recorded run's when re-streaming, else the picked one
   const verdictModel = STATIC
-    ? runs.find((r) => r.run === selRun)?.model
+    ? runOptions.find((o) => o.run === selRun)?.label
     : selected?.label
   const fieldCls =
     'appearance-none rounded-[9px] border border-hairline bg-surface py-2 pl-3 pr-8 font-mono text-[13px] text-ink outline-none transition-colors focus:border-judge disabled:opacity-40'
@@ -293,15 +316,19 @@ export default function App() {
           {replay ? (
             <div className="relative">
               <select
-                className={`${fieldCls} w-56`}
+                className={`${fieldCls} w-56 ${runOptions.find((o) => o.run === selRun)?.paid ? 'text-technicals' : ''}`}
                 value={selRun}
                 onChange={(e) => setSelRun(e.target.value)}
                 disabled={active || building || runs.length === 0}
                 aria-label="recorded run"
               >
                 {runs.length === 0 && <option value="">no recorded runs</option>}
-                {runs.map((r) => (
-                  <option key={r.run} value={r.run}>{r.model} · {fmtStamp(r.recorded_at)}</option>
+                {[...new Set(runOptions.map((o) => o.group))].map((group) => (
+                  <optgroup key={group} label={group}>
+                    {runOptions.filter((o) => o.group === group).map((o) => (
+                      <option key={o.run} value={o.run}>{o.display}</option>
+                    ))}
+                  </optgroup>
                 ))}
               </select>
               <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[11px] text-ink-3">▾</span>

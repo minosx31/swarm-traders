@@ -19,6 +19,7 @@ const ROOT = resolve(import.meta.dir, '..')
 const SRC_RUNS = resolve(ROOT, '../backend/data/runs')
 const SRC_OUTCOMES = resolve(ROOT, '../backend/data/outcomes')
 const SRC_MANIFESTS = resolve(ROOT, '../backend/data/manifests')
+const SRC_MODELS = resolve(ROOT, '../backend/data/models.json')
 const DEST = join(ROOT, 'public', 'data')
 
 interface IndexRun { run: string; model: string; recorded_at: string }
@@ -84,4 +85,13 @@ if (existsSync(SRC_MANIFESTS)) {
   console.log(`bundled ${manifestCount} manifest(s) → public/data/snapshots/`)
 } else {
   console.warn(`skip manifests: ${SRC_MANIFESTS} not found (run 'uv run python scripts/export_manifests.py' from backend/)`)
+}
+
+// model catalog (GET /models offline stand-in) — lets the replay picker resolve
+// each recorded run to its label/optgroup, matching the live picker
+if (existsSync(SRC_MODELS)) {
+  copyFileSync(SRC_MODELS, join(DEST, 'models.json'))
+  console.log('bundled model catalog → public/data/models.json')
+} else {
+  console.warn(`skip models.json: ${SRC_MODELS} not found (run 'uv run python scripts/export_manifests.py' from backend/)`)
 }

@@ -48,7 +48,12 @@ export function streamUrl(ticker: string, asOf: string, replay: boolean, opts: S
 }
 
 export async function fetchModels(): Promise<ModelOption[]> {
-  if (STATIC) return [] // no live runs without a backend
+  if (STATIC) {
+    // no live runs without a backend, but the bundled catalog lets the replay
+    // picker resolve each recorded run to its label/optgroup (matching live)
+    const res = await fetch(asset('data/models.json'))
+    return res.ok ? res.json() : [] // no catalog bundled ⇒ fall back to raw slugs
+  }
   const res = await fetch(`${API_BASE}/models`)
   if (!res.ok) throw new Error(`models fetch failed: ${res.status}`)
   return res.json()
