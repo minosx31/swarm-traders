@@ -171,10 +171,13 @@ def _openrouter_tier(models, *, paid, group):
     return [{"backend": "openrouter", "paid": paid, "group": group, **m} for m in models]
 
 OPENROUTER_OPTIONS = (
-    _openrouter_tier([  # $0 — rate-limited and weaker tool use; fine for casual runs
-        {"model": "meta-llama/llama-3.3-70b-instruct:free", "label": "Llama 3.3 70B (free)"},
-        {"model": "openai/gpt-oss-120b:free", "label": "GPT-OSS 120B (free)"},
+    _openrouter_tier([  # $0 — rate-limited; all tool-verified against the live
+        # catalog (structured output rides function-calling, so no-tool free models
+        # are excluded). Ordered strongest-first for the adversarial debate/judge.
         {"model": "qwen/qwen3-next-80b-a3b-instruct:free", "label": "Qwen3 Next 80B (free)"},
+        {"model": "nvidia/nemotron-3-super-120b-a12b:free", "label": "Nemotron 3 Super 120B (free)"},
+        {"model": "openai/gpt-oss-20b:free", "label": "GPT-OSS 20B (free)"},
+        {"model": "meta-llama/llama-3.3-70b-instruct:free", "label": "Llama 3.3 70B (free)"},
     ], paid=False, group="OpenRouter · free")
     + _openrouter_tier([  # cents per run — reliable cheap workhorses
         {"model": "openai/gpt-4o-mini", "label": "GPT-4o mini"},
