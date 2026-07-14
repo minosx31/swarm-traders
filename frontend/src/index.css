@@ -140,3 +140,26 @@ details.disc[open] .disc-body { animation: card-in 0.3s cubic-bezier(0.2, 0.9, 0
 /* ── LIVE indicator: a slow breathing pulse ─────────────────────────────── */
 @keyframes live-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
 .live-dot { animation: live-pulse 1.7s ease-in-out infinite; }
+
+/* ── run-aware as-of calendar (react-day-picker, themed to the dark UI) ──── */
+.swarm-daypicker {
+  --rdp-accent-color: var(--color-judge);
+  --rdp-accent-background-color: rgba(108, 201, 164, 0.16);
+  --rdp-today-color: var(--color-judge);
+  --rdp-day-width: 2.1rem;
+  --rdp-day-height: 2.1rem;
+  --rdp-day_button-width: 2.1rem;
+  --rdp-day_button-height: 2.1rem;
+  --rdp-disabled-opacity: 0.22;
+  --rdp-outside-opacity: 0.4;
+  margin: 0;
+  color: var(--color-ink-2);
+  font-family: inherit;
+  font-size: 12.5px;
+}
+.swarm-daypicker .rdp-month_caption { color: var(--color-ink); font-weight: 600; }
+.swarm-daypicker .rdp-weekday { color: var(--color-ink-3); font-weight: 500; }
+.swarm-daypicker .rdp-chevron { fill: var(--color-ink-2); }
+.swarm-daypicker .rdp-day_button:hover:not([disabled]) { color: var(--color-judge); }
+.swarm-daypicker .rdp-selected .rdp-day_button { color: var(--color-judge); font-weight: 700; }
+.swarm-daypicker .rdp-disabled { cursor: not-allowed; }

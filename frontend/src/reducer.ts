@@ -29,7 +29,10 @@ export interface LaneState {
 }
 
 export interface DebateState {
-  phase: 'idle' | 'streaming' | 'done' | 'error'
+  // 'connecting' = EventSource opened, no event on the wire yet — set optimistically
+  // by the stream hook so the UI shows activity during the connect + first-LLM gap
+  // (otherwise the app looks un-started; the first real event flips it to 'streaming').
+  phase: 'idle' | 'connecting' | 'streaming' | 'done' | 'error'
   lanes: Record<Specialist, LaneState>
   redTeam: {
     status: LaneState['status']

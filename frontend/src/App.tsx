@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { ensureSnapshot, fetchModels, fetchOutcome, fetchRuns, fetchSnapshotManifest, fetchWhitelist, STATIC, validateTicker } from './api'
 import { AgentChip } from './components'
+import { DatePicker } from './DatePicker'
 import { LayerFeed } from './Layers'
 import { Orchestration } from './Orchestration'
 import { Provenance } from './Provenance'
@@ -14,28 +15,28 @@ function fmtStamp(s: string): string {
   return m ? `${m[2]}-${m[3]} ${m[4]}:${m[5]}` : s
 }
 
-// sub-cent estimates need a third decimal to not read as "$0.00"
-const fmtCost = (n: number): string => `$${n < 0.1 ? n.toFixed(3) : n.toFixed(2)}`
+// Mirror backend llm.model_tag(): the slug a recorded run stores for its model, so
+// a recording can be matched back to a model-list entry (to pre-select its model).
+const modelTag = (m: ModelOption): string =>
+  m.backend === 'openrouter' ? m.model.replace(/[/:]/g, '-')
+    : m.backend === 'ollama' ? m.model.replace(/:/g, '-')
+      : m.backend // haiku | sonnet | groq → the backend name is the tag
 
 export default function App() {
   const { state, start } = useDebateStream()
   const [whitelist, setWhitelist] = useState<WhitelistPair[]>([])
   const [ticker, setTicker] = useState('')
   const [asOf, setAsOf] = useState('')
-  const [newPair, setNewPair] = useState(false)
+  const [newPair, setNewPair] = useState(false) // live-only: build+record a brand-new pair
   const [building, setBuilding] = useState(false)
   const [refusal, setRefusal] = useState<string | null>(null)
   // NEW PAIR ticker existence check — null until the box is probed on blur
   const [tickerCheck, setTickerCheck] = useState<TickerCheck | null>(null)
   const [checking, setChecking] = useState(false)
-  // simulate: transparently re-stream a recorded run for this pair as if live —
-  // a real-feeling run with $0 spend. Only offered when a recording exists.
-  const [simulate, setSimulate] = useState(false)
   const [models, setModels] = useState<ModelOption[]>([])
   const [sel, setSel] = useState('') // selected "backend::model"
   const [runs, setRuns] = useState<RunOption[]>([])
   const [selRun, setSelRun] = useState('') // selected recorded-run filename (replay)
-  const [pendingPaid, setPendingPaid] = useState(false)
   // the sealed Outcome — held in App so the verdict rail and the finale reveal as one
   const [outcome, setOutcome] = useState<Outcome | null>(null)
   const [outcomeError, setOutcomeError] = useState<string | null>(null)
@@ -68,16 +69,25 @@ export default function App() {
     }, () => {})
   }, [])
 
-  // list the recorded runs for the chosen pair: the static demo picks one by model,
-  // and a live run offers to "simulate" (replay the newest) instead of spending.
+  // list the recorded runs for the chosen pair — the static demo picks one by model,
+  // and it tells us which dates actually have a run to show.
   useEffect(() => {
     if (!ticker || !asOf) return
     fetchRuns(ticker.toUpperCase(), asOf).then((rs) => {
       setRuns(rs)
       setSelRun(rs.length > 0 ? rs[0].run : '') // newest first
-      if (rs.length === 0) setSimulate(false) // nothing to simulate for this pair
-    }, () => { setRuns([]); setSimulate(false) })
+    }, () => { setRuns([]) })
   }, [ticker, asOf])
+
+  // Live mode: when the chosen pair already has a recording, default the model
+  // dropdown to the model that run used (matched via its model tag). A pair with no
+  // recording leaves the current pick untouched — so recording a fresh pair keeps
+  // whatever model you selected. Static mode has no model dropdown, so skip it.
+  useEffect(() => {
+    if (STATIC || runs.length === 0 || models.length === 0) return
+    const match = models.find((m) => modelTag(m) === runs[0].model)
+    if (match) setSel(`${match.backend}::${match.model}`)
+  }, [runs, models])
 
   // dropdown option spaces, derived from the whitelist (= snapshots on disk)
   const tickers = useMemo(
@@ -116,10 +126,8 @@ export default function App() {
     if (dates.length > 0 && !dates.includes(asOf)) setAsOf(dates[dates.length - 1])
   }
 
-  // simulate is only offered live (the static demo is already a replay) and only
-  // when this pair has a recording to re-stream. doReplay = the no-spend path.
-  const canSimulate = !STATIC && runs.length > 0
-  const doReplay = STATIC || simulate
+  // the static demo re-streams a recorded run; a real backend runs live.
+  const doReplay = STATIC
 
   // probe a hand-typed ticker on blur so a bad symbol is caught before a build
   const runTickerCheck = async () => {
@@ -133,13 +141,11 @@ export default function App() {
 
   const launch = async () => {
     setRefusal(null)
-    setPendingPaid(false)
     setOutcome(null) // a new run re-seals the outcome
     setOutcomeError(null)
     const t = ticker.toUpperCase()
     if (doReplay) {
-      // static: the picked recording (by model); simulate: the newest for this pair
-      start(t, asOf, true, { run: STATIC ? selRun : runs[0]?.run })
+      start(t, asOf, true, { run: selRun }) // static demo: the picked recording
       return
     }
     if (!whitelisted) {
@@ -158,16 +164,6 @@ export default function App() {
     start(t, asOf, false, { backend: selected?.backend, model: selected?.model })
   }
 
-  // a paid run is gated behind an explicit confirm; a simulate spends nothing, so
-  // it (like replay) launches directly
-  const run = () => {
-    if (!doReplay && selected?.paid) {
-      setPendingPaid(true)
-      return
-    }
-    launch()
-  }
-
   const revealOutcome = () => {
     setOutcomeError(null)
     fetchOutcome(ticker.toUpperCase(), asOf).then(setOutcome, (e) =>
@@ -176,6 +172,10 @@ export default function App() {
   }
 
   const streaming = state.phase === 'streaming'
+  const connecting = state.phase === 'connecting'
+  // a run is live from the moment the stream opens (connecting) through streaming —
+  // both must lock the controls and read as in-session, not idle
+  const active = streaming || connecting
   // any specialist having taken the floor is enough to leave the pre-run empty state
   const feedStarted = SPECIALISTS.some(
     (s) => state.lanes[s].status !== 'idle' || state.lanes[s].thesis,
@@ -183,7 +183,6 @@ export default function App() {
   // the model behind this run — the recorded run's when re-streaming, else the picked one
   const verdictModel = STATIC
     ? runs.find((r) => r.run === selRun)?.model
-    : simulate ? runs[0]?.model
     : selected?.label
   const fieldCls =
     'appearance-none rounded-[9px] border border-hairline bg-surface py-2 pl-3 pr-8 font-mono text-[13px] text-ink outline-none transition-colors focus:border-judge disabled:opacity-40'
@@ -210,8 +209,11 @@ export default function App() {
             LIVE
           </span>
 
+          {/* Fixed footprint so toggling build-mode — or the async validity message
+              appearing — never re-wraps the bar or shifts the model picker + start. */}
+          <div className="flex w-[430px] shrink-0 items-center gap-2.5">
           {newPair && !replay ? (
-            // escape hatch: type a brand-new (ticker, as-of) to build a fresh snapshot
+            // live-only escape hatch: type a brand-new (ticker, as-of) to build + record it
             <>
               <input
                 className="w-20 rounded-md border border-hairline bg-surface px-2 py-1.5 text-[14px] uppercase text-ink outline-none focus:border-judge"
@@ -232,29 +234,31 @@ export default function App() {
               <button
                 onClick={() => setNewPair(false)}
                 className="cursor-pointer px-1 text-[16px] leading-none text-ink-3 hover:text-ink"
-                title="back to recorded pairs"
+                title="back to the calendar"
               >
                 ×
               </button>
-              {checking ? (
-                <span className="text-[11px] text-ink-3">checking…</span>
-              ) : tickerCheck && tickerCheck.valid ? (
-                <span className="text-[11px] text-bull" title={tickerCheck.name ?? undefined}>
-                  ✓ {tickerCheck.name ?? 'valid symbol'}
-                </span>
-              ) : tickerCheck ? (
-                <span className="text-[11px] text-bear">✗ {tickerCheck.reason ?? 'unknown symbol'}</span>
-              ) : null}
+              {/* reserved, truncating slot so validity feedback doesn't widen the cluster */}
+              <span className="min-w-0 flex-1 truncate text-[11px]">
+                {checking ? (
+                  <span className="text-ink-3">checking…</span>
+                ) : tickerCheck && tickerCheck.valid ? (
+                  <span className="text-bull" title={tickerCheck.name ?? undefined}>
+                    ✓ {tickerCheck.name ?? 'valid symbol'}
+                  </span>
+                ) : tickerCheck ? (
+                  <span className="text-bear">✗ {tickerCheck.reason ?? 'unknown symbol'}</span>
+                ) : null}
+              </span>
             </>
           ) : (
-            // dropdowns over the recorded snapshots
             <>
               <div className="relative">
                 <select
                   className={`${fieldCls} w-24`}
                   value={tickers.includes(ticker) ? ticker : ''}
                   onChange={(e) => pickTicker(e.target.value)}
-                  disabled={streaming || building || tickers.length === 0}
+                  disabled={active || building || tickers.length === 0}
                   aria-label="ticker"
                 >
                   {tickers.length === 0 && <option value="">—</option>}
@@ -262,32 +266,28 @@ export default function App() {
                 </select>
                 <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[11px] text-ink-3">▾</span>
               </div>
-              <div className="relative">
-                <select
-                  className={`${fieldCls} w-36`}
-                  value={datesForTicker.includes(asOf) ? asOf : ''}
-                  onChange={(e) => setAsOf(e.target.value)}
-                  disabled={streaming || building || datesForTicker.length === 0}
-                  aria-label="as-of date"
+              {/* run-aware calendar: only dates that have a run to show for this ticker
+                  are selectable; every other day is greyed out. */}
+              <DatePicker
+                value={asOf}
+                enabled={datesForTicker}
+                onChange={setAsOf}
+                disabled={active || building || datesForTicker.length === 0}
+              />
+              {/* build a brand-new pair — live backend only (nothing to build in the static demo) */}
+              {!replay && (
+                <button
+                  onClick={() => setNewPair(true)}
+                  disabled={active || building}
+                  className="shrink-0 cursor-pointer rounded-md border border-dashed border-hairline px-2.5 py-1.5 text-[12px] font-semibold tracking-[0.14em] text-ink-3 transition-colors hover:border-judge hover:text-judge disabled:cursor-default disabled:opacity-40"
+                  title="build a new point-in-time snapshot"
                 >
-                  {datesForTicker.length === 0 && <option value="">as-of…</option>}
-                  {datesForTicker.map((d) => <option key={d} value={d}>{d}</option>)}
-                </select>
-                <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[11px] text-ink-3">▾</span>
-              </div>
-              {/* always rendered so its footprint is reserved — hidden but space-holding in replay, keeping the dropdowns from shifting on mode toggle */}
-              <button
-                onClick={() => setNewPair(true)}
-                disabled={streaming || building || replay}
-                aria-hidden={replay}
-                tabIndex={replay ? -1 : undefined}
-                className={`cursor-pointer rounded-md border border-dashed border-hairline px-2.5 py-1.5 text-[12px] font-semibold tracking-[0.14em] text-ink-3 transition-colors hover:border-judge hover:text-judge disabled:cursor-default disabled:opacity-40 ${replay ? 'invisible' : ''}`}
-                title="build a new point-in-time snapshot"
-              >
-                ＋ NEW PAIR
-              </button>
+                  ＋ NEW
+                </button>
+              )}
             </>
           )}
+          </div>
 
           {/* live: pick the model (Ollama / Claude) · replay: pick which recorded run, by model */}
           {replay ? (
@@ -296,7 +296,7 @@ export default function App() {
                 className={`${fieldCls} w-56`}
                 value={selRun}
                 onChange={(e) => setSelRun(e.target.value)}
-                disabled={streaming || building || runs.length === 0}
+                disabled={active || building || runs.length === 0}
                 aria-label="recorded run"
               >
                 {runs.length === 0 && <option value="">no recorded runs</option>}
@@ -307,56 +307,37 @@ export default function App() {
               <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[11px] text-ink-3">▾</span>
             </div>
           ) : (
-            <div className="flex items-center gap-2">
-              <div className="relative">
-                <select
-                  className={`${fieldCls} w-56 ${selected?.paid ? 'text-technicals' : ''}`}
-                  value={sel}
-                  onChange={(e) => setSel(e.target.value)}
-                  disabled={streaming || building || models.length === 0}
-                  aria-label="model"
-                >
-                  {models.length === 0 && <option value="">no models found</option>}
-                  {[...new Set(models.map((m) => m.group))].map((group) => (
-                    <optgroup key={group} label={group}>
-                      {models.filter((m) => m.group === group).map((m) => (
-                        <option key={`${m.backend}::${m.model}`} value={`${m.backend}::${m.model}`}>{m.label}</option>
-                      ))}
-                    </optgroup>
-                  ))}
-                </select>
-                <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[11px] text-ink-3">▾</span>
-              </div>
-              {selected?.paid && !simulate && (
-                <span className="text-[11px] font-semibold tracking-[0.14em] text-technicals" title="estimated real API credits per run">
-                  ⚠ {selected.est_cost_usd != null ? `≈ ${fmtCost(selected.est_cost_usd)}/run` : 'CREDITS'}
-                </span>
-              )}
-              {canSimulate && (
-                <label className="inline-flex cursor-pointer items-center gap-1.5 text-[11px] text-ink-3" title="replay the newest recorded run for this pair as a live-feeling run — no credits">
-                  <input
-                    type="checkbox"
-                    checked={simulate}
-                    onChange={(e) => setSimulate(e.target.checked)}
-                    disabled={streaming || building}
-                    className="accent-judge"
-                  />
-                  Simulate · $0
-                </label>
-              )}
+            <div className="relative">
+              <select
+                className={`${fieldCls} w-56 ${selected?.paid ? 'text-technicals' : ''}`}
+                value={sel}
+                onChange={(e) => setSel(e.target.value)}
+                disabled={active || building || models.length === 0}
+                aria-label="model"
+              >
+                {models.length === 0 && <option value="">no models found</option>}
+                {[...new Set(models.map((m) => m.group))].map((group) => (
+                  <optgroup key={group} label={group}>
+                    {models.filter((m) => m.group === group).map((m) => (
+                      <option key={`${m.backend}::${m.model}`} value={`${m.backend}::${m.model}`}>{m.label}</option>
+                    ))}
+                  </optgroup>
+                ))}
+              </select>
+              <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[11px] text-ink-3">▾</span>
             </div>
           )}
 
           <button
-            onClick={run}
-            disabled={streaming || building || !ticker || !asOf
+            onClick={launch}
+            disabled={active || building || !ticker || !asOf
               || (replay ? !selRun : !selected)
               || (newPair && tickerCheck !== null && !tickerCheck.valid)}
             className="min-w-[200px] cursor-pointer rounded-[9px] border border-judge bg-judge/[0.08] px-[18px] py-[9px] text-[13px] font-semibold tracking-[0.14em] text-judge transition-colors hover:bg-judge hover:text-page disabled:cursor-default disabled:opacity-40"
           >
             {building ? 'BUILDING SNAPSHOT…'
+              : connecting ? 'CONVENING SWARM…'
               : streaming ? 'IN SESSION…'
-              : simulate ? '▶ SIMULATE RUN'
               : '▶ START ANALYSIS'}
           </button>
         </div>
@@ -365,25 +346,6 @@ export default function App() {
       {refusal && (
         <div className="border-b border-bear/40 bg-bear/10 px-[30px] py-2 text-[13px] text-bear">
           400 · {refusal}
-        </div>
-      )}
-      {pendingPaid && selected?.paid && (
-        <div className="flex flex-wrap items-center gap-3 border-b border-technicals/40 bg-technicals/10 px-[30px] py-2 text-[13px] text-technicals">
-          <span>⚠ {selected.label} uses real API credits — {selected.est_cost_usd != null
-            ? `about ${fmtCost(selected.est_cost_usd)} for this run`
-            : 'cost estimate unavailable'}.</span>
-          <button
-            onClick={() => setPendingPaid(false)}
-            className="cursor-pointer rounded border border-hairline px-2.5 py-0.5 text-[12px] text-ink-2 transition-colors hover:text-ink"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={launch}
-            className="cursor-pointer rounded border border-technicals px-2.5 py-0.5 text-[12px] font-semibold text-technicals transition-colors hover:bg-technicals hover:text-page"
-          >
-            Run anyway ▸
-          </button>
         </div>
       )}
       {state.error && (
@@ -405,16 +367,26 @@ export default function App() {
           </div>
 
           {!feedStarted ? (
-            <div className="rounded-[14px] border border-dashed border-hairline px-6 py-11 text-center">
-              <div className="mb-2.5 text-[26px] text-judge/80">✦</div>
-              <p className="font-display text-[18px] text-ink-2">
-                Three specialists, a red-team, and a judge are standing by.
-              </p>
-              <p className="mt-2 text-[13px] text-ink-3">
-                Press <b className="font-semibold text-judge">Start Analysis</b> to convene the swarm
-                and watch each thesis get challenged live.
-              </p>
-            </div>
+            connecting ? (
+              <div className="rounded-[14px] border border-dashed border-judge/40 px-6 py-11 text-center">
+                <div className="mb-2.5 animate-pulse text-[26px] text-judge/80">✦</div>
+                <p className="font-display text-[18px] text-ink-2">Convening the swarm…</p>
+                <p className="mt-2 text-[13px] text-ink-3">
+                  Specialists are reading the snapshot — the first thesis lands shortly.
+                </p>
+              </div>
+            ) : (
+              <div className="rounded-[14px] border border-dashed border-hairline px-6 py-11 text-center">
+                <div className="mb-2.5 text-[26px] text-judge/80">✦</div>
+                <p className="font-display text-[18px] text-ink-2">
+                  Three specialists, a red-team, and a judge are standing by.
+                </p>
+                <p className="mt-2 text-[13px] text-ink-3">
+                  Press <b className="font-semibold text-judge">Start Analysis</b> to convene the swarm
+                  and watch each thesis get challenged live.
+                </p>
+              </div>
+            )
           ) : (
             <LayerFeed state={state} manifest={manifest} />
           )}

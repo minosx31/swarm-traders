@@ -47,18 +47,18 @@ export function streamUrl(ticker: string, asOf: string, replay: boolean, opts: S
   return `${API_BASE}/stream?${params}`
 }
 
+export async function fetchModels(): Promise<ModelOption[]> {
+  if (STATIC) return [] // no live runs without a backend
+  const res = await fetch(`${API_BASE}/models`)
+  if (!res.ok) throw new Error(`models fetch failed: ${res.status}`)
+  return res.json()
+}
+
 /** Check a symbol exists before the user commits to building its snapshot.
  *  Live-only: the static demo has no backend to probe (and no NEW PAIR flow). */
 export async function validateTicker(ticker: string): Promise<TickerCheck> {
   const res = await fetch(`${API_BASE}/validate-ticker?ticker=${encodeURIComponent(ticker)}`)
   if (!res.ok) throw new Error(`validate failed: ${res.status}`)
-  return res.json()
-}
-
-export async function fetchModels(): Promise<ModelOption[]> {
-  if (STATIC) return [] // no live runs without a backend
-  const res = await fetch(`${API_BASE}/models`)
-  if (!res.ok) throw new Error(`models fetch failed: ${res.status}`)
   return res.json()
 }
 

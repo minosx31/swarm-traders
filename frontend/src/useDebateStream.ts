@@ -16,8 +16,10 @@ interface StreamControls {
 
 export function useDebateStream(): StreamControls {
   const [state, dispatch] = useReducer(
-    (s: DebateState, action: DebateEvent | { type: '__reset__' }) =>
-      action.type === '__reset__' ? initialState : debateReducer(s, action as DebateEvent),
+    (s: DebateState, action: DebateEvent | { type: '__reset__' } | { type: '__connecting__' }) =>
+      action.type === '__reset__' ? initialState
+        : action.type === '__connecting__' ? { ...s, phase: 'connecting' as const }
+          : debateReducer(s, action as DebateEvent),
     initialState,
   )
   const sourceRef = useRef<EventSource | null>(null)
@@ -66,6 +68,9 @@ export function useDebateStream(): StreamControls {
 
     const source = new EventSource(streamUrl(ticker, asOf, replay, opts))
     sourceRef.current = source
+    // show activity immediately — the first SSE event (agent_start) trails the
+    // connect + backend setup, and we don't want the UI to read as un-started.
+    dispatch({ type: '__connecting__' })
     source.onmessage = (msg) => {
       const event = JSON.parse(msg.data) as DebateEvent
       dispatch(event)
