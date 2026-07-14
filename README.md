@@ -439,23 +439,42 @@ A `$0`, backend-free site that replays recorded runs from bundled JSON — no LL
 no API key, nothing paid in the bundle. An alternative to the live Path B above;
 no code differs, only the build-time `VITE_STATIC` flag.
 
-1. **Record the runs you want to ship.** Do live runs (`LLM_BACKEND=ollama …`);
-   each persists to `backend/data/runs/` tagged with its model. Curate by which
-   files live there — delete takes you don't want public.
-2. **Export the snapshot manifests:** `cd backend && uv run python
-   scripts/export_manifests.py`. Writes `backend/data/manifests/{TICKER}_{as_of}.json`
-   — the offline stand-in for `GET /snapshot`, powering the Provenance manifest panel.
+1. **Record the runs you want to ship.** Do live runs (any backend — free
+   OpenRouter, `LLM_BACKEND=ollama …`, or paid Claude); each persists to
+   `backend/data/runs/` tagged with its model. Curate by which files live there —
+   delete takes you don't want public.
+2. **Export the snapshot manifests — do this after every recording session, so the
+   Provenance panel has data for the pairs you just recorded:**
+   ```bash
+   cd backend && uv run python scripts/export_manifests.py
+   ```
+   With no arguments it writes `backend/data/manifests/{TICKER}_{as_of}.json` for
+   **every whitelisted snapshot on disk** (every pair you have a snapshot for,
+   which includes every pair you recorded a run for) — the offline stand-in for
+   `GET /snapshot`. Skip this and the runs still replay, but the Provenance
+   manifest panel is empty for the pairs that have no manifest.
 3. **Bundle them:** `cd frontend && bun run bundle`. Copies `data/runs/*.json`
-   (+ each referenced outcome) into `frontend/public/data/`, copies any matching
-   `data/manifests/*.json` into `frontend/public/data/snapshots/` (skipped with a
-   warning if the manifests dir doesn't exist), and writes `index.json` (the
-   offline stand-in for `GET /whitelist` + `GET /runs`).
+   (+ each referenced outcome) into `frontend/public/data/`, writes `index.json`
+   (the offline stand-in for `GET /whitelist` + `GET /runs`), and copies
+   **whatever manifests are available** — for each bundled pair it copies
+   `data/manifests/{TICKER}_{as_of}.json` into `frontend/public/data/snapshots/`
+   if it exists, skipping (with a warning) any that are missing. Check the console
+   summary it prints — `bundled N run(s) …` and `bundled M manifest(s) …` — to
+   confirm the manifest count matches the pairs you expect.
 4. **Commit `frontend/public/data/`** — Vercel builds from git, so the bundled
    JSON must be committed (it is *not* gitignored).
 5. **Deploy to Vercel:** set the project's **Root Directory → `frontend`** and
    set the build-time env `VITE_STATIC=1` (Project → Settings → Environment
-   Variables) so the build reads the bundled JSON instead of a backend.
+   Variables) so the build reads the bundled JSON instead of a backend. Because
+   Vite inlines env vars at build time, **redeploy** after setting it.
    `vercel.json` pins the rest (`bun run build`, output `dist/`, `bun install`).
    Re-run steps 2–4 and push to ship more runs.
+
+The static site uses **whatever is bundled**: a pair with a manifest shows the
+Provenance panel; a pair without one still replays its debate, just without that
+panel (the manifest fetch 404s and is ignored). Partial manifest coverage is fine
+— you don't need a manifest for every recorded pair. Note the site replays from
+the bundled `frontend/public/data/`, *not* from `backend/data/runs/` directly, so
+runs you recorded locally only appear after a `bun run bundle`.
 
 Preview the static build locally: `VITE_STATIC=1 bun run build && bun run preview`.
