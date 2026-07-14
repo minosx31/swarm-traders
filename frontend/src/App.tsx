@@ -191,7 +191,7 @@ export default function App() {
     <>
     <div className="atmosphere" aria-hidden />
     <div className="relative z-[1] flex min-h-screen flex-col">
-      <header className="flex flex-wrap items-end justify-between gap-5 border-b border-hairline px-[30px] pb-5 pt-[22px]">
+      <header className="flex flex-col gap-4 border-b border-hairline px-[30px] pb-5 pt-[22px]">
         <div>
           <h1 className="font-display text-[31px] font-medium leading-none text-ink" style={{ letterSpacing: '-0.01em' }}>
             Swarm<span className="font-normal italic"> Traders</span>
@@ -201,7 +201,7 @@ export default function App() {
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div className="flex w-full flex-wrap items-center gap-2.5">
           {/* Always a live presentation. (Behind the scenes a backend-less demo
               re-streams a cached run, but that's never surfaced as a mode.) */}
           <span className="inline-flex items-center gap-2 rounded-[9px] border border-judge/35 bg-judge/10 px-3.5 py-2 text-[11px] font-semibold tracking-[0.14em] text-judge">
@@ -289,7 +289,7 @@ export default function App() {
           )}
           </div>
 
-          {/* live: pick the model (Ollama / Claude) · replay: pick which recorded run, by model */}
+          <div className="ml-auto flex flex-wrap items-center gap-2.5">
           {replay ? (
             <div className="relative">
               <select
@@ -340,6 +340,7 @@ export default function App() {
               : streaming ? 'IN SESSION…'
               : '▶ START ANALYSIS'}
           </button>
+          </div>
         </div>
       </header>
 
